@@ -1,0 +1,460 @@
+<script>
+/* =======================================================================
+   Muestras: campana de Gauss y plano de ubicación de paquetes
+   Reutiliza los helpers del bloque anterior (E, txt, line, path, clear,
+   legend, table, fillTip, place, markTip, nf, W).
+   ======================================================================= */
+const RAW = /*__MUESTRAS__*/;
+const el = id => document.getElementById(id);
+
+/* ---------- estadística ---------- */
+const mean = a => a.reduce((s, v) => s + v, 0) / a.length;
+const sdev = a => { const m = mean(a); return Math.sqrt(a.reduce((s, v) => s + (v - m) * (v - m), 0) / (a.length - 1)); };
+/* Abramowitz & Stegun 7.1.26 — error máximo 1,5e-7 */
+function erf(x) {
+  const s = x < 0 ? -1 : 1, a = Math.abs(x), t = 1 / (1 + 0.3275911 * a);
+  const poly = ((((1.061405429 * t - 1.453152027) * t + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t;
+  return s * (1 - poly * Math.exp(-a * a));
+}
+const Phi = (x, m, s) => 0.5 * (1 + erf((x - m) / (s * Math.SQRT2)));
+const npdf = (x, m, s) => Math.exp(-0.5 * Math.pow((x - m) / s, 2)) / (s * Math.sqrt(2 * Math.PI));
+
+/* ---------- tooltip sobre nodos HTML ---------- */
+function domTip(node, tipId, cardId, title, rows) {
+  const tip = el(tipId), card = el(cardId);
+  node.setAttribute("tabindex", "0");
+  const on = ev => { fillTip(tip, title, rows); place(tip, card, ev.clientX, ev.clientY); };
+  node.addEventListener("pointerenter", on);
+  node.addEventListener("pointermove", on);
+  node.addEventListener("focus", () => {
+    const b = node.getBoundingClientRect();
+    fillTip(tip, title, rows); place(tip, card, b.left + b.width / 2, b.top);
+  });
+  node.addEventListener("pointerleave", () => tip.classList.remove("on"));
+  node.addEventListener("blur", () => tip.classList.remove("on"));
+}
+
+/* ---------- planos (estructura de propuesta_2_plano_camaras_v3) ---------- */
+const PLANOS = {
+  p12: {
+    n: 24, titulo: "Cámaras 1–2", cols: 8,
+    nota: "En la distribución de <b>Cámaras 1–2</b> los paquetes se organizan en una <b>columna " +
+          "izquierda</b> y una <b>columna derecha</b>. La franja central corresponde a los " +
+          "<b>calefactores</b> y en los extremos izquierdo y derecho se ubica la <b>tina</b>.",
+    build: cell => {
+      const lay = document.createElement("div");
+      lay.className = "layout layout12";
+      lay.appendChild(box("side-tub", "Tina"));
+      lay.appendChild(camara("Columna izquierda", [
+        [[8, 7, 6], [2, 1, 0]], [[11, 10, 9], [5, 4, 3]]
+      ], cell));
+      lay.appendChild(box("heater", "Calefactores"));
+      lay.appendChild(camara("Columna derecha", [
+        [[20, 19, 18], [14, 13, 12]], [[23, 22, 21], [17, 16, 15]]
+      ], cell));
+      lay.appendChild(box("side-tub", "Tina"));
+      return [lay, salida()];
+    }
+  },
+  p36: {
+    n: 27, titulo: "Cámaras 3–6", cols: 9,
+    nota: "En <b>Cámaras 3–6</b> no existe pasillo entre las tres columnas. La <b>tina</b> se ubica " +
+          "en la parte trasera, detrás del conjunto de paquetes.",
+    build: cell => {
+      const rear = box("rear-tub", "Tina · parte trasera de las cámaras 3–6");
+      const lay = document.createElement("div");
+      lay.className = "layout layout36";
+      lay.appendChild(camara("Columna izquierda", [[[26, 25, 24], [17, 16, 15], [8, 7, 6]]], cell));
+      lay.appendChild(camara("Columna central", [[[23, 22, 21], [14, 13, 12], [5, 4, 3]]], cell));
+      lay.appendChild(camara("Columna derecha", [[[20, 19, 18], [11, 10, 9], [2, 1, 0]]], cell));
+      return [rear, lay, salida()];
+    }
+  }
+};
+function box(cls, t) { const d = document.createElement("div"); d.className = cls; d.textContent = t; return d; }
+/* La salida va al frente de la camara, debajo de los paquetes: es por donde
+   entra y sale la carga. Las flechas apuntan hacia afuera del plano. */
+function salida() {
+  const d = document.createElement("div");
+  d.className = "salida";
+  d.appendChild(document.createElement("i"));
+  d.appendChild(document.createTextNode("Salida de cámara"));
+  d.appendChild(document.createElement("i"));
+  return d;
+}
+function camara(titulo, columnas, cell) {
+  const s = document.createElement("section"); s.className = "camera";
+  s.appendChild(box("camera-title", titulo));
+  const g = document.createElement("div");
+  g.className = columnas.length > 1 ? "grid2" : "grid1";
+  columnas.forEach(col => {
+    const c = document.createElement("div");
+    if (col.length > 1 && columnas.length > 1) {
+      col.forEach((rack, i) => {
+        if (i > 0) {
+          const a = document.createElement("div"); a.className = "acceso";
+          const sp = document.createElement("span"); sp.textContent = "acceso"; a.appendChild(sp);
+          c.appendChild(a);
+        }
+        c.appendChild(mkRack(rack, cell));
+      });
+    } else {
+      c.className = "grid1";
+      col.forEach(rack => c.appendChild(mkRack(rack, cell)));
+    }
+    g.appendChild(c);
+  });
+  s.appendChild(g);
+  return s;
+}
+function mkRack(ids, cell) {
+  const r = document.createElement("div"); r.className = "rack";
+  ids.forEach(id => r.appendChild(cell(id)));
+  return r;
+}
+
+/* ---------- reconocimiento de cámara ----------
+   Un paquete lleva entre 24 y 26 tablas. Las cámaras 1–2 admiten 24 paquetes;
+   las 3–6, 27. De ahí sale el rango de paquetes posible para un total dado, y
+   con él la cámara compatible. Si ni la cámara mayor alcanza, el archivo trae
+   más muestras de las que cabe una carga: el Wagner duplicó los datos.        */
+const PMIN = 24, PMAX = 26;
+const CAP = {p12: 24, p36: 27};
+
+function detectar(v) {
+  const n = v.length;
+  const kmin = Math.ceil(n / PMAX), kmax = Math.floor(n / PMIN);
+  const d = {n: n, kmin: kmin, kmax: kmax, reparte: kmin <= kmax,
+             c12: kmin <= CAP.p12, c36: kmin <= CAP.p36};
+  /* la regla sólo puede *probar* cámaras 3–6: una carga chica cabe en las dos */
+  d.ok = d.c36;
+  d.grupo = "p36";
+  d.ambiguo = d.c12;
+  /* forense de duplicación: mitades idénticas, o un bloque que sí cabría solo */
+  const h = n >> 1;
+  d.mitadesIguales = n > 3 && n % 2 === 0 && v.every((x, i) => i >= h || Math.abs(x - v[i + h]) < 1e-9);
+  d.mitadCabe = n % 2 === 0 && Math.ceil(h / PMAX) <= CAP.p36 && Math.ceil(h / PMAX) <= Math.floor(h / PMIN);
+  d.mitad = h;
+  return d;
+}
+/* k paquetes repartidos lo más parejo posible, sin salirse de 24–26 */
+function repartir(n, k) {
+  const base = Math.floor(n / k), r = n % k, out = [];
+  for (let i = 0; i < k; i++)
+    out.push(base + (Math.floor((i + 1) * r / k) > Math.floor(i * r / k) ? 1 : 0));
+  return out;
+}
+function kPreferido(d, grupo) {
+  const cap = CAP[grupo];
+  if (!d.reparte) return Math.min(cap, Math.max(1, d.kmin));
+  const ks = [];
+  for (let k = d.kmin; k <= d.kmax; k++) if (k <= cap) ks.push(k);
+  return ks.length ? ks[ks.length - 1] : d.kmin;   /* el que más posiciones llena */
+}
+
+/* ---------- estado ---------- */
+let M = null;
+/* Camara y reparto en paquetes salen de la ingesta, que ya resolvio la deteccion. */
+const PLAN = RAW.grupo || "p36";
+const K = RAW.k || kPreferido(detectar(RAW.valores), PLAN);
+/* La banda es la del criterio guardado con el ciclo; se fija al cargar, no se
+   ajusta desde la pagina, para que el porcentaje que se cite sea siempre el mismo. */
+const band = () => {
+  let lo = parseFloat(D.lo), hi = parseFloat(D.hi);
+  if (!isFinite(lo)) lo = 8;
+  if (!isFinite(hi)) hi = 12;
+  return hi < lo ? [hi, lo] : [lo, hi];
+};
+
+function build(valores, ciclo, k) {
+  const b = band(), LO = b[0], HI = b[1], n = valores.length;
+  const tam = repartir(n, k), P = [];
+  let off = 0;
+  for (let p = 0; p < k; p++) {
+    const g = valores.slice(off, off + tam[p]);
+    off += tam[p];
+    const o = {
+      id: p, n: g.length, media: mean(g), sd: g.length > 1 ? sdev(g) : 0,
+      min: Math.min.apply(null, g), max: Math.max.apply(null, g),
+      bajas: g.filter(v => v < LO).length, altas: g.filter(v => v > HI).length
+    };
+    o.fuera = o.bajas + o.altas; o.pct = 100 * o.fuera / o.n;
+    P.push(o);
+  }
+  const mu = mean(valores), sg = sdev(valores);
+  M = {
+    valores: valores, ciclo: ciclo, P: P, n: n, LO: LO, HI: HI, k: k, mu: mu, sd: sg,
+    tamMin: Math.min.apply(null, tam), tamMax: Math.max.apply(null, tam),
+    min: Math.min.apply(null, valores), max: Math.max.apply(null, valores),
+    bajas: valores.filter(v => v < LO).length, altas: valores.filter(v => v > HI).length
+  };
+  M.fuera = M.bajas + M.altas;
+  M.dentro = n - M.fuera;
+  M.expBajas = n * Phi(LO, mu, sg);
+  M.expAltas = n * (1 - Phi(HI, mu, sg));
+}
+
+/* ---------- KPI de muestras ---------- */
+function kpisM() {
+  const box2 = el("kpis-m");
+  box2.textContent = "";
+  const peor = M.P.reduce((a, b) => b.pct > a.pct ? b : a);
+  const afect = M.P.filter(p => p.fuera > 0).length;
+  const dentro = 100 * M.dentro / M.n;
+  const items = [
+    {lbl: "Muestras del ciclo", val: String(M.n), u: "", note: M.P.length + " paquetes de " + M.tamMin + (M.tamMax !== M.tamMin ? " y " + M.tamMax : "") + " tablas"},
+    {lbl: "Media del lote", val: nf(M.mu, 1), u: "%",
+      note: "Óptimo " + nf(M.LO, 0) + " – " + nf(M.HI, 0) + " % · centro " + nf((M.LO + M.HI) / 2, 1) + " %"},
+    {lbl: "Desviación estándar", val: nf(M.sd, 2), u: "pts", note: "Rango " + nf(M.min, 1) + " a " + nf(M.max, 1) + " %"},
+    {lbl: "Dentro del óptimo", val: nf(dentro, 1), u: "%",
+      meter: [dentro, D.umbral],
+      note: M.dentro + " de " + M.n + " tablas · banda " + nf(M.LO, 0) + " – " + nf(M.HI, 0) +
+            " % · umbral " + nf(D.umbral, 0) + " %"},
+    {lbl: "Fuera del óptimo", val: String(M.fuera), u: "tablas",
+      flag: M.bajas >= M.altas ? ["f-warn", M.bajas + " bajo " + nf(M.LO, 0) + " %"]
+                               : ["f-crit", M.altas + " sobre " + nf(M.HI, 0) + " %"],
+      note: M.bajas + " bajo " + nf(M.LO, 0) + " % · " + M.altas + " sobre " + nf(M.HI, 0) + " %"},
+    {lbl: "Paquete más crítico", val: "#" + peor.id, u: "",
+      flag: peor.fuera ? ["f-crit", peor.fuera + " de " + peor.n + " fuera"] : ["f-good", "Sin desvíos"],
+      note: afect + " de " + M.P.length + " paquetes tienen alguna tabla fuera"},
+    /* el veredicto se recalcula sobre las tablas que se están mostrando, con la
+       misma cuenta que usa la ingesta: sin redondear antes de comparar */
+    {lbl: "Resultado del lote", res: dentro >= D.umbral,
+      note: nf(dentro, 1) + " % de las tablas en " + nf(M.LO, 0) + " – " + nf(M.HI, 0) +
+            " % · se exige " + nf(D.umbral, 0) + " %"}
+  ];
+  items.forEach(it => {
+    const d = document.createElement("div"); d.className = "kpi";
+    const l = document.createElement("div"); l.className = "lbl"; l.textContent = it.lbl; d.appendChild(l);
+    if (it.res !== undefined) {
+      const r = document.createElement("div");
+      r.className = "res " + (it.res ? "ok" : "no");
+      r.appendChild(document.createElement("i"));
+      r.appendChild(document.createTextNode(it.res ? "Aprobado" : "Rechazado"));
+      d.appendChild(r);
+    } else {
+      const v = document.createElement("div"); v.className = "val";
+      v.appendChild(document.createTextNode(it.val));
+      if (it.u) { const u = document.createElement("span"); u.className = "u"; u.textContent = it.u; v.appendChild(u); }
+      d.appendChild(v);
+    }
+    if (it.flag) {
+      const f = document.createElement("div"); f.className = "flag " + it.flag[0];
+      const dot = document.createElement("i"); dot.className = "dot"; f.appendChild(dot);
+      f.appendChild(document.createTextNode(it.flag[1])); d.appendChild(f);
+    }
+    if (it.meter) {
+      const m = document.createElement("div"); m.className = "meter";
+      const i = document.createElement("i"); i.style.width = Math.min(100, it.meter[0]) + "%";
+      if (it.meter[0] < it.meter[1]) i.style.background = "var(--crit)";
+      m.appendChild(i);
+      const bb = document.createElement("b"); bb.style.left = it.meter[1] + "%"; m.appendChild(bb);
+      d.appendChild(m);
+    }
+    const nn = document.createElement("div"); nn.className = "note"; nn.textContent = it.note; d.appendChild(nn);
+    box2.appendChild(d);
+  });
+}
+
+/* ---------- campana de Gauss ---------- */
+function gauss() {
+  const svg = clear(el("svg-gauss"), W, 356);
+  const L = 54, R = 26, T = 28, PH = 244, PW = W - L - R, bw = 0.5;
+  const lo = Math.floor(M.min * 2) / 2 - bw, hi = Math.ceil(M.max * 2) / 2 + bw;
+  const nb = Math.round((hi - lo) / bw);
+  const bins = new Array(nb).fill(0);
+  M.valores.forEach(v => { bins[Math.min(nb - 1, Math.max(0, Math.floor((v - lo) / bw)))]++; });
+  const ymax = Math.max.apply(null, bins) * 1.14;
+  const x = v => L + (v - lo) / (hi - lo) * PW;
+  const y = c => T + PH - c / ymax * PH;
+
+  svg.appendChild(E("rect", {x: x(M.LO), y: T, width: x(M.HI) - x(M.LO), height: PH},
+    {fill: "var(--good)", opacity: ".08"}));
+  [M.LO, M.HI].forEach(v => svg.appendChild(line(x(v), T, x(v), T + PH, "var(--good)", 1.5)));
+  svg.appendChild(txt("óptimo  " + nf(M.LO, 0) + " – " + nf(M.HI, 0) + " %",
+    (x(M.LO) + x(M.HI)) / 2, T + 14, {a: "middle", size: 10.5, mono: true, fill: "var(--good-ink)"}));
+
+  const step = ymax > 120 ? 40 : (ymax > 60 ? 20 : (ymax > 24 ? 10 : 5));
+  for (let c = 0; c <= ymax; c += step) {
+    svg.appendChild(line(L, y(c), W - R, y(c), "var(--grid)", 1));
+    svg.appendChild(txt(c, L - 8, y(c) + 3.5, {a: "end", size: 10, mono: true}));
+  }
+  svg.appendChild(txt("Tablas por intervalo de 0,5 %", L, T - 10,
+    {size: 10, disp: true, upper: true, track: ".08em", weight: 600, fill: "var(--ink-2)"}));
+
+  const slot = PW / nb, bwpx = Math.min(24, Math.max(2, slot - 2));
+  bins.forEach((c, k) => {
+    if (!c) return;
+    const c0 = lo + (k + 0.5) * bw;
+    /* bajo el optimo va en rojo: la tabla sobresecada no se recupera.
+       sobre el optimo va en amarillo: esa carga todavia se puede volver a secar. */
+    const fill = c0 < M.LO ? "var(--crit)" : (c0 > M.HI ? "var(--warn)" : "var(--s1)");
+    const bx = x(lo + k * bw) + (slot - bwpx) / 2, h = T + PH - y(c);
+    svg.appendChild(E("rect", {x: bx, y: y(c), width: bwpx, height: h, rx: 2}, {fill: fill}));
+    if (h > 4) svg.appendChild(E("rect", {x: bx, y: y(c) + 4, width: bwpx, height: h - 4}, {fill: fill}));
+    markTip(svg, E("rect", {x: bx - 3, y: T, width: bwpx + 6, height: PH}, {fill: "transparent"}),
+      "tip-gauss", "c-gauss", nf(lo + k * bw, 1) + " – " + nf(lo + (k + 1) * bw, 1) + " %",
+      [{c: fill, sq: true, t: "Tablas", v: String(c)},
+       {c: "var(--muted)", sq: true, t: "Del lote", v: nf(100 * c / M.n, 2) + " %"},
+       {c: "var(--ink)", sq: true, t: "Esperado normal",
+        v: nf(M.n * (Phi(lo + (k + 1) * bw, M.mu, M.sd) - Phi(lo + k * bw, M.mu, M.sd)), 1)}]);
+  });
+
+  let d = "";
+  for (let px = 0; px <= 240; px++) {
+    const v = lo + (hi - lo) * px / 240;
+    d += (px ? "L" : "M") + x(v).toFixed(1) + " " + y(npdf(v, M.mu, M.sd) * M.n * bw).toFixed(1);
+  }
+  svg.appendChild(path(d, {stroke: "var(--ink)", "stroke-width": "2px", "pointer-events": "none"}));
+
+  const ml = line(x(M.mu), T, x(M.mu), T + PH, "var(--ink)", 1.5);
+  ml.style.setProperty("pointer-events", "none");
+  svg.appendChild(ml);
+  svg.appendChild(txt("μ " + nf(M.mu, 1) + " %", x(M.mu), T + PH + 16,
+    {a: "middle", size: 11, weight: 600, fill: "var(--ink)"}));
+  [-2, -1, 1, 2].forEach(k => {
+    const v = M.mu + k * M.sd;
+    if (v <= lo || v >= hi) return;
+    svg.appendChild(line(x(v), T + PH, x(v), T + PH + 5, "var(--rule)", 1));
+    svg.appendChild(txt((k > 0 ? "+" : "") + k + "s", x(v), T + PH + 16, {a: "middle", size: 10, mono: true}));
+  });
+  for (let v = Math.ceil(lo); v <= hi; v++) {
+    svg.appendChild(line(x(v), T + PH, x(v), T + PH + 4, "var(--rule)", 1));
+    svg.appendChild(txt(v, x(v), T + PH + 32, {a: "middle", size: 10, mono: true}));
+  }
+  svg.appendChild(line(L, T + PH, W - R, T + PH, "var(--rule)", 1));
+  svg.appendChild(txt("Humedad final  %", W - R, T + PH + 50,
+    {a: "end", size: 10, disp: true, upper: true, track: ".08em", weight: 600, fill: "var(--ink-2)"}));
+
+  legend("lg-gauss", [
+    {c: "var(--s1)", sq: true, t: "Dentro del óptimo"},
+    {c: "var(--crit)", sq: true, t: "Bajo " + nf(M.LO, 0) + " %"},
+    {c: "var(--warn)", sq: true, t: "Sobre " + nf(M.HI, 0) + " %"},
+    {c: "var(--ink)", t: "Normal ajustada (μ " + nf(M.mu, 1) + " · s " + nf(M.sd, 2) + ")"}
+  ]);
+  table("tb-gauss", ["Intervalo", "Tablas", "% del lote", "Esperado normal"],
+    bins.map((c, k) => [nf(lo + k * bw, 1) + " – " + nf(lo + (k + 1) * bw, 1) + " %", String(c),
+      nf(100 * c / M.n, 2) + " %",
+      nf(M.n * (Phi(lo + (k + 1) * bw, M.mu, M.sd) - Phi(lo + k * bw, M.mu, M.sd)), 1)])
+      .filter((r, k) => bins[k] > 0));
+
+  const box3 = el("verdict");
+  const fuerte = M.bajas > M.expBajas * 2 + 2 || M.altas > M.expAltas * 2 + 2;
+  box3.className = "verdict" + (fuerte ? " alert" : "");
+  box3.textContent = "";
+  const add = (t, b) => { const e = document.createElement(b ? "b" : "span"); e.textContent = t; box3.appendChild(e); };
+  add("Una normal con μ " + nf(M.mu, 1) + " y s " + nf(M.sd, 2) + " predice ");
+  add(nf(M.expBajas, 1) + " tablas bajo " + nf(M.LO, 0) + " % y " + nf(M.expAltas, 1) + " sobre " + nf(M.HI, 0) + " %", true);
+  add(". El lote tiene ");
+  add(M.bajas + " y " + M.altas, true);
+  add(". ");
+  add(fuerte
+    ? "Las colas superan lo que explica el azar, así que el lote no es una sola población: hay una subpoblación con otra media. Eso se localiza — busca en el plano los paquetes marcados en rojo."
+    : "Las colas coinciden con lo que predice la normal, así que la dispersión se comporta como ruido del proceso y no como un defecto localizado. Bajar el porcentaje fuera del óptimo exige reducir s en toda la carga, no perseguir un paquete concreto.");
+}
+
+/* ---------- plano ---------- */
+const DVCUT = [-2, -1, -0.4, 0.4, 1, 2];
+const dv = d => { let k = 0; while (k < DVCUT.length && d > DVCUT[k]) k++; return k; };
+
+function plano() {
+  const P = PLANOS[PLAN], modo = el("mode").value, centro = (M.LO + M.HI) / 2;
+  const byId = {};
+  M.P.forEach(p => { byId[p.id] = p; });
+
+  const cell = id => {
+    const p = byId[id];
+    const d = document.createElement("div");
+    d.className = "pkg";
+    const num = document.createElement("div"); num.className = "num";
+    const sub = document.createElement("div"); sub.className = "sub";
+    if (!p) {
+      d.className = "pkg st-none";
+      num.textContent = String(id);
+      sub.textContent = "sin datos";
+      d.appendChild(num); d.appendChild(sub);
+      return d;
+    }
+    num.textContent = String(id);
+    if (modo === "fuera") {
+      d.classList.add(p.fuera === 0 ? "st-ok" : (p.pct < 20 ? "st-warn" : "st-bad"));
+      sub.textContent = nf(p.media, 1) + " %";
+      if (p.fuera) {
+        const b = document.createElement("div"); b.className = "badge";
+        b.textContent = p.fuera + " fuera";
+        b.style.background = p.pct < 20 ? "var(--warn)" : "var(--crit)";
+        if (p.pct < 20) b.style.color = "#2b2103";
+        d.appendChild(b);
+      }
+    } else {
+      const k = dv(p.media - centro);
+      d.classList.add("mc");
+      d.style.background = "var(--dv" + (k + 1) + ")";
+      d.style.color = "var(--dv" + (k + 1) + "i)";
+      sub.textContent = nf(p.media, 1) + " %";
+      if (p.fuera) {
+        const b = document.createElement("div"); b.className = "badge";
+        b.textContent = p.fuera + " fuera";
+        d.appendChild(b);
+      }
+    }
+    d.appendChild(num); d.appendChild(sub);
+    domTip(d, "tip-plan", "c-plan", "Paquete " + id, [
+      {c: "var(--s1)", sq: true, t: "Media", v: nf(p.media, 1) + " %"},
+      {c: "var(--muted)", sq: true, t: "Dispersión", v: nf(p.sd, 2) + " pts"},
+      {c: "var(--muted)", sq: true, t: "Rango", v: nf(p.min, 1) + " – " + nf(p.max, 1) + " %"},
+      {c: "var(--warn)", sq: true, t: "Bajo " + nf(M.LO, 0) + " %", v: String(p.bajas)},
+      {c: "var(--crit)", sq: true, t: "Sobre " + nf(M.HI, 0) + " %", v: String(p.altas)}
+    ]);
+    return d;
+  };
+
+  const cont = el("plan");
+  cont.textContent = "";
+  P.build(cell).forEach(n => cont.appendChild(n));
+
+  el("pnote").innerHTML = "<b>Lectura:</b> " + P.nota;
+
+  /* paquetes sin posición en este plano */
+  const sobra = M.P.filter(p => p.id >= P.n);
+  const tray = el("tray");
+  tray.textContent = "";
+  tray.className = "tray" + (sobra.length ? "" : " off");
+  if (sobra.length) {
+    const t = document.createElement("span");
+    t.textContent = "El plano de " + P.titulo + " tiene " + P.n + " posiciones y la carga generó " +
+      M.P.length + " paquetes. Sin ubicación:";
+    tray.appendChild(t);
+    sobra.forEach(p => {
+      const c = document.createElement("div"); c.className = "tp";
+      const b = document.createElement("b"); b.textContent = "#" + p.id; c.appendChild(b);
+      const s = document.createElement("span");
+      s.textContent = nf(p.media, 1) + " % · " + p.n + " tablas"; c.appendChild(s);
+      tray.appendChild(c);
+    });
+  }
+
+  legend("lg-plan", modo === "fuera"
+    ? [{c: "var(--good)", sq: true, t: "Sin tablas fuera del óptimo"},
+       {c: "var(--warn)", sq: true, t: "Menos del 20 % del paquete fuera"},
+       {c: "var(--crit)", sq: true, t: "20 % o más del paquete fuera"},
+       {c: "var(--rule)", sq: true, t: "Posición sin datos cargados"}]
+    : [{scale: [1, 2, 3, 4, 5, 6, 7].map(i => "var(--dv" + i + ")"),
+        t: "Media del paquete respecto del centro del óptimo (" + nf(centro, 1) + " %), de −2 a +2 pts"}]);
+
+  table("tb-plan", ["Paquete", "Tablas", "Media %", "s", "Mín", "Máx", "Bajas", "Altas", "% fuera"],
+    M.P.slice().sort((a, b) => b.pct - a.pct || b.fuera - a.fuera).map(p =>
+      ["#" + p.id, String(p.n), nf(p.media, 1), nf(p.sd, 2), nf(p.min, 1), nf(p.max, 1),
+       String(p.bajas), String(p.altas), nf(p.pct, 1) + " %"]));
+}
+
+/* ---------- orquestación ---------- */
+function render() {
+  build(RAW.valores, RAW.ciclo, K);
+  kpisM(); gauss(); plano();
+}
+el("mode").addEventListener("change", plano);
+render();
+let rtm = 0;
+window.addEventListener("resize", () => { clearTimeout(rtm); rtm = setTimeout(gauss, 200); });
+</script>

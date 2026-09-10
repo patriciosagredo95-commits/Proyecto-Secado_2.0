@@ -1,0 +1,541 @@
+<script>
+const D = /*__DATA__*/;
+
+/* ---------- utilidades ---------- */
+const NS = "http://www.w3.org/2000/svg";
+/* los graficos se dibujan en un viewBox de 1000; TS sube el texto de ejes,
+   leyendas y etiquetas de punta para que se lea proyectado */
+const TS = 1.15;
+const nf = (n, d) => Number(n).toLocaleString("es-CL", {minimumFractionDigits: d, maximumFractionDigits: d});
+const T0 = new Date(D.ini_log.replace(" ", "T"));
+const at = m => new Date(T0.getTime() + m * 60000);
+const p2 = n => String(n).padStart(2, "0");
+const dlab = d => p2(d.getDate()) + "-" + p2(d.getMonth() + 1);
+const tlab = d => dlab(d) + " " + p2(d.getHours()) + ":" + p2(d.getMinutes());
+
+function E(tag, attrs, styles) {
+  const n = document.createElementNS(NS, tag);
+  if (attrs) for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (styles) for (const k in styles) n.style.setProperty(k, styles[k]);
+  return n;
+}
+function txt(s, x, y, opt) {
+  opt = opt || {};
+  const t = E("text", {x: x, y: y, "text-anchor": opt.a || "start"});
+  t.style.setProperty("font-family", opt.mono ? "var(--f-mono)" : (opt.disp ? "var(--f-disp)" : "var(--f-body)"));
+  t.style.setProperty("font-size", ((opt.size || 11) * TS).toFixed(1) + "px");
+  t.style.setProperty("fill", opt.fill || "var(--muted)");
+  if (opt.weight) t.style.setProperty("font-weight", opt.weight);
+  if (opt.track) t.style.setProperty("letter-spacing", opt.track);
+  if (opt.upper) t.style.setProperty("text-transform", "uppercase");
+  if (opt.opacity) t.style.setProperty("opacity", opt.opacity);
+  t.textContent = s;
+  return t;
+}
+function line(x1, y1, x2, y2, color, w) {
+  return E("line", {x1: x1, y1: y1, x2: x2, y2: y2},
+    {stroke: color, "stroke-width": (w || 1) + "px"});
+}
+function path(d, opt) {
+  return E("path", {d: d}, Object.assign({fill: "none", "stroke-linejoin": "round", "stroke-linecap": "round"}, opt));
+}
+function clear(svg, w, h) {
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+  svg.setAttribute("viewBox", "0 0 " + w + " " + h);
+  return svg;
+}
+function legend(id, items) {
+  const box = document.getElementById(id);
+  box.textContent = "";
+  items.forEach(it => {
+    const s = document.createElement("span");
+    if (it.scale) {
+      const sc = document.createElement("span"); sc.className = "scale";
+      it.scale.forEach(c => { const i = document.createElement("i"); i.style.background = c; sc.appendChild(i); });
+      s.appendChild(sc);
+    } else {
+      const k = document.createElement("i");
+      k.className = it.sq ? "key sq" : "key";
+      k.style.background = it.c;
+      if (it.hollow) { k.style.background = "transparent"; k.style.border = "1.5px solid " + it.c; }
+      s.appendChild(k);
+    }
+    s.appendChild(document.createTextNode(it.t));
+    box.appendChild(s);
+  });
+}
+function table(id, head, rows) {
+  const box = document.getElementById(id);
+  box.textContent = "";
+  const t = document.createElement("table");
+  const th = document.createElement("thead");
+  const hr = document.createElement("tr");
+  head.forEach(h => { const c = document.createElement("th"); c.textContent = h; hr.appendChild(c); });
+  th.appendChild(hr); t.appendChild(th);
+  const tb = document.createElement("tbody");
+  rows.forEach(r => {
+    const tr = document.createElement("tr");
+    r.forEach(v => { const c = document.createElement("td"); c.textContent = v; tr.appendChild(c); });
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb); box.appendChild(t);
+}
+
+/* ---------- capa de hover ---------- */
+function fillTip(tip, title, rows) {
+  tip.textContent = "";
+  const h = document.createElement("div");
+  h.className = "th"; h.textContent = title;
+  tip.appendChild(h);
+  rows.forEach(row => {
+    const d = document.createElement("div"); d.className = "tr";
+    const k = document.createElement("i"); k.className = row.sq ? "key sq k" : "key k";
+    k.style.background = row.c; d.appendChild(k);
+    const n = document.createElement("span"); n.className = "tn"; n.textContent = row.t; d.appendChild(n);
+    const v = document.createElement("span"); v.className = "tv"; v.textContent = row.v; d.appendChild(v);
+    tip.appendChild(d);
+  });
+  tip.classList.add("on");
+}
+function place(tip, card, cx, cy) {
+  const cr = card.getBoundingClientRect();
+  let left = cx - cr.left + 16;
+  if (left + tip.offsetWidth > cr.width - 10) left = cx - cr.left - tip.offsetWidth - 16;
+  tip.style.left = Math.max(8, left) + "px";
+  tip.style.top = Math.min(Math.max(8, cy - cr.top - 12), cr.height - tip.offsetHeight - 8) + "px";
+}
+function hover(svg, tipId, cardId, vbW, getIndex, rows) {
+  const tip = document.getElementById(tipId);
+  const card = document.getElementById(cardId);
+  let cross = null;
+  function show(ev) {
+    const r = svg.getBoundingClientRect();
+    const res = getIndex((ev.clientX - r.left) * (vbW / r.width));
+    if (!res) return hide();
+    if (cross) { cross.setAttribute("transform", "translate(" + res.x + ",0)"); cross.style.setProperty("opacity", "1"); }
+    fillTip(tip, res.title, rows(res.i));
+    place(tip, card, ev.clientX, ev.clientY);
+  }
+  function hide() {
+    tip.classList.remove("on");
+    if (cross) cross.style.setProperty("opacity", "0");
+  }
+  if (svg.hnd) { svg.removeEventListener("pointermove", svg.hnd.m); svg.removeEventListener("pointerleave", svg.hnd.l); }
+  svg.hnd = {m: show, l: hide};
+  svg.addEventListener("pointermove", show);
+  svg.addEventListener("pointerleave", hide);
+  return { setCross: g => { cross = g; } };
+}
+/* zona de impacto por marca: siempre mayor que la marca pintada */
+function markTip(svg, hit, tipId, cardId, title, rows) {
+  const tip = document.getElementById(tipId);
+  const card = document.getElementById(cardId);
+  hit.setAttribute("tabindex", "0");
+  hit.setAttribute("role", "img");
+  hit.setAttribute("aria-label", title + ": " + rows.map(r => r.t + " " + r.v).join(", "));
+  const at = ev => { fillTip(tip, title, rows); place(tip, card, ev.clientX, ev.clientY); };
+  const fromNode = () => {
+    const b = hit.getBoundingClientRect();
+    fillTip(tip, title, rows); place(tip, card, b.left + b.width / 2, b.top);
+  };
+  hit.addEventListener("pointerenter", at);
+  hit.addEventListener("pointermove", at);
+  hit.addEventListener("focus", fromNode);
+  hit.addEventListener("pointerleave", () => tip.classList.remove("on"));
+  hit.addEventListener("blur", () => tip.classList.remove("on"));
+  svg.appendChild(hit);
+}
+
+/* ---------- logo ----------
+   El SVG de arriba es una reconstrucción. Si dejas el archivo original junto al
+   HTML (Logo_Glover.png, .jpg o .svg), la página lo usa en su lugar.          */
+(function marca() {
+  const holder = document.getElementById("brandmark");
+  if (!holder) return;
+  const fuentes = ["Logo_Glover.svg", "Logo_Glover.png", "Logo_Glover.jpg", "logo_glover.png"];
+  (function probar(i) {
+    if (i >= fuentes.length) return;
+    const img = new Image();
+    img.onload = () => { img.alt = "Glover"; holder.textContent = ""; holder.appendChild(img); };
+    img.onerror = () => probar(i + 1);
+    img.src = fuentes[i];
+  })(0);
+})();
+
+/* ---------- KPI ---------- */
+/* Banda de aceptacion del ciclo: un solo par de limites para toda la pagina. */
+const BANDA = nf(D.lo, 0) + " – " + nf(D.hi, 0) + " %";
+const DIAS = Math.floor(D.h_total / 24);
+const HRS = Math.round(D.h_total - DIAS * 24);
+/* Indicadores de como se condujo el programa de secado. El resultado del lote va
+   con las muestras, que es de donde sale. */
+function kpis() {
+  franja("kpis-marcha", [
+    { lbl: "Offset del sensor AWM", val: "+" + nf(D.offset, 1), u: "pts", flag: ["f-warn", "Sin calibrar"],
+      note: "El PLC cerró en " + nf(D.awm_fin, 1) + "% y la madera midió " + nf(D.mc_medio, 1) + "%" },
+    { lbl: "Ocupación de cámara", val: nf(D.h_total, 1), u: "h",
+      note: DIAS + " días y " + HRS + " h" },
+    { lbl: "Cola de sobresecado", val: nf(D.h_cola, 1), u: "h", flag: ["f-crit", "Recortable"],
+      note: nf(100 * D.h_cola / D.h_total, 0) + "% del tiempo y " + nf(D.pct_gh_cola, 0) + "% de la energía para " + nf(D.awm_cola_delta, 1) + " pts" },
+    { lbl: "Tiempo fuera de setpoint", val: nf(D.pct_fuera, 1), u: "%", flag: ["f-warn", "Revisar caldera"],
+      note: D.n_eventos + " caídas sostenidas &middot; máx " + D.desv_max + " °C" }
+  ]);
+}
+
+function franja(id, items) {
+  const box = document.getElementById(id);
+  items.forEach(it => {
+    const d = document.createElement("div"); d.className = "kpi";
+    const l = document.createElement("div"); l.className = "lbl"; l.textContent = it.lbl; d.appendChild(l);
+    if (it.res !== undefined) {
+      const r = document.createElement("div");
+      r.className = "res " + (it.res ? "ok" : "no");
+      r.appendChild(document.createElement("i"));
+      r.appendChild(document.createTextNode(it.res ? "Aprobado" : "Rechazado"));
+      d.appendChild(r);
+    } else {
+      const v = document.createElement("div"); v.className = "val";
+      v.appendChild(document.createTextNode(it.val));
+      const u = document.createElement("span"); u.className = "u"; u.textContent = it.u; v.appendChild(u);
+      d.appendChild(v);
+    }
+    if (it.flag) {
+      const f = document.createElement("div"); f.className = "flag " + it.flag[0];
+      const dot = document.createElement("i"); dot.className = "dot"; f.appendChild(dot);
+      f.appendChild(document.createTextNode(it.flag[1])); d.appendChild(f);
+    }
+    if (it.meter) {
+      const m = document.createElement("div"); m.className = "meter";
+      const i = document.createElement("i"); i.style.width = it.meter[0] + "%"; m.appendChild(i);
+      const b = document.createElement("b"); b.style.left = it.meter[1] + "%";
+      b.title = "Umbral " + it.meter[1] + "%"; m.appendChild(b);
+      d.appendChild(m);
+    }
+    const n = document.createElement("div"); n.className = "note"; n.innerHTML = it.note; d.appendChild(n);
+    box.appendChild(d);
+  });
+}
+
+/* ---------- 1. curva de secado ---------- */
+const W = 1000, ML = 48, MR = 18;
+const PA = {t: 34, h: 172}, PB = {t: 252, h: 122};
+const HC = 424;
+
+function xticks(m0, m1) {
+  const out = [];
+  const span = m1 - m0;
+  const startDay = new Date(T0.getTime() + m0 * 60000);
+  const d = new Date(startDay.getFullYear(), startDay.getMonth(), startDay.getDate());
+  const stepH = span > 4000 ? 24 : (span > 1200 ? 12 : 6);
+  let cur = new Date(d.getTime());
+  while (cur.getTime() <= T0.getTime() + m1 * 60000) {
+    const m = (cur.getTime() - T0.getTime()) / 60000;
+    if (m >= m0) out.push({m: m, l: cur.getHours() === 0 ? dlab(cur) : p2(cur.getHours()) + "h"});
+    cur = new Date(cur.getTime() + stepH * 3600000);
+  }
+  return out;
+}
+
+function curva(r) {
+  const svg = clear(document.getElementById("svg-curva"), W, HC);
+  const S = D.serie, PW = W - ML - MR;
+  const i0 = S.m.findIndex(m => m >= r[0]);
+  const i1 = S.m.length - 1 - [...S.m].reverse().findIndex(m => m <= r[1]);
+  const x = m => ML + (m - r[0]) / (r[1] - r[0]) * PW;
+  const yA = v => PA.t + PA.h - v / 60 * PA.h;
+  const yB = v => PB.t + PB.h - v / 90 * PB.h;
+
+  D.fases.forEach(f => {
+    const a = Math.max(f.desde, r[0]), b = Math.min(f.hasta, r[1]);
+    if (b <= a) return;
+    const st = f.id === "pre" ? {fill: "var(--grid)", opacity: ".55"}
+      : f.id === "cola" ? {fill: "var(--crit)", opacity: ".07"} : null;
+    if (st) svg.appendChild(E("rect", {x: x(a), y: PA.t, width: x(b) - x(a), height: PB.t + PB.h - PA.t}, st));
+    if (x(b) - x(a) > 96)
+      svg.appendChild(txt(f.label + "  " + nf(f.horas, 1) + " h", (x(a) + x(b)) / 2, 13,
+        {a: "middle", size: 10.5, disp: true, upper: true, track: ".1em", weight: 600, fill: "var(--muted)"}));
+  });
+
+  svg.appendChild(E("rect", {x: ML, y: yA(D.hi), width: PW, height: yA(D.lo) - yA(D.hi)},
+    {fill: "var(--good)", opacity: ".13"}));
+  svg.appendChild(txt("banda " + BANDA, ML + 6, yA(D.lo) - 4, {size: 9.5, mono: true, fill: "var(--good-ink)"}));
+
+  [0, 20, 40, 60].forEach(v => {
+    svg.appendChild(line(ML, yA(v), W - MR, yA(v), "var(--grid)", 1));
+    svg.appendChild(txt(v, ML - 8, yA(v) + 3.5, {a: "end", size: 10, mono: true}));
+  });
+  [0, 30, 60, 90].forEach(v => {
+    svg.appendChild(line(ML, yB(v), W - MR, yB(v), "var(--grid)", 1));
+    svg.appendChild(txt(v, ML - 8, yB(v) + 3.5, {a: "end", size: 10, mono: true}));
+  });
+  svg.appendChild(txt("Humedad  %", ML, PA.t - 9, {size: 10, disp: true, upper: true, track: ".08em", weight: 600, fill: "var(--ink-2)"}));
+  svg.appendChild(txt("Temperatura  °C", ML, PB.t - 9, {size: 10, disp: true, upper: true, track: ".08em", weight: 600, fill: "var(--ink-2)"}));
+
+  xticks(r[0], r[1]).forEach(t => {
+    svg.appendChild(line(x(t.m), PB.t + PB.h, x(t.m), PB.t + PB.h + 4, "var(--rule)", 1));
+    svg.appendChild(txt(t.l, x(t.m), PB.t + PB.h + 17, {a: "middle", size: 10, mono: true}));
+  });
+
+  const mk = (key, y) => {
+    let d = "";
+    for (let i = i0; i <= i1; i++) d += (i === i0 ? "M" : "L") + x(S.m[i]).toFixed(1) + " " + y(S[key][i]).toFixed(1);
+    return d;
+  };
+  svg.appendChild(path(mk("emcsp", yA), {stroke: "var(--muted)", "stroke-width": "1.5px", opacity: ".85"}));
+  svg.appendChild(path(mk("emc", yA), {stroke: "var(--s3)", "stroke-width": "2px"}));
+  svg.appendChild(path(mk("awm", yA), {stroke: "var(--s1)", "stroke-width": "2px"}));
+  svg.appendChild(path(mk("tsp", yB), {stroke: "var(--muted)", "stroke-width": "1.5px", opacity: ".85"}));
+  svg.appendChild(path(mk("temp", yB), {stroke: "var(--s2)", "stroke-width": "2px"}));
+
+  const end = i1, ex = x(S.m[end]);
+  [[yA(S.awm[end]), nf(S.awm[end], 1) + " %", "var(--s1)"],
+   [yB(S.temp[end]), nf(S.temp[end], 0) + " °C", "var(--s2)"]].forEach(p => {
+    svg.appendChild(E("circle", {cx: ex, cy: p[0], r: 4.5}, {fill: p[2], stroke: "var(--surf)", "stroke-width": "2px"}));
+    svg.appendChild(txt(p[1], ex - 9, p[0] - 8, {a: "end", size: 11.5, weight: 600, fill: "var(--ink)"}));
+  });
+  if (r[0] === 0) svg.appendChild(txt(nf(S.awm[i0], 0) + " %", x(S.m[i0]) + 7, yA(S.awm[i0]) + 4, {size: 11.5, weight: 600, fill: "var(--ink)"}));
+
+  const cg = E("g", null, {opacity: "0"});
+  cg.appendChild(line(0, PA.t, 0, PB.t + PB.h, "var(--ink)", 1));
+  svg.appendChild(cg);
+
+  const h = hover(svg, "tip-curva", "c-curva", W, vx => {
+    if (vx < ML || vx > W - MR) return null;
+    const m = r[0] + (vx - ML) / PW * (r[1] - r[0]);
+    let i = i0; let best = 1e9;
+    for (let k = i0; k <= i1; k++) { const d = Math.abs(S.m[k] - m); if (d < best) { best = d; i = k; } }
+    return {i: i, x: x(S.m[i]), title: tlab(at(S.m[i]))};
+  }, i => [
+    {c: "var(--s1)", t: "AWM madera", v: nf(S.awm[i], 1) + " %"},
+    {c: "var(--s3)", t: "EMC ambiente", v: nf(S.emc[i], 1) + " %"},
+    {c: "var(--muted)", t: "EMC programado", v: nf(S.emcsp[i], 1) + " %"},
+    {c: "var(--s2)", t: "Temperatura", v: nf(S.temp[i], 0) + " °C"},
+    {c: "var(--muted)", t: "T programada", v: nf(S.tsp[i], 0) + " °C"}
+  ]);
+  h.setCross(cg);
+
+  legend("lg-curva", [
+    {c: "var(--s1)", t: "AWM · humedad de la madera"},
+    {c: "var(--s3)", t: "EMC · humedad de equilibrio del aire"},
+    {c: "var(--s2)", t: "Temperatura real de cámara"},
+    {c: "var(--muted)", t: "Valores programados (setpoint)"}
+  ]);
+}
+
+/* ---------- 2. estabilidad térmica ---------- */
+const HD = 250;
+function desv(r) {
+  const svg = clear(document.getElementById("svg-desv"), W, HD);
+  const S = D.serie, PW = W - ML - MR, T = 26, PH = 158;
+  const i0 = S.m.findIndex(m => m >= r[0]);
+  const i1 = S.m.length - 1 - [...S.m].reverse().findIndex(m => m <= r[1]);
+  const lo = -55, hi = 15;
+  const x = m => ML + (m - r[0]) / (r[1] - r[0]) * PW;
+  const y = v => T + (hi - v) / (hi - lo) * PH;
+  const fx = n => n.toFixed(1);
+
+  [10, 0, -20, -40].forEach(v => {
+    svg.appendChild(line(ML, y(v), W - MR, y(v), v === 0 ? "var(--rule)" : "var(--grid)", v === 0 ? 1.5 : 1));
+    svg.appendChild(txt(v > 0 ? "+" + v : v, ML - 8, y(v) + 3.5, {a: "end", size: 10, mono: true}));
+  });
+  svg.appendChild(txt("Δ °C respecto del setpoint", ML, T - 9, {size: 10, disp: true, upper: true, track: ".08em", weight: 600, fill: "var(--ink-2)"}));
+
+  let d = "M" + fx(x(S.m[i0])) + " " + fx(y(0));
+  for (let i = i0; i <= i1; i++) d += "L" + fx(x(S.m[i])) + " " + fx(y(S.devmin[i]));
+  d += "L" + fx(x(S.m[i1])) + " " + fx(y(0)) + "Z";
+  ["pos", "neg"].forEach(side => {
+    const cp = E("clipPath", {id: "cl-" + side});
+    cp.appendChild(E("rect", {x: ML, y: side === "pos" ? T : y(0), width: PW, height: side === "pos" ? y(0) - T : T + PH - y(0)}));
+    svg.appendChild(cp);
+    svg.appendChild(E("path", {d: d, "clip-path": "url(#cl-" + side + ")"},
+      {fill: side === "pos" ? "var(--s1)" : "var(--neg)", opacity: ".8"}));
+  });
+
+  D.eventos.forEach(e => {
+    if (e.hasta < r[0] || e.desde > r[1]) return;
+    svg.appendChild(line(Math.max(x(e.desde), ML), T + PH + 6, Math.min(x(e.hasta), W - MR), T + PH + 6, "var(--neg)", 3));
+  });
+  svg.appendChild(txt("eventos sostenidos", ML, T + PH + 20, {size: 9.5, mono: true, fill: "var(--neg)"}));
+
+  /* un ciclo puede no tener ningun evento sostenido: sin guardia, el reduce
+     sin valor inicial revienta y se lleva por delante el resto de la pagina */
+  const worst = D.eventos.length ? D.eventos.reduce((a, b) => b.desv < a.desv ? b : a) : null;
+  if (worst && worst.desde >= r[0] && worst.desde <= r[1])
+    svg.appendChild(txt(worst.desv + " °C", x(worst.desde) + 6, y(worst.desv) - 6, {size: 11.5, weight: 600, fill: "var(--ink)"}));
+
+  xticks(r[0], r[1]).forEach(t => {
+    svg.appendChild(line(x(t.m), T + PH, x(t.m), T + PH + 4, "var(--rule)", 1));
+    svg.appendChild(txt(t.l, x(t.m), T + PH + 34, {a: "middle", size: 10, mono: true}));
+  });
+
+  const cg = E("g", null, {opacity: "0"});
+  cg.appendChild(line(0, T, 0, T + PH, "var(--ink)", 1));
+  svg.appendChild(cg);
+  const h = hover(svg, "tip-desv", "c-desv", W, vx => {
+    if (vx < ML || vx > W - MR) return null;
+    const m = r[0] + (vx - ML) / PW * (r[1] - r[0]);
+    let i = i0, best = 1e9;
+    for (let k = i0; k <= i1; k++) { const dd = Math.abs(S.m[k] - m); if (dd < best) { best = dd; i = k; } }
+    return {i: i, x: x(S.m[i]), title: tlab(at(S.m[i]))};
+  }, i => [
+    {c: S.devmin[i] < 0 ? "var(--neg)" : "var(--s1)", t: "Desviación mínima", v: (S.devmin[i] > 0 ? "+" : "") + nf(S.devmin[i], 1) + " °C"},
+    {c: "var(--s2)", t: "Temperatura", v: nf(S.temp[i], 0) + " °C"},
+    {c: "var(--muted)", t: "T programada", v: nf(S.tsp[i], 0) + " °C"}
+  ]);
+  h.setCross(cg);
+
+  legend("lg-desv", [
+    {c: "var(--s1)", sq: true, t: "Por sobre el setpoint"},
+    {c: "var(--neg)", sq: true, t: "Por debajo del setpoint"},
+    {c: "var(--neg)", t: "Evento sostenido (más de 20 min bajo −5 °C)"}
+  ]);
+}
+
+/* ---------- 3. balance de horas ---------- */
+function balance() {
+  const svg = clear(document.getElementById("svg-balance"), W, 196);
+  const PW = W - ML - MR, BY = 86, BH = 24, GAP = 2;
+  const segs = [
+    {l: "Acondicionamiento", h: D.h_pre, c: "var(--s1)"},
+    {l: "Secado efectivo", h: D.h_sec, c: "var(--s2)"},
+    {l: "Cola de sobresecado", h: D.h_cola, c: "var(--s3)"},
+    {l: "Enfriado y medición", h: D.h_enfr, c: "var(--s4)"}
+  ];
+  const tot = D.h_total, x = h => ML + h / tot * PW;
+
+  const bs = x(D.h_pre), be = x(tot);
+  svg.appendChild(line(bs, 46, be, 46, "var(--ink-2)", 1));
+  svg.appendChild(line(bs, 46, bs, 54, "var(--ink-2)", 1));
+  svg.appendChild(line(be, 46, be, 54, "var(--ink-2)", 1));
+  svg.appendChild(txt("Ciclo según el informe · " + nf(D.h_inf, 1) + " h", (bs + be) / 2, 38,
+    {a: "middle", size: 11, weight: 600, fill: "var(--ink-2)"}));
+  svg.appendChild(txt("Ocupación real de cámara · " + nf(tot, 1) + " h", ML, 20,
+    {size: 11, disp: true, upper: true, track: ".1em", weight: 600, fill: "var(--ink)"}));
+  svg.appendChild(line(ML, 26, W - MR, 26, "var(--ink)", 1.5));
+
+  let acc = 0;
+  segs.forEach((s, k) => {
+    const x0 = x(acc), x1 = x(acc + s.h);
+    const w = Math.max(1, x1 - x0 - (k < segs.length - 1 ? GAP : 0));
+    svg.appendChild(E("rect", {x: x0, y: BY, width: w, height: BH, rx: 1}, {fill: s.c}));
+    if (w > 64) {
+      svg.appendChild(txt(nf(s.h, 1) + " h", x0 + w / 2, BY - 10, {a: "middle", size: 12, weight: 600, fill: "var(--ink)"}));
+      svg.appendChild(txt(nf(100 * s.h / tot, 0) + "%", x0 + w / 2, BY + BH + 15, {a: "middle", size: 10.5, mono: true, fill: "var(--ink-2)"}));
+    } else {
+      svg.appendChild(line(x0 + w / 2, BY - 7, x0 + w / 2, BY, "var(--rule)", 1));
+      svg.appendChild(txt(nf(s.h, 1) + " h", x1, BY - 12, {a: "end", size: 12, weight: 600, fill: "var(--ink)"}));
+    }
+    markTip(svg, E("rect", {x: x0, y: BY - 6, width: Math.max(12, w), height: BH + 12}, {fill: "transparent"}),
+      "tip-balance", "c-balance", s.l,
+      [{c: s.c, sq: true, t: "Duración", v: nf(s.h, 1) + " h"},
+       {c: "var(--muted)", sq: true, t: "Del total", v: nf(100 * s.h / tot, 1) + " %"}]);
+    acc += s.h;
+  });
+
+  for (let hh = 0; hh <= tot; hh += 24) {
+    svg.appendChild(line(x(hh), BY + BH + 26, x(hh), BY + BH + 30, "var(--rule)", 1));
+    svg.appendChild(txt(hh === 0 ? "0 h" : hh + " h", x(hh), BY + BH + 43, {a: "middle", size: 10, mono: true}));
+  }
+  svg.appendChild(line(ML, BY + BH + 26, W - MR, BY + BH + 26, "var(--grid)", 1));
+
+  legend("lg-balance", segs.map(s => ({c: s.c, sq: true, t: s.l + " · " + nf(s.h, 1) + " h"})));
+  table("tb-balance",
+    ["Fase", "Desde", "Hasta", "Horas", "Share"],
+    [["Acondicionamiento", "24-08 17:16", "26-08 08:12", nf(D.h_pre, 1), nf(100 * D.h_pre / tot, 1) + "%"],
+     ["Secado efectivo", "26-08 08:12", "30-08 09:11", nf(D.h_sec, 1), nf(100 * D.h_sec / tot, 1) + "%"],
+     ["Cola de sobresecado", "30-08 09:11", "01-09 05:42", nf(D.h_cola, 1), nf(100 * D.h_cola / tot, 1) + "%"],
+     ["Enfriado y medición", "01-09 05:42", "01-09 09:26", nf(D.h_enfr, 1), nf(100 * D.h_enfr / tot, 1) + "%"],
+     ["Total", "24-08 17:16", "01-09 09:26", nf(tot, 1), "100,0%"]]);
+}
+
+/* ---------- 4. tramos de AWM ---------- */
+function tramos() {
+  const T = D.tramos, RH = 29, TOP = 40, LW = 92;
+  const H = TOP + T.length * RH + 34;
+  const svg = clear(document.getElementById("svg-tramos"), W, H);
+  /* mismo borde derecho que el gráfico de horas de cámara: x = W - MR */
+  const x0 = LW, PW = W - MR - LW;
+  const max = Math.max.apply(null, T.map(t => t.horas));
+  const dom = Math.ceil(max / 10) * 10;   /* la última marca cae justo en el borde */
+  const x = h => x0 + h / dom * PW;
+
+  svg.appendChild(txt("Tramo de AWM", 0, 22, {size: 10, disp: true, upper: true, track: ".1em", weight: 600, fill: "var(--ink-2)"}));
+  svg.appendChild(txt("Horas empleadas", x0, 22, {size: 10, disp: true, upper: true, track: ".1em", weight: 600, fill: "var(--ink-2)"}));
+  svg.appendChild(line(0, 28, W, 28, "var(--grid)", 1));
+
+  for (let h = 0; h <= dom; h += 10) {
+    svg.appendChild(line(x(h), TOP - 4, x(h), TOP + T.length * RH - 6, "var(--grid)", 1));
+    svg.appendChild(txt(h + " h", x(h), TOP + T.length * RH + 12,
+      {a: h === dom ? "end" : "middle", size: 10, mono: true}));
+  }
+
+  T.forEach((t, i) => {
+    const y = TOP + i * RH, tail = t.fase === "cola";
+    svg.appendChild(txt(nf(t.de, t.de % 1 ? 1 : 0) + " → " + nf(t.a, t.a % 1 ? 1 : 0) + " %", x0 - 12, y + 12,
+      {a: "end", size: 11.5, mono: true, fill: tail ? "var(--ink)" : "var(--ink-2)", weight: tail ? 500 : 400}));
+    const w = Math.max(2, x(t.horas) - x0);
+    svg.appendChild(E("rect", {x: x0, y: y + 1, width: w, height: 16, rx: 1},
+      {fill: tail ? "var(--s1)" : "var(--deemph)"}));
+    svg.appendChild(txt(nf(t.horas, 1) + " h", x0 + w + 8, y + 13,
+      {size: 11.5, weight: tail ? 600 : 500, fill: tail ? "var(--ink)" : "var(--ink-2)"}));
+    markTip(svg, E("rect", {x: 0, y: y - 5, width: W, height: RH - 1}, {fill: "transparent"}),
+      "tip-tramos", "c-tramos",
+      "AWM " + nf(t.de, t.de % 1 ? 1 : 0) + " → " + nf(t.a, t.a % 1 ? 1 : 0) + " %",
+      [{c: tail ? "var(--s1)" : "var(--deemph)", sq: true, t: "Duración", v: nf(t.horas, 1) + " h"},
+       {c: "var(--muted)", sq: true, t: "Acumulado", v: nf(t.acum, 1) + " h"},
+       {c: "var(--muted)", sq: true, t: "Fase", v: tail ? "Cola" : (t.fase === "pre" ? "Acondicionam." : "Secado")}]);
+  });
+
+  legend("lg-tramos", [
+    {c: "var(--deemph)", sq: true, t: "Secado productivo"},
+    {c: "var(--s1)", sq: true, t: "Cola: " + nf(D.h_cola, 1) + " h para 0,8 pts"}
+  ]);
+  table("tb-tramos", ["Tramo AWM", "Horas", "Acumulado", "Fase"],
+    T.map(t => [nf(t.de, t.de % 1 ? 1 : 0) + " → " + nf(t.a, t.a % 1 ? 1 : 0) + " %", nf(t.horas, 1),
+      nf(t.acum, 1) + " h", t.fase === "cola" ? "Cola" : (t.fase === "pre" ? "Acondicionamiento" : "Secado")]));
+}
+
+/* ---------- filtros y arranque ---------- */
+const LAST = D.serie.m[D.serie.m.length - 1];
+const RANGES = [
+  {l: "Ciclo completo", r: [0, LAST]},
+  {l: "Sólo secado efectivo", r: [Math.round(D.fases[1].desde), LAST]},
+  {l: "Últimas 48 h", r: [Math.max(0, LAST - 2880), LAST]}
+];
+function drawTime(r) {
+  curva(r); desv(r);
+  const S = D.serie, rows = [];
+  for (let i = 0; i < S.m.length; i++) {
+    if (S.m[i] < r[0] || S.m[i] > r[1] || S.m[i] % 60 !== 0) continue;
+    rows.push([tlab(at(S.m[i])), nf(S.awm[i], 1), nf(S.emc[i], 1), nf(S.emcsp[i], 1),
+      nf(S.temp[i], 0), nf(S.tsp[i], 0), (S.devmin[i] > 0 ? "+" : "") + nf(S.devmin[i], 1)]);
+  }
+  table("tb-curva", ["Fecha", "AWM %", "EMC %", "EMC prog", "T °C", "T prog", "Δ mín"], rows);
+  table("tb-desv", ["Inicio", "Término", "Minutos", "Desviación máxima"],
+    D.eventos.filter(e => e.hasta >= r[0] && e.desde <= r[1])
+      .map(e => [e.ini, e.fin, String(e.min_), e.desv + " °C"]));
+}
+function filters() {
+  const seg = document.getElementById("seg");
+  RANGES.forEach((rg, i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = rg.l;
+    b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+    b.addEventListener("click", () => {
+      [...seg.children].forEach(c => c.setAttribute("aria-pressed", "false"));
+      b.setAttribute("aria-pressed", "true");
+      drawTime(rg.r);
+    });
+    seg.appendChild(b);
+  });
+}
+kpis(); filters(); drawTime(RANGES[0].r); balance(); tramos();
+let rt = 0;
+window.addEventListener("resize", () => {
+  clearTimeout(rt);
+  rt = setTimeout(() => {
+    const i = [...document.getElementById("seg").children].findIndex(b => b.getAttribute("aria-pressed") === "true");
+    drawTime((RANGES[i] || RANGES[0]).r);
+  }, 180);
+});
+</script>

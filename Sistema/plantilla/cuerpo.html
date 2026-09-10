@@ -1,0 +1,111 @@
+<section class="sect" aria-labelledby="h-mues" id="s-mues">
+  <header>
+    <h2 id="h-mues">Resultados del Ciclo</h2>
+  </header>
+
+  <div class="ctl">
+    <label>Colorear el plano por
+      <select id="mode">
+        <option value="fuera" selected>Tablas fuera del óptimo</option>
+        <option value="mc">Humedad media</option>
+      </select>
+    </label>
+  </div>
+  <div class="kpis" id="kpis-m"></div>
+
+  <article class="card" id="c-gauss">
+    <h3>Campana de Gauss del lote</h3>
+    <p class="cap">Histograma de las mediciones con la normal ajustada a la media y desviación
+    observadas. Lo que importa no es la forma de la campana sino la comparación entre sus colas y las
+    reales: si sobran tablas fuera del óptimo respecto de lo que predice esa normal, el lote no es
+    una población con dispersión aleatoria sino una mezcla &mdash; y una mezcla tiene una causa
+    física que el plano de abajo puede localizar.</p>
+    <div class="plot"><svg id="svg-gauss" role="img" aria-label="Histograma de humedad final de las muestras con curva normal ajustada"></svg></div>
+    <div class="legend" id="lg-gauss"></div>
+    <div class="tip" id="tip-gauss"></div>
+    <div class="verdict" id="verdict"></div>
+    <details><summary>Ver tabla (bins del histograma)</summary><div class="tw" id="tb-gauss"></div></details>
+  </article>
+
+  <article class="card" id="c-plan">
+    <h3>Plano de ubicación de paquetes</h3>
+    <p class="cap" id="plan-cap">Cada bloque es una posición de paquete, coloreada según sus
+    mediciones. La numeración sigue el orden de carga y el paquete 0 es el primero.</p>
+    <div class="plan" id="plan"></div>
+    <div class="tray off" id="tray"></div>
+    <div class="legend" id="lg-plan"></div>
+    <div class="tip" id="tip-plan"></div>
+    <div class="pnote" id="pnote"></div>
+    <details><summary>Ver tabla (resumen por paquete)</summary><div class="tw" id="tb-plan"></div></details>
+  </article>
+</section>
+
+<section class="sect" aria-labelledby="h-marcha">
+  <header>
+    <h2 id="h-marcha">Marcha del ciclo</h2>
+    <p>Los dos gráficos de esta sección comparten el mismo rango de tiempo y el mismo filtro.</p>
+  </header>
+
+  <div class="kpis" id="kpis-marcha"></div>
+
+  <div class="filters">
+    <span class="flabel" id="flab">Rango</span>
+    <div class="seg" role="group" aria-labelledby="flab" id="seg"></div>
+  </div>
+
+  <article class="card" id="c-curva">
+    <h3>Curva de secado</h3>
+    <p class="cap">Humedad y temperatura en paneles separados sobre un mismo eje de tiempo: dos
+    magnitudes distintas nunca comparten una escala. Las bandas de fondo marcan las tres fases que
+    el log revela y que el informe no distingue.</p>
+    <div class="plot"><svg id="svg-curva" role="img" aria-label="Curva de humedad de la madera y temperatura de cámara a lo largo del ciclo 3367"></svg></div>
+    <div class="legend" id="lg-curva"></div>
+    <div class="tip" id="tip-curva"></div>
+    <details><summary>Ver tabla (valores horarios)</summary><div class="tw" id="tb-curva"></div></details>
+  </article>
+
+  <article class="card" id="c-desv">
+    <h3>Estabilidad térmica</h3>
+    <p class="cap">Diferencia entre temperatura real y programada, centrada en cero: azul por encima
+    del setpoint, rojo por debajo. Cada punto es la desviación más desfavorable de su ventana de
+    5&nbsp;minutos, para que ningún evento corto quede oculto por el promedio.</p>
+    <div class="plot"><svg id="svg-desv" role="img" aria-label="Desviación de temperatura respecto del setpoint durante el ciclo"></svg></div>
+    <div class="legend" id="lg-desv"></div>
+    <div class="tip" id="tip-desv"></div>
+    <details><summary>Ver tabla (eventos sostenidos)</summary><div class="tw" id="tb-desv"></div></details>
+  </article>
+</section>
+
+<section class="sect" aria-labelledby="h-cierre">
+  <header>
+    <h2 id="h-cierre">Cierre del ciclo</h2>
+    <p>Tres lecturas que sólo aparecen cuando el informe de humedad y el log de proceso viven en la
+    misma base de datos y se cruzan por <code>(camara, ciclo)</code>.</p>
+  </header>
+
+  <article class="card" id="c-balance">
+    <h3>En qué se fueron las 184,2 horas de cámara</h3>
+    <p class="cap">El informe cuenta 145,2&nbsp;h y arranca cuando cambia el programa; antes hubo casi
+    dos días de acondicionamiento que igual ocuparon la cámara y consumieron energía.</p>
+    <div class="plot"><svg id="svg-balance" role="img" aria-label="Descomposición de las 184,2 horas de ocupación de cámara en cuatro fases"></svg></div>
+    <div class="legend" id="lg-balance"></div>
+    <div class="tip" id="tip-balance"></div>
+    <details><summary>Ver tabla</summary><div class="tw" id="tb-balance"></div></details>
+  </article>
+<article class="card" id="c-tramos">
+      <h3>Horas por cada punto de humedad</h3>
+      <p class="cap">Cuánto tardó la carga en atravesar cada tramo de AWM. El rendimiento se
+      derrumba al final: los dos últimos tramos están destacados.</p>
+      <div class="plot"><svg id="svg-tramos" role="img" aria-label="Horas empleadas en bajar cada tramo de humedad de la madera"></svg></div>
+      <div class="legend" id="lg-tramos"></div>
+      <div class="tip" id="tip-tramos"></div>
+      <details><summary>Ver tabla</summary><div class="tw" id="tb-tramos"></div></details>
+    </article>
+
+</section>
+
+<section class="sect">
+  <p class="foot">Datos leídos de la base del sistema. El programa de secado se ingiere del <code>.xlsx</code> del PLC cuando existe (precisión completa) y del <code>.pdf</code> impreso sólo como respaldo. El plano reproduce el esquema de <code>propuesta_2_plano_camaras_v3.html</code>.</p>
+</section>
+
+</div>

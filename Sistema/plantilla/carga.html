@@ -1,0 +1,55 @@
+<details class="carga" id="carga"__ABIERTO__>
+  <summary>
+    <span class="cg-tit">Cargar un ciclo</span>
+    <span class="cg-sub">Arrastra el Excel de muestras y el programa de secado</span>
+  </summary>
+
+  <div class="cg-cuerpo">
+    <div class="cg-dos">
+      <div class="drop" id="d-mues" tabindex="0" role="button">
+        <strong>1 · Muestras de humedad</strong>
+        <span>Excel del Wagner o CSV del informe</span>
+        <span class="est" id="e-mues">Sin archivo</span>
+        <input type="file" id="f-mues" accept=".xlsx,.xlsm,.csv,.txt" hidden>
+      </div>
+      <div class="drop" id="d-proc" tabindex="0" role="button">
+        <strong>2 · Programa de secado</strong>
+        <span>Excel del PLC (mejor) o PDF impreso</span>
+        <span class="est" id="e-proc">Sin archivo</span>
+        <input type="file" id="f-proc" accept=".xlsx,.xlsm,.pdf" hidden>
+      </div>
+    </div>
+
+    <div class="cg-campos">
+      <label class="f">Cámara
+        <select id="camara">
+          <option value="1">1</option><option value="2">2</option>
+          <option value="3" selected>3</option><option value="4">4</option>
+          <option value="5">5</option><option value="6">6</option>
+        </select>
+      </label>
+      <label class="f">Ciclo <input type="number" id="ciclo" min="1" step="1"></label>
+      <label class="f">Objetivo % <input type="number" id="objetivo" step="0.5" value="9"></label>
+      <label class="f">Óptimo desde <input type="number" id="crlo" step="0.5" value="8"></label>
+      <label class="f">hasta <input type="number" id="crhi" step="0.5" value="12"></label>
+      <label class="f">Umbral % <input type="number" id="umbral" step="1" value="85"></label>
+      <button class="primario" id="guardar" disabled>Guardar y ver</button>
+    </div>
+
+    <div class="avisos" id="avisos"></div>
+
+    <details class="cg-lista">
+      <summary>Ciclos en la base (__NCICLOS__)</summary>
+      <div class="cg-tabla">
+        <table>
+          <thead><tr><th>Ciclo</th><th>Registros PLC</th><th>Muestras</th><th>Origen</th>
+            <th>Inicio</th><th>Resultado</th><th></th></tr></thead>
+          <tbody><!--__FILAS__--></tbody>
+        </table>
+      </div>
+    </details>
+
+    <p class="cg-red">Desde otro equipo de la planta, entra a
+      <code id="cg-url">__URL_RED__</code></p>
+  </div>
+</details>

@@ -1,0 +1,16 @@
+;; Informe Ciclo medición de humedad 
+
+Fecha:;04-09-2026;;Hora:;14:55
+
+Ciclo;Muestras;Especie;% mc;deb_std;máximo;mímimo;
+3367;655;N/A;9;1,29;21,7;5,7;
+
+Fecha Inicio;26-08-2026 ; 8:12:11;;Fecha Término;01-09-2026 ; 9:26:22
+
+Criterio de Aceptacion
+Humedad: ;9%  +/-2
+Aprueba: ;85%
+Bajas: ;2,44%
+Altas: ;1,22%
+Rango: ;96,34%
+Resultado: ;Aprobado

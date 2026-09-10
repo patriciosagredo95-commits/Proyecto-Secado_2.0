@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plano visual de cámaras</title>
+<style>
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Inter,Segoe UI,Arial,sans-serif;
+    background:#eef1f4;
+    color:#18212b
+  }
+  .page{max-width:1400px;margin:auto;padding:24px}
+  .top{
+    display:flex;justify-content:space-between;gap:16px;align-items:end;
+    margin-bottom:16px
+  }
+  h1{margin:0;font-size:28px}
+  .subtitle{margin:6px 0 0;color:#697582}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap}
+  button{
+    border:0;border-radius:10px;padding:11px 16px;font-weight:700;
+    cursor:pointer;background:white;box-shadow:0 2px 8px #00000014
+  }
+  button.active{background:#1f4f7a;color:white}
+  .card{
+    background:white;border-radius:18px;padding:20px;
+    box-shadow:0 8px 28px #00000012
+  }
+  .legend{
+    display:flex;gap:18px;flex-wrap:wrap;margin-bottom:14px;
+    font-size:13px;color:#52606d
+  }
+  .dot{width:13px;height:13px;border-radius:3px;display:inline-block;margin-right:6px;vertical-align:-2px}
+  .plan{
+    position:relative;
+    min-height:660px;
+    background:
+      linear-gradient(#0000 39px,#d9dee5 40px),
+      linear-gradient(90deg,#0000 39px,#d9dee5 40px);
+    background-size:40px 40px;
+    border:1px solid #dfe4ea;border-radius:14px;
+    overflow:auto;padding:44px
+  }
+  .layout{
+    min-width:980px;
+    display:grid;
+    gap:26px;
+    align-items:stretch
+  }
+  .layout12{grid-template-columns:82px 1fr 110px 1fr 82px}
+  .side-tub{
+    border:2px dashed #9a7f4e;background:#fbf6ea;color:#7e673e;
+    border-radius:14px;display:flex;justify-content:center;align-items:center;
+    font-weight:800;letter-spacing:.8px;
+    writing-mode:vertical-rl;transform:rotate(180deg);min-height:520px
+  }
+  .heater{
+    border:2px dashed #b04c4c;background:#fff2f2;color:#8d2e2e;
+    border-radius:14px;display:flex;justify-content:center;align-items:center;
+    font-weight:800;letter-spacing:1px;
+    writing-mode:vertical-rl;transform:rotate(180deg);min-height:520px
+  }
+  .layout36{grid-template-columns:repeat(3,1fr);gap:18px}
+  .rear-tub{
+    min-width:980px;
+    margin-bottom:18px;
+    border:2px dashed #9a7f4e;
+    background:#fbf6ea;
+    color:#7e673e;
+    border-radius:14px;
+    min-height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    letter-spacing:.8px;
+  }
+  .camera{
+    border:3px solid #244d73;border-radius:14px;padding:18px;
+    background:#f9fbfd;position:relative
+  }
+  .camera-title{
+    position:absolute;top:-15px;left:16px;background:#244d73;color:white;
+    padding:5px 12px;border-radius:20px;font-size:14px;font-weight:800
+  }
+  .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .grid1{display:grid;grid-template-columns:1fr;gap:18px}
+  .rack{
+    display:grid;grid-template-rows:repeat(3,72px);
+    border:2px solid #60758a;border-radius:9px;overflow:hidden;background:white
+  }
+  .pkg{
+    display:flex;align-items:center;justify-content:center;
+    font-size:25px;font-weight:800;border-bottom:1px solid #aeb8c2;
+    background:linear-gradient(180deg,#fff,#f4f7f9);
+    position:relative
+  }
+  .pkg:last-child{border-bottom:0}
+  .pkg:hover{background:#e8f2fb}
+  .pkg:after{
+    content:"Paquete";position:absolute;left:8px;top:7px;
+    font-size:9px;color:#87939f;font-weight:600;text-transform:uppercase
+  }
+  .gap{
+    height:55px;display:flex;align-items:center;justify-content:center;
+    color:#7a8793;font-size:12px;font-weight:700
+  }
+  .gap:before,.gap:after{content:"";height:1px;background:#bbc4cc;flex:1}
+  .gap span{padding:0 10px}
+  .aisle{
+    border:2px dashed #8da2b5;border-radius:14px;background:#eef5fa;
+    display:flex;align-items:center;justify-content:center;
+    color:#34556f;font-weight:800;letter-spacing:1px;
+    writing-mode:vertical-rl;transform:rotate(180deg);
+    min-height:520px
+  }
+  .service{
+    border:2px dashed #9a7f4e;background:#fbf6ea;color:#7e673e;
+    border-radius:14px;display:flex;justify-content:center;align-items:center;
+    font-weight:800;writing-mode:vertical-rl;transform:rotate(180deg)
+  }
+  .flow{
+    position:absolute;right:12px;top:75px;bottom:75px;width:38px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:#566675;font-weight:800;font-size:12px
+  }
+  .arrow{font-size:52px;line-height:40px}
+  .meta{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px
+  }
+  .metric{background:#f6f8fa;border-radius:10px;padding:10px 12px}
+  .metric b{display:block;font-size:18px}
+  .metric span{font-size:11px;color:#73808c}
+  .hidden{display:none}
+  .note{
+    margin-top:14px;padding:12px 14px;border-left:4px solid #244d73;
+    background:#f7fafc;border-radius:8px;color:#52606d;font-size:13px
+  }
+  @media(max-width:800px){
+    .top{align-items:flex-start;flex-direction:column}
+    .page{padding:12px}.plan{padding:22px;min-height:600px}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="top">
+    <div>
+      <h1>Plano de ubicación de paquetes</h1>
+      <p class="subtitle">Propuesta 2 corregida · distribución tipo planta ajustada a la disposición real.</p>
+    </div>
+    <div class="tabs">
+      <button id="b12" class="active" onclick="showPlan('p12')">Cámaras 1–2</button>
+      <button id="b36" onclick="showPlan('p36')">Cámaras 3–6</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="legend">
+      <span><i class="dot" style="background:#f4f7f9;border:1px solid #60758a"></i>Paquete</span>
+      <span><i class="dot" style="background:#eef5fa;border:1px dashed #8da2b5"></i>Pasillo / circulación</span>
+      <span><i class="dot" style="background:#fbf6ea;border:1px dashed #9a7f4e"></i>Zona lateral / servicio</span>
+    </div>
+
+    <div id="p12" class="plan">
+      <div class="layout layout12">
+        <div class="side-tub">TINA</div>
+
+        <section class="camera">
+          <div class="camera-title">COLUMNA IZQUIERDA</div>
+          <div class="grid2">
+            <div>
+              <div class="rack"><div class="pkg">8</div><div class="pkg">7</div><div class="pkg">6</div></div>
+              <div class="gap"><span>acceso</span></div>
+              <div class="rack"><div class="pkg">2</div><div class="pkg">1</div><div class="pkg">0</div></div>
+            </div>
+            <div>
+              <div class="rack"><div class="pkg">11</div><div class="pkg">10</div><div class="pkg">9</div></div>
+              <div class="gap"><span>acceso</span></div>
+              <div class="rack"><div class="pkg">5</div><div class="pkg">4</div><div class="pkg">3</div></div>
+            </div>
+          </div>
+        </section>
+
+        <div class="heater">CALEFACTORES</div>
+
+        <section class="camera">
+          <div class="camera-title">COLUMNA DERECHA</div>
+          <div class="grid2">
+            <div>
+              <div class="rack"><div class="pkg">20</div><div class="pkg">19</div><div class="pkg">18</div></div>
+              <div class="gap"><span>acceso</span></div>
+              <div class="rack"><div class="pkg">14</div><div class="pkg">13</div><div class="pkg">12</div></div>
+            </div>
+            <div>
+              <div class="rack"><div class="pkg">23</div><div class="pkg">22</div><div class="pkg">21</div></div>
+              <div class="gap"><span>acceso</span></div>
+              <div class="rack"><div class="pkg">17</div><div class="pkg">16</div><div class="pkg">15</div></div>
+            </div>
+          </div>
+        </section>
+
+        <div class="side-tub">TINA</div>
+      </div>
+
+      <div class="note" style="margin-top:16px">
+        <b>Lectura:</b> en la distribución de Cámaras 1–2, los paquetes se organizan en una <b>columna izquierda</b> y una <b>columna derecha</b>. La franja central corresponde a <b>calefactores</b> y en los extremos izquierdo y derecho se ubica la <b>tina</b>.
+      </div>
+
+      <div class="meta">
+        <div class="metric"><b>24</b><span>posiciones representadas</span></div>
+        <div class="metric"><b>3</b><span>paquetes por columna</span></div>
+        <div class="metric"><b>8</b><span>columnas físicas</span></div>
+      </div>
+    </div>
+
+    <div id="p36" class="plan hidden">
+      <div class="rear-tub">TINA · PARTE TRASERA DE LAS CÁMARAS 3–6</div>
+
+      <div class="layout layout36">
+        <section class="camera">
+          <div class="camera-title">COLUMNA IZQUIERDA</div>
+          <div class="grid1">
+            <div class="rack"><div class="pkg">26</div><div class="pkg">25</div><div class="pkg">24</div></div>
+            <div class="rack"><div class="pkg">17</div><div class="pkg">16</div><div class="pkg">15</div></div>
+            <div class="rack"><div class="pkg">8</div><div class="pkg">7</div><div class="pkg">6</div></div>
+          </div>
+        </section>
+
+        <section class="camera">
+          <div class="camera-title">COLUMNA CENTRAL</div>
+          <div class="grid1">
+            <div class="rack"><div class="pkg">23</div><div class="pkg">22</div><div class="pkg">21</div></div>
+            <div class="rack"><div class="pkg">14</div><div class="pkg">13</div><div class="pkg">12</div></div>
+            <div class="rack"><div class="pkg">5</div><div class="pkg">4</div><div class="pkg">3</div></div>
+          </div>
+        </section>
+
+        <section class="camera">
+          <div class="camera-title">COLUMNA DERECHA</div>
+          <div class="grid1">
+            <div class="rack"><div class="pkg">20</div><div class="pkg">19</div><div class="pkg">18</div></div>
+            <div class="rack"><div class="pkg">11</div><div class="pkg">10</div><div class="pkg">9</div></div>
+            <div class="rack"><div class="pkg">2</div><div class="pkg">1</div><div class="pkg">0</div></div>
+          </div>
+        </section>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 170px;margin-top:18px;gap:14px">
+        <div class="note"><b>Lectura:</b> en Cámaras 3–6 no existe pasillo entre las tres columnas. La tina se ubica en la parte trasera, detrás del conjunto de paquetes.</div>
+        <div class="service" style="min-height:90px;writing-mode:horizontal-tb;transform:none">CONTENEDORES →</div>
+      </div>
+
+      <div class="meta">
+        <div class="metric"><b>27</b><span>posiciones representadas</span></div>
+        <div class="metric"><b>3</b><span>paquetes por columna</span></div>
+        <div class="metric"><b>9</b><span>columnas físicas</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      Esta propuesta prioriza el <b>plano físico</b> más que una tabla. En una versión operacional, cada bloque puede cambiar de color según estado (vacío, cargado, secando, listo, retenido) y mostrar información al pasar el mouse.
+    </div>
+  </div>
+</div>
+
+<script>
+function showPlan(id){
+  document.getElementById('p12').classList.toggle('hidden', id !== 'p12');
+  document.getElementById('p36').classList.toggle('hidden', id !== 'p36');
+  document.getElementById('b12').classList.toggle('active', id === 'p12');
+  document.getElementById('b36').classList.toggle('active', id === 'p36');
+}
+</script>
+</body>
+</html>

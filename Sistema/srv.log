@@ -1,0 +1,12 @@
+  GET /
+  GET /Logo_Glover.svg
+  GET /Logo_Glover.png
+  GET /Logo_Glover.jpg
+  GET /logo_glover.png
+  GET /favicon.ico
+  GET /
+  GET /plano
+  GET /?camara=3&ciclo=3367
+  GET /api/ciclos
+  GET /plano
+  GET /?camara=3&ciclo=3367

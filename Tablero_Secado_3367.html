@@ -1,0 +1,1688 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>html{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Ciclo 3367 · Cámara 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --plane:#eef2f2; --surf:#fbfcfc; --surf-2:#f5f8f8;
+  --ink:#10171a; --ink-2:#4a565b; --muted:#7d8a8f;
+  --grid:#e2e7e7; --rule:#c4cdcf; --hair:rgba(16,23,26,.11);
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --neg:#e34948;
+  --deemph:#9aa7ab;
+  --good:#0ca30c; --warn:#fab219; --crit:#d03b3b;
+  --good-ink:#0a7a0a; --warn-ink:#8a6104; --crit-ink:#b32f2f;
+  --band:rgba(42,120,214,.07); --wash:rgba(42,120,214,.10);
+  --brand:#cc0000;   /* rojo Glover: sólo identidad, nunca codifica datos */
+  /* escala tipografica: 6 pasos, calibrada para proyeccion */
+  --t-xs:12px; --t-sm:15px; --t-md:17px; --t-lg:20px; --t-xl:28px; --t-2xl:36px;
+  --f-serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  /* escala tipografica: 6 pasos, calibrada para proyeccion */
+  --t-xs:12px; --t-sm:15px; --t-md:17px; --t-lg:20px; --t-xl:28px; --t-2xl:36px;
+  --f-serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --f-disp:"IBM Plex Sans Condensed","Segoe UI",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --plane:#0a0e10; --surf:#141b1e; --surf-2:#1a2225;
+    --ink:#f2f6f6; --ink-2:#a8b6ba; --muted:#7f8d91;
+    --grid:#232d31; --rule:#33403f; --hair:rgba(242,246,246,.12);
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --neg:#e66767;
+    --deemph:#5c6a6e;
+    --good:#0ca30c; --warn:#fab219; --crit:#d03b3b;
+    --good-ink:#3cc23c; --warn-ink:#fab219; --crit-ink:#e56b6b;
+    --band:rgba(57,135,229,.10); --wash:rgba(57,135,229,.13);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --plane:#0a0e10; --surf:#141b1e; --surf-2:#1a2225;
+  --ink:#f2f6f6; --ink-2:#a8b6ba; --muted:#7f8d91;
+  --grid:#232d31; --rule:#33403f; --hair:rgba(242,246,246,.12);
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --neg:#e66767;
+  --deemph:#5c6a6e;
+  --good:#0ca30c; --warn:#fab219; --crit:#d03b3b;
+  --good-ink:#3cc23c; --warn-ink:#fab219; --crit-ink:#e56b6b;
+  --band:rgba(57,135,229,.10); --wash:rgba(57,135,229,.13);
+}
+*{box-sizing:border-box}
+body{background:var(--plane); color:var(--ink); font-family:var(--f-body);
+  font-size:var(--t-md); line-height:1.55; -webkit-font-smoothing:antialiased;}
+.page{max-width:1240px; margin:0 auto; padding:40px 28px 84px; display:flex; flex-direction:column; gap:38px;}
+
+.masthead{display:flex; flex-direction:column; gap:14px; padding-bottom:22px; border-bottom:3px solid var(--brand);}
+.brand{display:flex; align-items:center; gap:20px;}
+.mark{flex:none; width:64px; height:64px; display:block; border-radius:2px; overflow:hidden;
+  box-shadow:0 1px 3px rgba(16,23,26,.18);}
+.mark svg, .mark img{display:block; width:100%; height:100%; object-fit:contain;}
+.brandtxt{display:flex; flex-direction:column; gap:5px; min-width:0;}
+.ciclosel{display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin:-14px 0 0;}
+.ciclosel a{font-size:var(--t-sm); color:var(--s1); text-decoration:none; font-weight:500;}
+.ciclosel a:hover{text-decoration:underline;}
+.ciclosel select{font-family:var(--f-body); font-size:var(--t-sm); color:var(--ink);
+  background:var(--surf); border:1px solid var(--rule); border-radius:2px; padding:7px 10px;}
+.eyebrow{font-family:var(--f-disp); font-size:var(--t-xs); font-weight:600; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ink-2);}
+.masthead h1{margin:0; font-family:var(--f-serif); font-size:clamp(34px,4.4vw,52px);
+  font-weight:600; letter-spacing:-.015em; line-height:1.06; text-wrap:balance;}
+.masthead h1 .sub{color:var(--muted); font-family:var(--f-mono); font-weight:400;
+  font-size:.42em; letter-spacing:-.01em; vertical-align:.28em; margin-left:6px;}
+.kpis{display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr)); gap:1px;
+  background:var(--hair); border:1px solid var(--hair);}
+.kpi{background:var(--surf); padding:16px 17px 15px; display:flex; flex-direction:column; gap:7px;}
+.kpi .lbl{font-family:var(--f-disp); font-size:var(--t-xs); font-weight:600; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--muted); line-height:1.3;}
+.kpi .val{font-size:var(--t-2xl); font-weight:600; letter-spacing:-.025em; line-height:1;}
+.kpi .val .u{font-size:var(--t-sm); font-weight:500; color:var(--ink-2); letter-spacing:0; margin-left:2px;}
+.kpi .note{font-size:var(--t-sm); color:var(--ink-2); line-height:1.4; margin-top:auto;}
+/* el veredicto es un estado, no una magnitud: distintivo en vez de cifra */
+.kpi .res{align-self:flex-start; display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--f-disp); font-size:var(--t-md); font-weight:600; letter-spacing:.09em;
+  text-transform:uppercase; padding:6px 13px; border:2px solid currentColor; border-radius:3px;}
+.kpi .res i{width:9px; height:9px; border-radius:50%; background:currentColor; flex:none;}
+.kpi .res.ok{color:var(--good-ink);}
+.kpi .res.no{color:var(--crit-ink);}
+.kpi .flag{font-family:var(--f-disp); font-size:var(--t-xs); font-weight:600; letter-spacing:.08em;
+  text-transform:uppercase; display:flex; align-items:center; gap:5px;}
+.flag .dot{width:8px; height:8px; border-radius:50%; flex:none;}
+.f-good{color:var(--good-ink);} .f-good .dot{background:var(--good);}
+.f-warn{color:var(--warn-ink);} .f-warn .dot{background:var(--warn);}
+.f-crit{color:var(--crit-ink);} .f-crit .dot{background:var(--crit);}
+.meter{height:6px; background:var(--grid); position:relative; border-radius:3px;}
+.meter i{position:absolute; top:0; bottom:0; left:0; background:var(--good); border-radius:3px;}
+.meter b{position:absolute; top:-3px; bottom:-3px; width:2px; background:var(--ink);}
+
+.sect{display:flex; flex-direction:column; gap:18px;}
+.sect > header{display:flex; flex-direction:column; gap:8px;
+  padding-bottom:14px; border-bottom:1px solid var(--hair);}
+.sect h2{margin:0; font-family:var(--f-serif); font-size:var(--t-xl); font-weight:600;
+  letter-spacing:-.012em; line-height:1.15; color:var(--ink); text-wrap:balance;}
+.sect header p{margin:0; max-width:70ch; color:var(--ink-2); font-size:var(--t-md);}
+.card{background:var(--surf); border:1px solid var(--hair); padding:20px 22px 18px;
+  display:flex; flex-direction:column; gap:0; position:relative;}
+.card h3{margin:0 0 5px; font-size:var(--t-lg); font-weight:600; letter-spacing:-.01em;}
+.card .cap{margin:0 0 14px; font-size:var(--t-sm); color:var(--ink-2); max-width:78ch;}
+.grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(410px,1fr)); gap:18px;}
+.plot{overflow-x:auto;}
+.plot svg{display:block; min-width:580px; width:100%; height:auto;}
+.legend{display:flex; flex-wrap:wrap; gap:8px 22px; padding:13px 0 0; font-size:var(--t-sm); color:var(--ink-2);}
+.legend span{display:inline-flex; align-items:center; gap:7px;}
+.key{width:15px; height:3px; border-radius:2px; flex:none;}
+.key.sq{width:11px; height:11px; border-radius:2px;}
+
+.filters{display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
+.filters .flabel{font-size:var(--t-sm); font-weight:500; color:var(--muted);}
+.seg{display:flex; border:1px solid var(--rule); background:var(--surf); border-radius:2px; overflow:hidden;}
+.seg button{appearance:none; border:0; background:transparent; color:var(--ink-2); cursor:pointer;
+  font-family:var(--f-body); font-size:var(--t-sm); font-weight:500; padding:7px 14px;
+  border-right:1px solid var(--hair);}
+.seg button:last-child{border-right:0;}
+.seg button:hover{background:var(--surf-2); color:var(--ink);}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--surf);}
+:focus-visible{outline:2px solid var(--s1); outline-offset:2px;}
+
+.tip{position:absolute; z-index:5; pointer-events:none; opacity:0; transition:opacity .1s;
+  background:var(--surf); border:1px solid var(--rule); box-shadow:0 4px 16px rgba(0,0,0,.13);
+  padding:10px 12px; font-size:var(--t-sm); min-width:180px; border-radius:2px;}
+.tip.on{opacity:1;}
+.tip .th{font-family:var(--f-mono); font-size:var(--t-xs); color:var(--muted); margin-bottom:6px;
+  padding-bottom:5px; border-bottom:1px solid var(--hair); letter-spacing:-.02em;}
+.tip .tr{display:flex; align-items:center; gap:8px; padding:2px 0;}
+.tip .tr .k{flex:none;}
+.tip .tr .tv{font-family:var(--f-mono); font-weight:500; font-variant-numeric:tabular-nums;
+  margin-left:auto; color:var(--ink);}
+.tip .tr .tn{color:var(--ink-2);}
+
+details{border-top:1px solid var(--hair); margin-top:14px;}
+summary{cursor:pointer; font-size:var(--t-sm); font-weight:500;
+  color:var(--muted); padding:11px 0 0; list-style:none;}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+ "; font-family:var(--f-mono);}
+details[open] summary::before{content:"- ";}
+summary:hover{color:var(--ink);}
+.tw{overflow:auto; max-height:290px; margin-top:10px;}
+table{border-collapse:collapse; width:100%; font-size:var(--t-sm);}
+th,td{text-align:right; padding:5px 10px 5px 0; border-bottom:1px solid var(--hair); white-space:nowrap;}
+th:first-child,td:first-child{text-align:left;}
+thead th{position:sticky; top:0; background:var(--surf); font-family:var(--f-disp); font-weight:600;
+  font-size:var(--t-xs); letter-spacing:.07em; text-transform:uppercase; color:var(--muted);}
+tbody td{font-family:var(--f-mono); font-variant-numeric:tabular-nums; color:var(--ink-2);}
+tbody td:first-child{color:var(--ink);}
+
+.foot{border-top:1px solid var(--hair); padding-top:18px; font-size:var(--t-sm); color:var(--muted); max-width:78ch;}
+code{font-family:var(--f-mono); font-size:.88em; background:var(--surf-2); padding:1px 5px;
+  border:1px solid var(--hair); border-radius:2px; white-space:nowrap;}
+@media (prefers-reduced-motion: reduce){*{transition:none !important;}}
+</style>
+
+<style>
+/* ============ tokens del plano (modo claro = colores de propuesta_2) ============ */
+:root{
+  --pl-bg:#ffffff; --pl-bd:#dfe4ea;
+  --cam-bd:#244d73; --cam-bg:#f9fbfd; --cam-pill:#244d73; --cam-pill-tx:#ffffff;
+  --rack-bd:#60758a; --rack-bg:#ffffff;
+  --pkg-bd:#aeb8c2; --pkg-g1:#ffffff; --pkg-g2:#f4f7f9; --pkg-lab:#87939f; --pkg-tx:#18212b;
+  --tub-bd:#9a7f4e; --tub-bg:#fbf6ea; --tub-tx:#7e673e;
+  --htr-bd:#b04c4c; --htr-bg:#fff2f2; --htr-tx:#8d2e2e;
+  --acc-tx:#7a8793; --acc-ln:#bbc4cc;
+  --note-bd:#244d73; --note-bg:#f7fafc;
+  --dv1:#1c5cab; --dv2:#5598e7; --dv3:#b7d3f6; --dv4:#ebeceb; --dv5:#f6c3c2; --dv6:#e87372; --dv7:#b32f2f;
+  --dv1i:#ffffff; --dv2i:#0b1b2e; --dv3i:#0b1b2e; --dv4i:#10171a; --dv5i:#2b0f0f; --dv6i:#2b0f0f; --dv7i:#ffffff;
+  --amber-bg:#fdf6e3; --amber-line:#e2c66a; --amber-ink:#6b5205;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --pl-bg:#111819; --pl-bd:#242f32;
+    --cam-bd:#3f6a94; --cam-bg:#151d20; --cam-pill:#3f6a94; --cam-pill-tx:#ffffff;
+    --rack-bd:#3d4d59; --rack-bg:#131a1d;
+    --pkg-bd:#2a353a; --pkg-g1:#182124; --pkg-g2:#141b1e; --pkg-lab:#75838a; --pkg-tx:#eef3f4;
+    --tub-bd:#6b5c3c; --tub-bg:#1d1a12; --tub-tx:#cbb27f;
+    --htr-bd:#7a4444; --htr-bg:#231414; --htr-tx:#e09b9b;
+    --acc-tx:#75838a; --acc-ln:#2a353a;
+    --note-bd:#3f6a94; --note-bg:#151d20;
+    --dv1:#5598e7; --dv2:#3987e5; --dv3:#24537f; --dv4:#2a3236; --dv5:#7a3a3d; --dv6:#e66767; --dv7:#f08b8b;
+    --dv1i:#08131f; --dv2i:#08131f; --dv3i:#eef4fb; --dv4i:#dfe6e8; --dv5i:#f6e3e3; --dv6i:#240c0c; --dv7i:#240c0c;
+    --amber-bg:#241d09; --amber-line:#6b5205; --amber-ink:#f0d68a;
+  }
+}
+:root[data-theme="dark"]{
+  --pl-bg:#111819; --pl-bd:#242f32;
+  --cam-bd:#3f6a94; --cam-bg:#151d20; --cam-pill:#3f6a94; --cam-pill-tx:#ffffff;
+  --rack-bd:#3d4d59; --rack-bg:#131a1d;
+  --pkg-bd:#2a353a; --pkg-g1:#182124; --pkg-g2:#141b1e; --pkg-lab:#75838a; --pkg-tx:#eef3f4;
+  --tub-bd:#6b5c3c; --tub-bg:#1d1a12; --tub-tx:#cbb27f;
+  --htr-bd:#7a4444; --htr-bg:#231414; --htr-tx:#e09b9b;
+  --acc-tx:#75838a; --acc-ln:#2a353a;
+  --note-bd:#3f6a94; --note-bg:#151d20;
+  --dv1:#5598e7; --dv2:#3987e5; --dv3:#24537f; --dv4:#2a3236; --dv5:#7a3a3d; --dv6:#e66767; --dv7:#f08b8b;
+  --dv1i:#08131f; --dv2i:#08131f; --dv3i:#eef4fb; --dv4i:#dfe6e8; --dv5i:#f6e3e3; --dv6i:#240c0c; --dv7i:#240c0c;
+  --amber-bg:#241d09; --amber-line:#6b5205; --amber-ink:#f0d68a;
+}
+
+.ctl{display:flex; flex-wrap:wrap; gap:10px 22px; align-items:center;}
+.ctl label{font-size:var(--t-sm); font-weight:500; color:var(--muted);
+  display:inline-flex; align-items:center; gap:8px;}
+.ctl input, .ctl select{font-family:var(--f-body); font-size:var(--t-sm); font-weight:400; letter-spacing:0;
+  text-transform:none; color:var(--ink); background:var(--surf); border:1px solid var(--rule);
+  border-radius:2px; padding:5px 8px;}
+.ctl input{width:58px; font-variant-numeric:tabular-nums;}
+
+/* ============ plano de cámaras (diseño de propuesta_2) ============ */
+
+.plan{position:relative; background:var(--pl-bg);
+  border:1px solid var(--pl-bd); border-radius:14px; overflow:auto; padding:40px;}
+.layout{min-width:980px; display:grid; gap:26px; align-items:stretch;}
+.layout12{grid-template-columns:78px 1fr 104px 1fr 78px;}
+.layout36{grid-template-columns:repeat(3,1fr); gap:18px;}
+.side-tub, .heater, .rear-tub{
+  border:2px dashed var(--tub-bd); background:var(--tub-bg); color:var(--tub-tx);
+  border-radius:14px; display:flex; align-items:center; justify-content:center;
+  font-family:var(--f-disp); font-weight:600; font-size:var(--t-sm); letter-spacing:.9px; text-transform:uppercase;}
+.side-tub{writing-mode:vertical-rl; transform:rotate(180deg);}
+.heater{border-color:var(--htr-bd); background:var(--htr-bg); color:var(--htr-tx);
+  writing-mode:vertical-rl; transform:rotate(180deg);}
+.rear-tub{min-width:980px; min-height:68px; margin-bottom:18px;}
+.camera{border:3px solid var(--cam-bd); border-radius:14px; padding:20px 18px 18px;
+  background:var(--cam-bg); position:relative;}
+.camera-title{position:absolute; top:-14px; left:16px; background:var(--cam-pill); color:var(--cam-pill-tx);
+  padding:4px 13px; border-radius:20px; font-family:var(--f-disp); font-size:var(--t-xs); font-weight:600;
+  letter-spacing:.06em; text-transform:uppercase;}
+.grid2{display:grid; grid-template-columns:repeat(2,1fr); gap:18px;}
+.grid1{display:grid; grid-template-columns:1fr; gap:18px;}
+.rack{display:grid; grid-template-rows:repeat(3,82px); border:2px solid var(--rack-bd);
+  border-radius:9px; overflow:hidden; background:var(--rack-bg);}
+.pkg{position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:1px; border-bottom:1px solid var(--pkg-bd); color:var(--pkg-tx);
+  background:linear-gradient(180deg, var(--pkg-g1), var(--pkg-g2)); cursor:default;}
+.pkg:last-child{border-bottom:0;}
+.pkg:before{content:"Paquete"; position:absolute; left:8px; top:7px; font-family:var(--f-disp);
+  font-size:10px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--pkg-lab);}
+.pkg .num{font-size:27px; font-weight:600; line-height:1; letter-spacing:-.02em;}
+.pkg .sub{font-family:var(--f-mono); font-size:var(--t-xs); opacity:.82;}
+.pkg .badge{position:absolute; right:7px; top:6px; font-family:var(--f-disp); font-size:11px;
+  font-weight:600; letter-spacing:.04em; padding:1px 6px; border-radius:9px;
+  background:var(--crit); color:#ffffff;}
+.pkg.st-ok{background:linear-gradient(180deg,#f2fbf2,#e6f6e6);}
+.pkg.st-warn{background:linear-gradient(180deg,#fff8e8,#fdf0d2);}
+.pkg.st-bad{background:linear-gradient(180deg,#fdeeee,#f9dede);}
+.pkg.st-none{background:linear-gradient(180deg,var(--pkg-g2),var(--pkg-g2)); color:var(--muted);}
+.pkg.st-none .num{font-size:var(--t-sm); font-weight:500;}
+.pkg:focus-visible{outline:2px solid var(--s1); outline-offset:-3px;}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .pkg.st-ok{background:linear-gradient(180deg,#16241a,#132018);}
+  :root:not([data-theme="light"]) .pkg.st-warn{background:linear-gradient(180deg,#2a2413,#221d0f);}
+  :root:not([data-theme="light"]) .pkg.st-bad{background:linear-gradient(180deg,#2c1919,#241414);}
+}
+:root[data-theme="dark"] .pkg.st-ok{background:linear-gradient(180deg,#16241a,#132018);}
+:root[data-theme="dark"] .pkg.st-warn{background:linear-gradient(180deg,#2a2413,#221d0f);}
+:root[data-theme="dark"] .pkg.st-bad{background:linear-gradient(180deg,#2c1919,#241414);}
+.pkg.mc{background:none;}
+.acceso{height:52px; display:flex; align-items:center; justify-content:center;
+  font-family:var(--f-disp); font-size:var(--t-xs); font-weight:600; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--acc-tx);}
+.acceso:before, .acceso:after{content:""; height:1px; background:var(--acc-ln); flex:1;}
+.acceso span{padding:0 10px;}
+.pnote{margin-top:16px; padding:12px 15px; border-left:4px solid var(--note-bd);
+  background:var(--note-bg); border-radius:8px; color:var(--ink-2); font-size:var(--t-sm); line-height:1.55;}
+.pnote b{color:var(--ink); font-weight:600;}
+.tray{display:flex; flex-wrap:wrap; gap:10px; align-items:center; padding:13px 16px; margin-top:14px;
+  background:var(--amber-bg); border-left:3px solid var(--amber-line); border-radius:8px;
+  color:var(--amber-ink); font-size:var(--t-sm);}
+.tray .tp{background:var(--surf); border:1px solid var(--hair); border-radius:6px; padding:6px 11px;
+  display:flex; flex-direction:column; min-width:96px;}
+.tray .tp b{font-size:var(--t-md); font-weight:600; color:var(--ink);}
+.tray .tp span{font-family:var(--f-mono); font-size:var(--t-xs); color:var(--ink-2);}
+.tray.off{display:none;}
+.scale{display:inline-flex; align-items:center; gap:0; vertical-align:-2px;}
+.scale i{width:24px; height:11px; display:block;}
+.scale i:first-child{border-radius:2px 0 0 2px;}
+.scale i:last-child{border-radius:0 2px 2px 0;}
+.gap p b{color:var(--ink); font-weight:600;}
+@media (max-width:800px){ .plan{padding:22px;} }
+</style>
+
+<style>
+/* ============ panel de carga integrado en la misma pagina ============ */
+.carga{background:var(--surf); border:1px solid var(--hair); border-radius:3px;}
+.carga > summary{list-style:none; cursor:pointer; padding:16px 22px; display:flex;
+  align-items:baseline; gap:14px; flex-wrap:wrap;}
+.carga > summary::-webkit-details-marker{display:none}
+.carga > summary::before{content:"+"; font-family:var(--f-mono); font-size:var(--t-lg);
+  color:var(--s1); line-height:1; margin-right:2px;}
+.carga[open] > summary::before{content:"–";}
+.carga > summary:hover{background:var(--surf-2);}
+.cg-tit{font-family:var(--f-serif); font-size:var(--t-lg); font-weight:600; color:var(--ink);}
+.cg-sub{font-size:var(--t-sm); color:var(--muted);}
+.cg-cuerpo{padding:4px 22px 22px; border-top:1px solid var(--hair);}
+.cg-dos{display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); gap:14px;
+  margin-top:18px;}
+.drop{border:1.5px dashed var(--rule); background:var(--surf-2); border-radius:4px;
+  padding:20px; display:flex; flex-direction:column; gap:5px; cursor:pointer;
+  transition:border-color .12s, background .12s;}
+.drop:hover, .drop.over{border-color:var(--s1); background:var(--wash);}
+.drop strong{font-size:var(--t-md); font-weight:600;}
+.drop > span{font-size:var(--t-sm); color:var(--ink-2);}
+.drop .est{font-family:var(--f-mono); font-size:var(--t-xs); color:var(--muted); margin-top:3px;}
+.drop.listo{border-style:solid; border-color:var(--good); background:rgba(12,163,12,.07);}
+.drop.listo .est{color:var(--good-ink);}
+.drop.malo{border-style:solid; border-color:var(--crit); background:rgba(208,59,59,.06);}
+.drop.malo .est{color:var(--crit-ink);}
+.drop:focus-visible{outline:2px solid var(--s1); outline-offset:2px;}
+.cg-campos{display:flex; flex-wrap:wrap; gap:12px 20px; align-items:flex-end; margin-top:18px;}
+label.f{display:flex; flex-direction:column; gap:5px; font-size:var(--t-sm); color:var(--muted);}
+label.f input, label.f select{font-family:var(--f-body); font-size:var(--t-sm); color:var(--ink);
+  background:var(--surf); border:1px solid var(--rule); border-radius:2px; padding:7px 9px;}
+label.f input{width:104px; font-variant-numeric:tabular-nums;}
+button.primario{appearance:none; border:0; background:var(--ink); color:var(--surf);
+  font-family:var(--f-body); font-size:var(--t-sm); font-weight:600; padding:10px 22px;
+  border-radius:2px; cursor:pointer; margin-left:auto;}
+button.primario:hover{opacity:.87;}
+button.primario:disabled{opacity:.35; cursor:not-allowed;}
+.avisos{display:flex; flex-direction:column; gap:8px; margin-top:16px;}
+.avisos:empty{display:none;}
+.av{padding:11px 15px; border-left:3px solid var(--s1); background:var(--surf-2);
+  font-size:var(--t-sm); border-radius:2px; line-height:1.5;}
+.av.ok{border-left-color:var(--good);}
+.av.aviso{border-left-color:var(--warn); background:#fdf6e3; color:var(--warn-ink);}
+.av.alerta{border-left-color:var(--crit); background:rgba(208,59,59,.07); color:var(--crit-ink);}
+
+.cg-lista{margin-top:20px; border-top:1px solid var(--hair);}
+.cg-lista > summary{cursor:pointer; padding:12px 0 0; font-size:var(--t-sm); color:var(--muted);
+  list-style:none;}
+.cg-lista > summary::-webkit-details-marker{display:none}
+.cg-lista > summary::before{content:"+ "; font-family:var(--f-mono);}
+.cg-lista[open] > summary::before{content:"– ";}
+.cg-lista > summary:hover{color:var(--ink);}
+.cg-tabla{overflow:auto; max-height:280px; margin-top:10px;}
+.cg-tabla table{border-collapse:collapse; width:100%; font-size:var(--t-sm);}
+.cg-tabla th, .cg-tabla td{text-align:left; padding:8px 12px 8px 0;
+  border-bottom:1px solid var(--hair); white-space:nowrap;}
+.cg-tabla th{position:sticky; top:0; background:var(--surf); font-family:var(--f-disp);
+  font-size:var(--t-xs); font-weight:600; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--muted);}
+.cg-tabla td{font-family:var(--f-mono); color:var(--ink-2);}
+.cg-tabla td:first-child{font-family:var(--f-body);}
+.cg-tabla td a{color:var(--s1); font-weight:500; text-decoration:none;}
+.cg-tabla td a:hover{text-decoration:underline;}
+.cg-tabla td.vacio{color:var(--muted); font-family:var(--f-body); padding:20px 0;}
+.cg-tabla tr.actual td{background:var(--wash);}
+.est-pill{font-family:var(--f-disp); font-size:var(--t-xs); font-weight:600; letter-spacing:.08em;
+  text-transform:uppercase; padding:2px 9px; border:1.5px solid currentColor; border-radius:3px;
+  color:var(--muted);}
+.est-pill.ok{color:var(--good-ink);} .est-pill.no{color:var(--crit-ink);}
+button.del{appearance:none; border:1px solid var(--rule); background:var(--surf);
+  color:var(--muted); font-family:var(--f-body); font-size:var(--t-xs); padding:4px 10px;
+  border-radius:2px; cursor:pointer;}
+button.del:hover{border-color:var(--crit); color:var(--crit-ink);}
+.cg-red{margin:18px 0 0; font-size:var(--t-sm); color:var(--muted);}
+
+/* barra de ciclo, ahora sin enlace de vuelta */
+.ciclosel{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:-14px 0 0;}
+.ciclosel label{font-size:var(--t-sm); color:var(--muted);}
+.ciclosel select{font-family:var(--f-body); font-size:var(--t-sm); color:var(--ink);
+  background:var(--surf); border:1px solid var(--rule); border-radius:2px; padding:7px 10px;}
+
+/* estado inicial, cuando todavia no hay nada cargado */
+.vacio-hero{background:var(--surf); border:1px solid var(--hair); padding:44px 26px;
+  text-align:center; border-radius:3px;}
+.vacio-hero h2{margin:0 0 8px; font-family:var(--f-serif); font-size:var(--t-xl); font-weight:600;}
+.vacio-hero p{margin:0 auto; max-width:56ch; color:var(--ink-2);}
+</style>
+
+</head>
+<body>
+<div class="page">
+
+<header class="masthead">
+  <div class="brand">
+    <span class="mark" id="brandmark">
+      <svg viewBox="0 0 128 128" role="img" aria-label="Glover">
+        <rect width="128" height="128" fill="#cc0000"></rect>
+        <text x="9" y="86" font-family="'IBM Plex Sans','Segoe UI',system-ui,sans-serif"
+              font-weight="700" font-size="84" fill="#ffffff">G</text>
+        <text x="50" y="99" font-family="'IBM Plex Sans','Segoe UI',system-ui,sans-serif"
+              font-weight="700" font-size="96" fill="#ffffff" stroke="#cc0000" stroke-width="7"
+              style="paint-order:stroke fill">V</text>
+        <rect x="17" y="103" width="94" height="1.8" fill="#f4f4f4"></rect>
+        <text x="62" y="121" text-anchor="middle"
+              font-family="'IBM Plex Sans','Segoe UI',system-ui,sans-serif"
+              font-weight="500" font-size="15" letter-spacing="4.6" fill="#ededed">Glover</text>
+      </svg>
+    </span>
+    <div class="brandtxt">
+      <div class="eyebrow">Planta Glover &middot; Cámara de secado 3</div>
+      <h1>Ciclo 3367 <span class="sub">&mdash;</span></h1>
+    </div>
+  </div>
+</header>
+
+<details class="carga" id="carga">
+  <summary>
+    <span class="cg-tit">Cargar un ciclo</span>
+    <span class="cg-sub">Arrastra el Excel de muestras y el programa de secado</span>
+  </summary>
+
+  <div class="cg-cuerpo">
+    <div class="cg-dos">
+      <div class="drop" id="d-mues" tabindex="0" role="button">
+        <strong>1 · Muestras de humedad</strong>
+        <span>Excel del Wagner o CSV del informe</span>
+        <span class="est" id="e-mues">Sin archivo</span>
+        <input type="file" id="f-mues" accept=".xlsx,.xlsm,.csv,.txt" hidden>
+      </div>
+      <div class="drop" id="d-proc" tabindex="0" role="button">
+        <strong>2 · Programa de secado</strong>
+        <span>Excel del PLC (mejor) o PDF impreso</span>
+        <span class="est" id="e-proc">Sin archivo</span>
+        <input type="file" id="f-proc" accept=".xlsx,.xlsm,.pdf" hidden>
+      </div>
+    </div>
+
+    <div class="cg-campos">
+      <label class="f">Cámara
+        <select id="camara">
+          <option value="1">1</option><option value="2">2</option>
+          <option value="3" selected>3</option><option value="4">4</option>
+          <option value="5">5</option><option value="6">6</option>
+        </select>
+      </label>
+      <label class="f">Ciclo <input type="number" id="ciclo" min="1" step="1"></label>
+      <label class="f">Objetivo % <input type="number" id="objetivo" step="0.5" value="9"></label>
+      <label class="f">Óptimo desde <input type="number" id="crlo" step="0.5" value="8"></label>
+      <label class="f">hasta <input type="number" id="crhi" step="0.5" value="12"></label>
+      <label class="f">Umbral % <input type="number" id="umbral" step="1" value="85"></label>
+      <button class="primario" id="guardar" disabled>Guardar y ver</button>
+    </div>
+
+    <div class="avisos" id="avisos"></div>
+
+    <details class="cg-lista">
+      <summary>Ciclos en la base (3)</summary>
+      <div class="cg-tabla">
+        <table>
+          <thead><tr><th>Ciclo</th><th>Registros PLC</th><th>Muestras</th><th>Origen</th>
+            <th>Inicio</th><th>Resultado</th><th></th></tr></thead>
+          <tbody><tr class="actual"><td><a href="/?camara=3&ciclo=3367">Cámara 3 · Ciclo 3367</a></td><td>10.827</td><td>655</td><td>PDF</td><td>2026-08-24 17:16</td><td><span class="est-pill ok">Aprobado</span></td><td><button class="del" data-c="3" data-n="3367">Eliminar</button></td></tr><tr><td><a href="/?camara=3&ciclo=3366">Cámara 3 · Ciclo 3366</a></td><td>4.836</td><td>646</td><td>PDF</td><td>2026-08-23 18:49</td><td><span class="est-pill no">Rechazado</span></td><td><button class="del" data-c="3" data-n="3366">Eliminar</button></td></tr><tr><td><a href="/?camara=3&ciclo=3362">Cámara 3 · Ciclo 3362</a></td><td>8.035</td><td>651</td><td>PDF</td><td>2026-08-20 15:02</td><td><span class="est-pill no">Rechazado</span></td><td><button class="del" data-c="3" data-n="3362">Eliminar</button></td></tr></tbody>
+        </table>
+      </div>
+    </details>
+
+    <p class="cg-red">Desde otro equipo de la planta, entra a
+      <code id="cg-url">http://172.96.55.32:8765</code></p>
+  </div>
+</details>
+<div class="ciclosel"><label for="selciclo">Ciclo en pantalla</label><select id="selciclo"><option value="3/3367" selected>Cámara 3 &middot; Ciclo 3367</option><option value="3/3366">Cámara 3 &middot; Ciclo 3366</option><option value="3/3362">Cámara 3 &middot; Ciclo 3362</option></select></div><section class="sect" aria-labelledby="h-mues" id="s-mues">
+  <header>
+    <h2 id="h-mues">Resultados del Ciclo</h2>
+  </header>
+
+  <div class="ctl">
+    <label>Colorear el plano por
+      <select id="mode">
+        <option value="fuera" selected>Tablas fuera del óptimo</option>
+        <option value="mc">Humedad media</option>
+      </select>
+    </label>
+  </div>
+  <div class="kpis" id="kpis-m"></div>
+
+  <article class="card" id="c-gauss">
+    <h3>Campana de Gauss del lote</h3>
+    <p class="cap">Histograma de las mediciones con la normal ajustada a la media y desviación
+    observadas. Lo que importa no es la forma de la campana sino la comparación entre sus colas y las
+    reales: si sobran tablas fuera del óptimo respecto de lo que predice esa normal, el lote no es
+    una población con dispersión aleatoria sino una mezcla &mdash; y una mezcla tiene una causa
+    física que el plano de abajo puede localizar.</p>
+    <div class="plot"><svg id="svg-gauss" role="img" aria-label="Histograma de humedad final de las muestras con curva normal ajustada"></svg></div>
+    <div class="legend" id="lg-gauss"></div>
+    <div class="tip" id="tip-gauss"></div>
+    <div class="verdict" id="verdict"></div>
+    <details><summary>Ver tabla (bins del histograma)</summary><div class="tw" id="tb-gauss"></div></details>
+  </article>
+
+  <article class="card" id="c-plan">
+    <h3>Plano de ubicación de paquetes</h3>
+    <p class="cap" id="plan-cap">Cada bloque es una posición de paquete, coloreada según sus
+    mediciones. La numeración sigue el orden de carga y el paquete 0 es el primero.</p>
+    <div class="plan" id="plan"></div>
+    <div class="tray off" id="tray"></div>
+    <div class="legend" id="lg-plan"></div>
+    <div class="tip" id="tip-plan"></div>
+    <div class="pnote" id="pnote"></div>
+    <details><summary>Ver tabla (resumen por paquete)</summary><div class="tw" id="tb-plan"></div></details>
+  </article>
+</section>
+
+<section class="sect" aria-labelledby="h-marcha">
+  <header>
+    <h2 id="h-marcha">Marcha del ciclo</h2>
+    <p>Los dos gráficos de esta sección comparten el mismo rango de tiempo y el mismo filtro.</p>
+  </header>
+
+  <div class="kpis" id="kpis-marcha"></div>
+
+  <div class="filters">
+    <span class="flabel" id="flab">Rango</span>
+    <div class="seg" role="group" aria-labelledby="flab" id="seg"></div>
+  </div>
+
+  <article class="card" id="c-curva">
+    <h3>Curva de secado</h3>
+    <p class="cap">Humedad y temperatura en paneles separados sobre un mismo eje de tiempo: dos
+    magnitudes distintas nunca comparten una escala. Las bandas de fondo marcan las tres fases que
+    el log revela y que el informe no distingue.</p>
+    <div class="plot"><svg id="svg-curva" role="img" aria-label="Curva de humedad de la madera y temperatura de cámara a lo largo del ciclo 3367"></svg></div>
+    <div class="legend" id="lg-curva"></div>
+    <div class="tip" id="tip-curva"></div>
+    <details><summary>Ver tabla (valores horarios)</summary><div class="tw" id="tb-curva"></div></details>
+  </article>
+
+  <article class="card" id="c-desv">
+    <h3>Estabilidad térmica</h3>
+    <p class="cap">Diferencia entre temperatura real y programada, centrada en cero: azul por encima
+    del setpoint, rojo por debajo. Cada punto es la desviación más desfavorable de su ventana de
+    5&nbsp;minutos, para que ningún evento corto quede oculto por el promedio.</p>
+    <div class="plot"><svg id="svg-desv" role="img" aria-label="Desviación de temperatura respecto del setpoint durante el ciclo"></svg></div>
+    <div class="legend" id="lg-desv"></div>
+    <div class="tip" id="tip-desv"></div>
+    <details><summary>Ver tabla (eventos sostenidos)</summary><div class="tw" id="tb-desv"></div></details>
+  </article>
+</section>
+
+<section class="sect" aria-labelledby="h-cierre">
+  <header>
+    <h2 id="h-cierre">Cierre del ciclo</h2>
+    <p>Tres lecturas que sólo aparecen cuando el informe de humedad y el log de proceso viven en la
+    misma base de datos y se cruzan por <code>(camara, ciclo)</code>.</p>
+  </header>
+
+  <article class="card" id="c-balance">
+    <h3>En qué se fueron las 184,2 horas de cámara</h3>
+    <p class="cap">El informe cuenta 145,2&nbsp;h y arranca cuando cambia el programa; antes hubo casi
+    dos días de acondicionamiento que igual ocuparon la cámara y consumieron energía.</p>
+    <div class="plot"><svg id="svg-balance" role="img" aria-label="Descomposición de las 184,2 horas de ocupación de cámara en cuatro fases"></svg></div>
+    <div class="legend" id="lg-balance"></div>
+    <div class="tip" id="tip-balance"></div>
+    <details><summary>Ver tabla</summary><div class="tw" id="tb-balance"></div></details>
+  </article>
+<article class="card" id="c-tramos">
+      <h3>Horas por cada punto de humedad</h3>
+      <p class="cap">Cuánto tardó la carga en atravesar cada tramo de AWM. El rendimiento se
+      derrumba al final: los dos últimos tramos están destacados.</p>
+      <div class="plot"><svg id="svg-tramos" role="img" aria-label="Horas empleadas en bajar cada tramo de humedad de la madera"></svg></div>
+      <div class="legend" id="lg-tramos"></div>
+      <div class="tip" id="tip-tramos"></div>
+      <details><summary>Ver tabla</summary><div class="tw" id="tb-tramos"></div></details>
+    </article>
+
+</section>
+
+<section class="sect">
+  <p class="foot">Datos leídos de la base del sistema. El programa de secado se ingiere del <code>.xlsx</code> del PLC cuando existe (precisión completa) y del <code>.pdf</code> impreso sólo como respaldo. El plano reproduce el esquema de <code>propuesta_2_plano_camaras_v3.html</code>.</p>
+</section>
+
+</div>
+
+<script>
+const D = {"ciclo":3367,"camara":3,"cliente":"Glover","programa":"","especie":"N/A","ini_log":"2026-08-24 17:16:57","fin_log":"2026-09-01 05:42:36","ini_inf":"2026-08-26 08:12:11","fin_inf":"2026-09-01 09:26:22","ini_sec":"2026-08-26 08:27:57","sec_por_sensor":true,"t0":"24-08-2026 17:16","paso":5,"n_reg":10827,"h_log":180.4,"h_inf":145.2,"h_total":184.2,"h_pre":39.2,"h_sec":96.7,"h_cola":44.5,"h_enfr":3.7,"awm_fin":7.6,"emc_fin":5.8,"mc_medio":9.0,"mc_sd":1.29,"mc_min":5.7,"mc_max":21.7,"n_muestras":655,"n_bajas":88,"n_altas":7,"n_rango":560,"pct_rango":85.5,"pct_bajas":13.44,"pct_altas":1.07,"umbral":85.0,"objetivo":9.0,"lo":8.0,"hi":12.0,"resultado":"Aprobado","offset":1.4,"pct_fuera":19.0,"n_eventos":11,"desv_max":-51,"gh_total":8707,"gh_cola":2160,"pct_gh_cola":24.8,"awm_cola_delta":0.8,"fases":[{"id":"pre","label":"Acondicionamiento","desde":0.0,"hasta":2351.0,"horas":39.2},{"id":"sec","label":"Secado efectivo","desde":2351.0,"hasta":8155.0,"horas":96.7},{"id":"cola","label":"Cola de sobresecado","desde":8155.0,"hasta":10825.65,"horas":44.5}],"eventos":[{"desde":3162,"hasta":3260,"ini":"26-08 21:58","fin":"26-08 23:36","min_":98,"desv":-14},{"desde":4593,"hasta":4891,"ini":"27-08 21:49","fin":"28-08 02:47","min_":298,"desv":-19},{"desde":5916,"hasta":6218,"ini":"28-08 19:52","fin":"29-08 00:54","min_":302,"desv":-23},{"desde":6324,"hasta":6350,"ini":"29-08 02:40","fin":"29-08 03:06","min_":26,"desv":-10},{"desde":6479,"hasta":6510,"ini":"29-08 05:15","fin":"29-08 05:46","min_":31,"desv":-9},{"desde":6804,"hasta":6827,"ini":"29-08 10:40","fin":"29-08 11:03","min_":23,"desv":-8},{"desde":6841,"hasta":6987,"ini":"29-08 11:17","fin":"29-08 13:43","min_":146,"desv":-14},{"desde":7201,"hasta":7221,"ini":"29-08 17:17","fin":"29-08 17:37","min_":20,"desv":-8},{"desde":7977,"hasta":8182,"ini":"30-08 06:13","fin":"30-08 09:38","min_":205,"desv":-50},{"desde":9455,"hasta":9587,"ini":"31-08 06:51","fin":"31-08 09:03","min_":132,"desv":-51},{"desde":10386,"hasta":10826,"ini":"31-08 22:22","fin":"01-09 05:42","min_":440,"desv":-13}],"tramos":[{"de":50,"a":40,"horas":4.9,"acum":4.9,"fase":"pre"},{"de":40,"a":30,"horas":46.6,"acum":51.5,"fase":"sec"},{"de":30,"a":25,"horas":37.4,"acum":88.9,"fase":"sec"},{"de":25,"a":20,"horas":4.0,"acum":92.9,"fase":"sec"},{"de":20,"a":15,"horas":6.8,"acum":99.7,"fase":"sec"},{"de":15,"a":12,"horas":5.6,"acum":105.3,"fase":"sec"},{"de":12,"a":10,"horas":11.4,"acum":116.7,"fase":"sec"},{"de":10,"a":9,"horas":9.7,"acum":126.4,"fase":"sec"},{"de":9,"a":8.5,"horas":9.5,"acum":135.9,"fase":"sec"},{"de":8.5,"a":8.0,"horas":15.8,"acum":151.7,"fase":"cola"},{"de":8.0,"a":7.6,"horas":28.7,"acum":180.4,"fase":"cola"}],"serie":{"m":[0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,195,200,205,210,215,220,225,230,235,240,245,250,255,260,265,270,275,280,285,290,295,300,305,310,315,320,325,330,335,340,345,350,355,360,365,370,375,380,385,390,395,400,405,410,415,420,425,430,435,440,445,450,455,460,465,470,475,480,485,490,495,500,505,510,515,520,525,530,535,540,545,550,555,560,565,570,575,580,585,590,595,600,605,610,615,620,625,630,635,640,645,650,655,660,665,670,675,680,685,690,695,700,705,710,715,720,725,730,735,740,745,750,755,760,765,770,775,780,785,790,795,800,805,810,815,820,825,830,835,840,845,850,855,860,865,870,875,880,885,890,895,900,905,910,915,920,925,930,935,940,945,950,955,960,965,970,975,980,985,990,995,1000,1005,1010,1015,1020,1025,1030,1035,1040,1045,1050,1055,1060,1065,1070,1075,1080,1085,1090,1095,1100,1105,1110,1115,1120,1125,1130,1135,1140,1145,1150,1155,1160,1165,1170,1175,1180,1185,1190,1195,1200,1205,1210,1215,1220,1225,1230,1235,1240,1245,1250,1255,1260,1265,1270,1275,1280,1285,1290,1295,1300,1305,1310,1315,1320,1325,1330,1335,1340,1345,1350,1355,1360,1365,1370,1375,1380,1385,1390,1395,1400,1405,1410,1415,1420,1425,1430,1435,1440,1445,1450,1455,1460,1465,1470,1475,1480,1485,1490,1495,1500,1505,1510,1515,1520,1525,1530,1535,1540,1545,1550,1555,1560,1565,1570,1575,1580,1585,1590,1595,1600,1605,1610,1615,1620,1625,1630,1635,1640,1645,1650,1655,1660,1665,1670,1675,1680,1685,1690,1695,1700,1705,1710,1715,1720,1725,1730,1735,1740,1745,1750,1755,1760,1765,1770,1775,1780,1785,1790,1795,1800,1805,1810,1815,1820,1825,1830,1835,1840,1845,1850,1855,1860,1865,1870,1875,1880,1885,1890,1895,1900,1905,1910,1915,1920,1925,1930,1935,1940,1945,1950,1955,1960,1965,1970,1975,1980,1985,1990,1995,2000,2005,2010,2015,2020,2025,2030,2035,2040,2045,2050,2055,2060,2065,2070,2075,2080,2085,2090,2095,2100,2105,2110,2115,2120,2125,2130,2135,2140,2145,2150,2155,2160,2165,2170,2175,2180,2185,2190,2195,2200,2205,2210,2215,2220,2225,2230,2235,2240,2245,2250,2255,2260,2265,2270,2275,2280,2285,2290,2295,2300,2305,2310,2315,2320,2325,2330,2335,2340,2345,2350,2355,2360,2365,2370,2375,2380,2385,2390,2395,2400,2405,2410,2415,2420,2425,2430,2435,2440,2445,2450,2455,2460,2465,2470,2475,2480,2485,2490,2495,2500,2505,2510,2515,2520,2525,2530,2535,2540,2545,2550,2555,2560,2565,2570,2575,2580,2585,2590,2595,2600,2605,2610,2615,2620,2625,2630,2635,2640,2645,2650,2655,2660,2665,2670,2675,2680,2685,2690,2695,2700,2705,2710,2715,2720,2725,2730,2735,2740,2745,2750,2755,2760,2765,2770,2775,2780,2785,2790,2795,2800,2805,2810,2815,2820,2825,2830,2835,2840,2845,2850,2855,2860,2865,2870,2875,2880,2885,2890,2895,2900,2905,2910,2915,2920,2925,2930,2935,2940,2945,2950,2955,2960,2965,2970,2975,2980,2985,2990,2995,3000,3005,3010,3015,3020,3025,3030,3035,3040,3045,3050,3055,3060,3065,3070,3075,3080,3085,3090,3095,3100,3105,3110,3115,3120,3125,3130,3135,3140,3145,3150,3155,3160,3165,3170,3175,3180,3185,3190,3195,3200,3205,3210,3215,3220,3225,3230,3235,3240,3245,3250,3255,3260,3265,3270,3275,3280,3285,3290,3295,3300,3305,3310,3315,3320,3325,3330,3335,3340,3345,3350,3355,3360,3365,3370,3375,3380,3385,3390,3395,3400,3405,3410,3415,3420,3425,3430,3435,3440,3445,3450,3455,3460,3465,3470,3475,3480,3485,3490,3495,3500,3505,3510,3515,3520,3525,3530,3535,3540,3545,3550,3555,3560,3565,3570,3575,3580,3585,3590,3595,3600,3605,3610,3615,3620,3625,3630,3635,3640,3645,3650,3655,3660,3665,3670,3675,3680,3685,3690,3695,3700,3705,3710,3715,3720,3725,3730,3735,3740,3745,3750,3755,3760,3765,3770,3775,3780,3785,3790,3795,3800,3805,3810,3815,3820,3825,3830,3835,3840,3845,3850,3855,3860,3865,3870,3875,3880,3885,3890,3895,3900,3905,3910,3915,3920,3925,3930,3935,3940,3945,3950,3955,3960,3965,3970,3975,3980,3985,3990,3995,4000,4005,4010,4015,4020,4025,4030,4035,4040,4045,4050,4055,4060,4065,4070,4075,4080,4085,4090,4095,4100,4105,4110,4115,4120,4125,4130,4135,4140,4145,4150,4155,4160,4165,4170,4175,4180,4185,4190,4195,4200,4205,4210,4215,4220,4225,4230,4235,4240,4245,4250,4255,4260,4265,4270,4275,4280,4285,4290,4295,4300,4305,4310,4315,4320,4325,4330,4335,4340,4345,4350,4355,4360,4365,4370,4375,4380,4385,4390,4395,4400,4405,4410,4415,4420,4425,4430,4435,4440,4445,4450,4455,4460,4465,4470,4475,4480,4485,4490,4495,4500,4505,4510,4515,4520,4525,4530,4535,4540,4545,4550,4555,4560,4565,4570,4575,4580,4585,4590,4595,4600,4605,4610,4615,4620,4625,4630,4635,4640,4645,4650,4655,4660,4665,4670,4675,4680,4685,4690,4695,4700,4705,4710,4715,4720,4725,4730,4735,4740,4745,4750,4755,4760,4765,4770,4775,4780,4785,4790,4795,4800,4805,4810,4815,4820,4825,4830,4835,4840,4845,4850,4855,4860,4865,4870,4875,4880,4885,4890,4895,4900,4905,4910,4915,4920,4925,4930,4935,4940,4945,4950,4955,4960,4965,4970,4975,4980,4985,4990,4995,5000,5005,5010,5015,5020,5025,5030,5035,5040,5045,5050,5055,5060,5065,5070,5075,5080,5085,5090,5095,5100,5105,5110,5115,5120,5125,5130,5135,5140,5145,5150,5155,5160,5165,5170,5175,5180,5185,5190,5195,5200,5205,5210,5215,5220,5225,5230,5235,5240,5245,5250,5255,5260,5265,5270,5275,5280,5285,5290,5295,5300,5305,5310,5315,5320,5325,5330,5335,5340,5345,5350,5355,5360,5365,5370,5375,5380,5385,5390,5395,5400,5405,5410,5415,5420,5425,5430,5435,5440,5445,5450,5455,5460,5465,5470,5475,5480,5485,5490,5495,5500,5505,5510,5515,5520,5525,5530,5535,5540,5545,5550,5555,5560,5565,5570,5575,5580,5585,5590,5595,5600,5605,5610,5615,5620,5625,5630,5635,5640,5645,5650,5655,5660,5665,5670,5675,5680,5685,5690,5695,5700,5705,5710,5715,5720,5725,5730,5735,5740,5745,5750,5755,5760,5765,5770,5775,5780,5785,5790,5795,5800,5805,5810,5815,5820,5825,5830,5835,5840,5845,5850,5855,5860,5865,5870,5875,5880,5885,5890,5895,5900,5905,5910,5915,5920,5925,5930,5935,5940,5945,5950,5955,5960,5965,5970,5975,5980,5985,5990,5995,6000,6005,6010,6015,6020,6025,6030,6035,6040,6045,6050,6055,6060,6065,6070,6075,6080,6085,6090,6095,6100,6105,6110,6115,6120,6125,6130,6135,6140,6145,6150,6155,6160,6165,6170,6175,6180,6185,6190,6195,6200,6205,6210,6215,6220,6225,6230,6235,6240,6245,6250,6255,6260,6265,6270,6275,6280,6285,6290,6295,6300,6305,6310,6315,6320,6325,6330,6335,6340,6345,6350,6355,6360,6365,6370,6375,6380,6385,6390,6395,6400,6405,6410,6415,6420,6425,6430,6435,6440,6445,6450,6455,6460,6465,6470,6475,6480,6485,6490,6495,6500,6505,6510,6515,6520,6525,6530,6535,6540,6545,6550,6555,6560,6565,6570,6575,6580,6585,6590,6595,6600,6605,6610,6615,6620,6625,6630,6635,6640,6645,6650,6655,6660,6665,6670,6675,6680,6685,6690,6695,6700,6705,6710,6715,6720,6725,6730,6735,6740,6745,6750,6755,6760,6765,6770,6775,6780,6785,6790,6795,6800,6805,6810,6815,6820,6825,6830,6835,6840,6845,6850,6855,6860,6865,6870,6875,6880,6885,6890,6895,6900,6905,6910,6915,6920,6925,6930,6935,6940,6945,6950,6955,6960,6965,6970,6975,6980,6985,6990,6995,7000,7005,7010,7015,7020,7025,7030,7035,7040,7045,7050,7055,7060,7065,7070,7075,7080,7085,7090,7095,7100,7105,7110,7115,7120,7125,7130,7135,7140,7145,7150,7155,7160,7165,7170,7175,7180,7185,7190,7195,7200,7205,7210,7215,7220,7225,7230,7235,7240,7245,7250,7255,7260,7265,7270,7275,7280,7285,7290,7295,7300,7305,7310,7315,7320,7325,7330,7335,7340,7345,7350,7355,7360,7365,7370,7375,7380,7385,7390,7395,7400,7405,7410,7415,7420,7425,7430,7435,7440,7445,7450,7455,7460,7465,7470,7475,7480,7485,7490,7495,7500,7505,7510,7515,7520,7525,7530,7535,7540,7545,7550,7555,7560,7565,7570,7575,7580,7585,7590,7595,7600,7605,7610,7615,7620,7625,7630,7635,7640,7645,7650,7655,7660,7665,7670,7675,7680,7685,7690,7695,7700,7705,7710,7715,7720,7725,7730,7735,7740,7745,7750,7755,7760,7765,7770,7775,7780,7785,7790,7795,7800,7805,7810,7815,7820,7825,7830,7835,7840,7845,7850,7855,7860,7865,7870,7875,7880,7885,7890,7895,7900,7905,7910,7915,7920,7925,7930,7935,7940,7945,7950,7955,7960,7965,7970,7975,7980,7985,7990,7995,8000,8005,8010,8015,8020,8025,8030,8035,8040,8045,8050,8055,8060,8065,8070,8075,8080,8085,8090,8095,8100,8105,8110,8115,8120,8125,8130,8135,8140,8145,8150,8155,8160,8165,8170,8175,8180,8185,8190,8195,8200,8205,8210,8215,8220,8225,8230,8235,8240,8245,8250,8255,8260,8265,8270,8275,8280,8285,8290,8295,8300,8305,8310,8315,8320,8325,8330,8335,8340,8345,8350,8355,8360,8365,8370,8375,8380,8385,8390,8395,8400,8405,8410,8415,8420,8425,8430,8435,8440,8445,8450,8455,8460,8465,8470,8475,8480,8485,8490,8495,8500,8505,8510,8515,8520,8525,8530,8535,8540,8545,8550,8555,8560,8565,8570,8575,8580,8585,8590,8595,8600,8605,8610,8615,8620,8625,8630,8635,8640,8645,8650,8655,8660,8665,8670,8675,8680,8685,8690,8695,8700,8705,8710,8715,8720,8725,8730,8735,8740,8745,8750,8755,8760,8765,8770,8775,8780,8785,8790,8795,8800,8805,8810,8815,8820,8825,8830,8835,8840,8845,8850,8855,8860,8865,8870,8875,8880,8885,8890,8895,8900,8905,8910,8915,8920,8925,8930,8935,8940,8945,8950,8955,8960,8965,8970,8975,8980,8985,8990,8995,9000,9005,9010,9015,9020,9025,9030,9035,9040,9045,9050,9055,9060,9065,9070,9075,9080,9085,9090,9095,9100,9105,9110,9115,9120,9125,9130,9135,9140,9145,9150,9155,9160,9165,9170,9175,9180,9185,9190,9195,9200,9205,9210,9215,9220,9225,9230,9235,9240,9245,9250,9255,9260,9265,9270,9275,9280,9285,9290,9295,9300,9305,9310,9315,9320,9325,9330,9335,9340,9345,9350,9355,9360,9365,9370,9375,9380,9385,9390,9395,9400,9405,9410,9415,9420,9425,9430,9435,9440,9445,9450,9455,9460,9465,9470,9475,9480,9485,9490,9495,9500,9505,9510,9515,9520,9525,9530,9535,9540,9545,9550,9555,9560,9565,9570,9575,9580,9585,9590,9595,9600,9605,9610,9615,9620,9625,9630,9635,9640,9645,9650,9655,9660,9665,9670,9675,9680,9685,9690,9695,9700,9705,9710,9715,9720,9725,9730,9735,9740,9745,9750,9755,9760,9765,9770,9775,9780,9785,9790,9795,9800,9805,9810,9815,9820,9825,9830,9835,9840,9845,9850,9855,9860,9865,9870,9875,9880,9885,9890,9895,9900,9905,9910,9915,9920,9925,9930,9935,9940,9945,9950,9955,9960,9965,9970,9975,9980,9985,9990,9995,10000,10005,10010,10015,10020,10025,10030,10035,10040,10045,10050,10055,10060,10065,10070,10075,10080,10085,10090,10095,10100,10105,10110,10115,10120,10125,10130,10135,10140,10145,10150,10155,10160,10165,10170,10175,10180,10185,10190,10195,10200,10205,10210,10215,10220,10225,10230,10235,10240,10245,10250,10255,10260,10265,10270,10275,10280,10285,10290,10295,10300,10305,10310,10315,10320,10325,10330,10335,10340,10345,10350,10355,10360,10365,10370,10375,10380,10385,10390,10395,10400,10405,10410,10415,10420,10425,10430,10435,10440,10445,10450,10455,10460,10465,10470,10475,10480,10485,10490,10495,10500,10505,10510,10515,10520,10525,10530,10535,10540,10545,10550,10555,10560,10565,10570,10575,10580,10585,10590,10595,10600,10605,10610,10615,10620,10625,10630,10635,10640,10645,10650,10655,10660,10665,10670,10675,10680,10685,10690,10695,10700,10705,10710,10715,10720,10725,10730,10735,10740,10745,10750,10755,10760,10765,10770,10775,10780,10785,10790,10795,10800,10805,10810,10815,10820,10825],"awm":[56.0,54.0,55.0,53.0,52.0,50.0,49.0,47.0,51.0,45.0,44.0,43.0,43.0,43.0,43.0,44.0,44.0,44.0,44.0,44.0,44.0,44.0,44.0,44.0,45.0,45.0,45.0,45.0,45.0,45.0,45.0,45.0,45.0,45.0,45.0,45.0,45.0,45.0,45.0,45.0,45.0,46.0,46.0,46.0,46.0,46.0,46.0,46.0,46.0,44.0,41.0,41.0,41.0,41.0,41.0,41.0,42.0,42.0,42.0,39.0,39.0,40.0,40.0,41.0,42.0,42.0,43.0,43.0,44.0,44.0,45.0,45.0,46.0,47.0,47.0,47.0,48.0,48.0,48.0,48.0,48.0,49.0,49.0,49.0,49.0,49.0,50.0,50.0,50.0,50.0,50.0,51.0,51.0,51.0,51.0,51.0,52.0,51.0,51.0,51.0,50.0,50.0,50.0,50.0,50.0,50.0,51.0,51.0,51.0,51.0,51.0,51.0,51.0,51.0,50.0,50.0,50.0,49.0,49.0,49.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,48.0,48.0,48.0,48.0,48.0,48.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,51.0,52.0,53.0,54.0,54.0,55.0,56.0,57.0,58.0,59.0,59.0,59.0,60.0,60.0,60.0,61.0,61.0,61.0,59.0,58.0,58.0,57.0,57.0,57.0,57.0,57.0,56.0,56.0,56.0,56.0,56.0,55.0,55.0,55.0,55.0,55.0,54.0,54.0,54.0,54.0,54.0,53.0,53.0,53.0,53.0,53.0,52.0,52.0,53.0,53.0,53.0,53.0,52.0,52.0,52.0,52.0,53.0,53.0,53.0,52.0,52.0,52.0,52.0,51.0,51.0,51.0,51.0,50.0,50.0,50.0,50.0,49.0,51.0,51.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,51.0,51.0,51.0,51.0,51.0,51.0,51.0,51.0,51.0,51.0,49.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,49.0,49.0,49.0,49.0,49.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,49.0,49.0,49.0,49.0,49.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,50.0,49.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,49.0,49.0,49.0,49.0,49.0,49.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,49.0,48.0,48.0,48.0,48.0,48.0,48.0,48.0,46.0,45.0,45.0,44.0,43.0,43.0,42.0,42.0,41.0,41.0,44.0,45.0,44.0,44.0,44.0,44.0,44.0,43.0,43.0,43.0,43.0,43.0,42.0,42.0,42.0,42.0,42.0,41.0,41.0,41.0,41.0,41.0,40.0,40.0,40.0,42.0,43.0,42.0,42.0,42.0,42.0,42.0,41.0,41.0,41.0,41.0,40.0,40.0,40.0,40.0,40.0,39.0,39.0,39.0,39.0,39.0,38.0,38.0,38.0,38.0,39.0,39.0,38.0,38.0,38.0,38.0,38.0,38.0,38.0,38.0,38.0,38.0,38.0,38.0,38.0,38.0,38.0,38.0,38.0,38.0,38.0,38.0,37.0,39.0,38.0,38.0,38.0,38.0,38.0,38.0,38.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,36.0,36.0,36.0,36.0,36.0,36.0,36.0,35.0,35.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,36.0,36.0,36.0,36.0,36.0,36.0,36.0,36.0,36.0,35.0,35.0,35.0,35.0,35.0,35.0,35.0,35.0,35.0,35.0,34.0,34.0,34.0,34.0,33.0,33.0,33.0,32.0,32.0,32.0,32.0,31.0,31.0,31.0,31.0,30.0,30.0,30.0,31.0,31.0,31.0,32.0,32.0,33.0,34.0,34.0,35.0,36.0,36.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,36.0,36.0,36.0,35.0,35.0,35.0,35.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,33.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,35.0,35.0,35.0,35.0,35.0,35.0,35.0,35.0,35.0,35.0,35.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,35.0,35.0,35.0,35.0,35.0,35.0,35.0,35.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,33.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,33.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,35.0,36.0,36.0,35.0,35.0,35.0,35.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,33.0,33.0,33.0,33.0,32.0,32.0,34.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,34.0,34.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,33.0,32.0,32.0,32.0,33.0,34.0,34.0,34.0,33.0,33.0,33.0,33.0,33.0,32.0,32.0,32.0,32.0,32.0,31.0,31.0,31.0,31.0,31.0,31.0,31.0,31.0,31.0,31.0,31.0,31.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,33.0,33.0,33.0,34.0,34.0,34.0,35.0,35.0,35.0,36.0,36.0,36.0,37.0,37.0,37.0,37.0,37.0,37.0,37.0,36.0,36.0,36.0,36.0,35.0,36.0,35.0,35.0,35.0,35.0,34.0,35.0,35.0,35.0,34.0,34.0,34.0,34.0,34.0,34.0,34.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,32.0,32.0,32.0,32.0,32.0,31.0,31.0,31.0,31.0,31.0,30.0,30.0,30.0,30.0,30.0,29.0,29.0,29.0,29.0,29.0,28.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,30.0,30.0,30.0,30.0,30.0,30.0,30.0,30.0,30.0,30.0,30.0,30.0,30.0,30.0,30.0,30.0,30.0,30.0,29.0,29.0,29.0,29.0,29.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,27.0,27.0,27.0,27.0,27.0,28.0,28.0,28.0,28.0,27.0,27.0,27.0,27.0,27.0,27.0,27.0,27.0,27.0,27.0,27.0,27.0,27.0,27.0,27.0,27.0,27.0,27.0,27.0,27.0,28.0,27.0,27.0,27.0,26.0,26.0,26.0,26.0,26.0,26.0,25.0,25.0,25.0,25.0,25.0,25.0,24.0,24.0,24.0,24.0,24.0,24.0,24.0,24.0,24.0,24.0,24.0,24.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,22.0,22.0,22.0,22.0,21.0,21.0,21.0,21.0,20.0,20.0,20.0,20.0,20.0,20.0,20.0,20.0,20.0,20.0,20.0,20.0,19.0,19.0,20.0,20.0,21.0,21.0,20.0,20.0,20.0,20.0,20.0,20.0,20.0,20.0,19.0,19.0,19.0,19.0,19.0,19.0,19.0,18.0,18.0,18.0,18.0,18.0,18.0,18.0,18.0,18.0,18.0,18.0,18.0,18.0,18.0,18.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,14.0,14.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,12.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,9.9,9.9,9.8,9.8,9.7,9.7,9.7,9.6,9.7,9.7,9.6,9.6,9.6,9.6,9.6,9.6,9.6,9.6,9.6,9.6,9.6,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.4,9.5,9.5,9.5,9.5,9.5,9.5,9.4,9.4,9.4,9.4,9.4,9.3,9.3,9.3,9.3,9.3,9.2,9.2,9.2,9.2,9.2,9.1,9.1,9.1,9.2,9.1,9.1,9.1,9.0,9.0,9.0,8.9,8.9,8.9,8.9,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.1,9.1,9.1,9.1,9.0,8.9,8.9,8.8,8.7,8.7,8.6,8.6,8.7,8.7,8.7,8.8,8.8,8.8,8.8,8.8,8.8,8.8,8.8,8.8,8.8,8.8,8.8,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.8,8.8,8.8,8.8,8.8,8.8,8.8,8.8,8.8,8.8,8.8,8.8,8.8,8.8,8.6,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.9,8.9,9.0,9.1,9.1,9.2,9.3,9.3,9.4,9.5,9.5,9.6,9.7,9.7,9.8,9.9,10.0,10.0,9.7,9.4,9.0,8.7,8.4,8.1,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.1,8.1,8.3,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.4,8.3,8.3,8.3,8.3,8.3,8.3,8.3,8.3,8.3,8.3,8.3,8.3,8.4,8.4,8.4,8.4,8.4,8.3,8.3,8.3,8.3,8.3,8.3,8.3,8.3,8.3,8.3,8.3,8.3,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.3,8.3,8.3,8.3,8.3,8.3,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.0,8.0,8.0,8.0,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.2,8.2,8.2,8.3,8.4,8.5,8.6,8.7,8.8,8.9,9.0,9.6,10.0,10.0,10.0,9.9,9.9,9.6,9.1,8.6,7.7,7.6,7.5,7.5,7.4,7.3,7.3,7.4,7.4,7.4,7.4,7.4,7.4,7.5,7.5,7.5,7.5,7.5,7.5,7.6,7.6,7.6,7.6,7.6,7.6,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.6,7.6,7.6,7.6,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.3,7.3,7.3,7.4,7.4,7.4,7.4,7.4,7.5,7.5,7.5,7.5,7.5,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.6,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.7,7.7,7.7,7.6,7.6],"emc":[13.0,12.0,13.0,13.0,14.0,14.0,14.0,14.0,14.0,14.0,15.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,17.0,17.0,17.0,17.0,17.0,17.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,16.0,18.0,18.0,18.0,19.0,19.0,19.0,20.0,20.0,20.0,17.0,18.0,18.0,18.0,18.0,19.0,19.0,19.0,20.0,20.0,20.0,21.0,21.0,22.0,23.0,24.0,25.0,26.0,26.0,26.0,26.0,26.0,26.0,26.0,26.0,26.0,26.0,26.0,26.0,26.0,27.0,27.0,27.0,27.0,27.0,27.0,27.0,27.0,26.0,25.0,25.0,24.0,23.0,22.0,22.0,22.0,22.0,22.0,22.0,22.0,21.0,20.0,20.0,19.0,18.0,18.0,17.0,17.0,16.0,16.0,16.0,16.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,15.0,14.0,15.0,16.0,15.0,14.0,13.0,13.0,13.0,13.0,13.0,13.0,15.0,15.0,16.0,16.0,16.0,16.0,17.0,17.0,17.0,17.0,18.0,19.0,20.0,20.0,20.0,20.0,20.0,20.0,20.0,20.0,20.0,20.0,20.0,19.0,19.0,19.0,18.0,18.0,17.0,17.0,16.0,15.0,16.0,15.0,16.0,14.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,17.0,17.0,18.0,18.0,18.0,19.0,18.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,15.0,15.0,15.0,14.0,14.0,14.0,14.0,13.0,15.0,15.0,15.0,15.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,15.0,15.0,15.0,15.0,15.0,15.0,14.0,14.0,14.0,14.0,11.0,15.0,15.0,15.0,15.0,15.0,15.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,17.0,17.0,17.0,17.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,15.0,12.0,11.0,11.0,11.0,11.0,10.0,10.0,10.0,10.0,11.0,10.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,12.0,12.0,12.0,11.0,11.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,11.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,10.0,10.0,10.0,10.0,10.0,10.0,11.0,11.0,11.0,10.0,9.9,10.0,10.0,10.0,10.0,11.0,10.0,11.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,11.0,11.0,11.0,11.0,11.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,12.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,9.9,9.9,9.8,9.8,9.7,9.7,9.6,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,9.9,9.9,9.9,9.9,9.9,9.9,9.9,9.8,9.8,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,9.9,9.9,9.8,9.8,9.8,9.7,9.7,9.7,9.6,9.6,9.5,9.5,9.5,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,9.9,9.9,9.9,9.8,9.8,9.8,9.8,9.7,9.7,9.7,9.6,9.6,9.6,9.6,9.5,9.5,10.0,10.0,10.0,9.9,9.9,9.8,9.7,9.7,9.6,9.6,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.6,9.6,9.6,9.7,9.7,9.7,9.8,9.8,8.8,8.9,9.1,9.2,9.3,9.4,9.6,9.7,9.8,9.9,10.0,10.0,9.7,9.4,9.1,8.7,8.6,8.7,8.7,8.8,8.8,8.9,8.9,9.7,9.6,9.6,9.5,9.5,9.5,9.4,9.4,9.3,9.3,9.4,9.4,9.4,9.5,9.5,9.5,9.5,9.6,9.6,9.6,9.7,9.7,9.7,9.7,9.9,8.9,8.8,8.8,8.9,8.9,9.0,9.0,9.0,9.1,9.1,9.2,9.2,9.2,9.3,9.3,9.3,9.4,9.4,9.5,9.5,9.5,9.6,9.6,9.8,9.8,9.8,9.8,9.7,9.7,9.7,9.7,9.7,9.7,9.6,9.6,9.6,9.6,9.6,9.6,9.5,9.5,9.5,9.5,9.5,9.5,9.4,9.4,9.5,8.5,8.6,8.7,8.9,9.3,9.7,10.0,8.6,8.6,8.6,8.7,8.7,8.7,8.7,8.8,8.8,8.8,8.8,8.9,8.9,8.8,8.8,8.7,9.3,9.3,9.3,9.3,9.2,9.2,9.2,9.2,9.1,9.1,9.1,9.1,9.0,9.0,9.0,8.9,8.9,8.9,8.9,8.8,8.8,8.8,8.8,8.7,9.4,9.5,9.6,9.7,9.8,9.9,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,9.8,9.6,9.5,9.3,11.0,9.8,10.0,10.0,10.0,11.0,9.6,10.0,9.2,9.2,9.2,9.2,9.2,9.2,9.2,9.2,9.1,9.1,9.1,9.1,9.1,9.1,9.1,9.1,9.7,9.6,9.5,9.5,9.4,9.4,9.3,9.2,9.2,9.1,9.0,9.0,8.9,8.9,8.8,8.7,8.7,8.6,8.6,8.5,8.5,8.4,8.4,8.3,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.1,9.1,9.1,9.6,9.4,9.2,9.1,8.9,8.7,8.6,8.4,8.2,8.3,8.4,8.5,8.6,8.7,8.9,9.0,9.1,9.2,9.3,9.4,9.2,9.1,9.0,8.9,9.3,9.3,9.3,9.3,9.2,9.2,9.2,9.2,9.1,9.1,9.1,9.1,9.0,9.0,9.0,9.0,8.9,8.9,8.9,8.9,8.8,8.8,8.8,9.4,9.1,8.9,8.7,8.4,8.2,7.9,8.4,9.0,8.6,8.2,8.1,8.1,8.2,8.2,8.2,8.3,8.3,8.3,8.4,8.4,8.4,8.5,8.5,8.5,8.8,8.7,8.6,8.4,8.3,8.1,8.1,8.1,8.0,8.0,7.9,7.9,7.9,7.8,7.8,7.8,7.7,7.7,7.7,7.8,7.8,7.8,7.9,7.9,8.2,8.1,8.1,8.0,7.9,7.8,7.8,7.7,7.6,7.5,7.5,7.6,7.6,7.6,7.7,7.7,7.7,7.8,7.8,7.9,7.9,7.9,8.0,8.0,8.2,7.6,7.2,7.2,7.2,7.2,7.3,7.3,7.3,7.3,7.3,7.4,7.4,7.4,7.4,7.4,7.5,7.5,7.5,7.5,7.5,7.6,7.6,7.6,8.0,7.9,7.7,7.6,7.4,7.3,7.1,7.0,6.9,7.3,7.6,7.9,7.8,7.8,7.7,7.7,7.6,7.6,7.5,7.5,7.4,7.3,7.3,7.2,7.9,7.9,7.9,7.9,7.9,7.9,7.9,7.9,7.9,7.9,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.8,7.7,7.7,7.7,7.7,7.8,7.9,8.0,8.1,8.2,8.3,8.4,8.6,8.7,8.8,8.9,9.6,10.0,10.0,11.0,11.0,11.0,11.0,11.0,11.0,12.0,12.0,12.0,12.0,12.0,11.0,11.0,11.0,11.0,10.0,10.0,10.0,10.0,9.8,9.6,9.4,9.2,9.0,8.7,8.5,8.6,8.7,8.8,8.8,8.6,8.4,8.3,8.4,8.4,8.3,8.3,8.3,8.2,8.2,8.1,8.1,8.1,8.0,8.0,8.0,7.9,7.9,7.8,7.8,7.8,7.7,7.7,7.7,7.6,7.6,7.6,7.5,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.0,8.0,8.0,8.0,8.5,8.4,8.4,8.3,8.3,8.2,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,7.5,6.7,6.6,6.6,6.6,6.6,6.5,6.5,6.5,6.5,6.4,6.4,6.4,6.6,6.7,6.7,6.7,6.7,6.8,6.8,6.8,6.8,6.9,6.9,7.1,7.0,7.0,7.0,7.0,6.9,6.9,6.9,6.9,6.8,6.8,6.8,6.8,6.7,6.7,6.7,6.7,6.6,6.6,6.6,6.6,6.5,6.5,6.5,6.9,6.9,6.9,6.9,6.9,6.9,6.9,6.9,6.9,6.9,6.9,6.9,6.9,6.9,6.8,6.8,6.8,6.8,6.8,6.8,6.8,6.8,6.8,6.8,6.8,6.8,6.7,6.7,6.7,6.6,6.6,6.6,6.6,6.5,6.5,6.5,6.5,6.4,6.4,6.4,6.4,6.3,6.3,6.3,6.3,6.3,6.3,6.3,6.6,6.6,6.6,6.6,6.6,6.5,6.5,6.5,6.5,6.4,6.4,6.4,6.4,6.3,6.3,6.3,6.3,6.2,6.2,6.2,6.2,6.1,6.1,6.1,6.1,6.1,6.1,6.0,6.0,6.0,6.0,6.0,6.0,6.0,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.8,5.8,5.8,5.8,5.8,5.8,5.8,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.8,5.8,5.8,5.8,5.8,5.8,6.0,6.0,6.0,6.0,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.8,5.8,5.8,5.8,5.8,5.8,5.8,5.8,5.7,5.7,5.7,5.7,5.8,5.8,5.8,5.8,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,5.9,5.8,5.7,5.6,5.5,5.4,5.3,5.4,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,5.8,5.3,6.0,6.0,5.9,5.9,5.9,5.9,5.9,5.8,5.8,5.8,5.8,5.7,5.7,5.7,5.7,5.6,5.6,5.6,5.6,5.5,5.5,5.5,5.7,5.7,5.8,5.8,5.9,5.9,6.0,6.1,6.1,6.2,6.2,6.3,6.3,6.4,6.4,6.5,7.3,7.2,7.0,6.7,6.4,6.1,5.8,5.6,5.8,5.9,6.0,6.1,6.2,6.3,6.4,6.5,6.6,5.9,5.7,5.7,5.7,5.7,5.8,5.8,5.8,5.8,5.9,5.9,5.9,5.9,5.9,6.0,6.2,6.2,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.3,6.3,6.3,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.2,6.2,6.2,6.2,6.2,6.2,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.0,6.0,6.0,6.0,6.0,6.0,6.0,5.9,5.9,5.9,5.9,6.1,6.1,6.1,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,6.1,6.1,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,5.9,5.9,5.9,5.9,5.9,6.0,6.0,6.0,6.0,6.0,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.8,5.8,5.8,5.8,6.1,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.8,5.9,5.9,6.0,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.9,5.8,5.8,5.8,5.8,5.8,5.8,5.8,5.8,5.8,5.8,5.8,5.8,5.8,6.0,5.9,5.9,5.8,5.8,5.7,5.7,5.6,5.6,5.5,5.5,5.4,5.4,5.3,5.3,5.2,5.2,5.1,5.1,5.1,5.1,5.1,5.1,5.1,5.2,5.4,5.5,5.6,5.7,5.8,5.9,6.0,6.5,7.0,7.2,7.4,7.7,7.9,7.8,7.3,6.8,5.7,5.7,5.6,5.6,5.5,5.5,5.4,5.7,5.7,5.7,5.7,5.7,5.7,5.8,5.8,5.8,5.8,5.8,5.8,5.8,5.8,5.8,5.8,5.8,5.8,5.9,5.9,5.9,5.9,5.9,5.9,6.0,6.0,5.9,5.9,5.9,5.8,5.8,5.8,5.8,5.7,5.7,5.7,5.7,5.7,5.7,5.7,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.7,5.7,5.7,5.7,5.7,5.7,5.7,5.7,5.7,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.5,5.5,5.5,5.5,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.6,5.8,5.9,6.1,6.2,6.3,6.5,6.6,6.4,5.8,5.5,5.5,5.5,5.5,5.5,5.5,5.5,5.5,5.5,5.5,5.5,5.5,5.5,5.5,5.5,5.6,5.6,5.6,5.6,5.6,5.6,5.5,5.5,5.5,5.5,5.5,5.5,5.5,5.5,5.5,5.5,5.5,5.5,5.4,5.4,5.4,5.4,5.4,5.4,5.7,5.7,5.7,5.7,5.8,5.8,5.8,5.8,5.9,5.9,5.9,5.9,5.9,6.0,6.0,6.0,6.0,6.0,6.1,6.1,6.1,6.1,6.1,6.2,6.2,6.2,6.2,6.2,6.2,6.2,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.0,6.0,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.1,6.0,5.9,5.9,5.8],"emcsp":[13.0,13.0,13.0,13.0,13.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,13.0,13.0,13.0,13.0,13.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,18.0,18.0,18.0,18.0,18.0,18.0,18.0,18.0,18.0,18.0,18.0,18.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,16.0,13.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,9.8,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,8.9,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,8.1,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.7,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,8.8,8.8,8.8,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,8.2,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.6,6.5,6.5,6.5,6.5,6.5,6.5,6.5,6.5,6.4,6.4,6.4,6.4,6.4,6.4,6.4,6.4,6.4,6.4,6.4,6.4,6.3,6.3,6.3,6.3,6.3,6.3,6.2,6.2,6.2,6.2,6.2,6.2,6.1,6.1,6.1,6.1,6.1,6.1,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,5.8,5.8,5.9,5.9,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0],"temp":[14.0,15.0,15.0,14.0,14.0,14.0,14.0,14.0,14.0,15.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,18.0,18.0,18.0,18.0,18.0,18.0,21.0,33.0,36.0,37.0,38.0,39.0,39.0,40.0,41.0,35.0,36.0,45.0,44.0,44.0,44.0,45.0,46.0,46.0,46.0,47.0,46.0,38.0,37.0,36.0,36.0,36.0,36.0,37.0,37.0,37.0,38.0,38.0,38.0,39.0,39.0,39.0,40.0,40.0,40.0,41.0,41.0,41.0,42.0,42.0,42.0,42.0,43.0,43.0,43.0,50.0,51.0,52.0,52.0,53.0,52.0,52.0,52.0,53.0,53.0,53.0,54.0,54.0,53.0,53.0,53.0,53.0,54.0,53.0,53.0,54.0,53.0,54.0,54.0,51.0,54.0,54.0,54.0,54.0,55.0,55.0,55.0,55.0,55.0,55.0,55.0,55.0,55.0,55.0,56.0,56.0,56.0,56.0,56.0,56.0,56.0,56.0,56.0,55.0,56.0,56.0,56.0,56.0,57.0,57.0,57.0,57.0,57.0,57.0,57.0,58.0,58.0,58.0,58.0,58.0,58.0,58.0,58.0,59.0,59.0,59.0,58.0,57.0,58.0,59.0,59.0,60.0,62.0,62.0,63.0,64.0,64.0,65.0,66.0,65.0,66.0,66.0,67.0,67.0,67.0,67.0,67.0,67.0,67.0,67.0,67.0,70.0,70.0,70.0,70.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,72.0,72.0,71.0,71.0,71.0,71.0,67.0,68.0,71.0,68.0,71.0,70.0,69.0,68.0,69.0,69.0,70.0,70.0,70.0,70.0,70.0,70.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,70.0,70.0,69.0,69.0,70.0,72.0,73.0,71.0,71.0,72.0,73.0,71.0,70.0,70.0,71.0,72.0,71.0,70.0,70.0,70.0,69.0,69.0,69.0,69.0,69.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,70.0,71.0,70.0,69.0,68.0,68.0,68.0,68.0,72.0,71.0,70.0,70.0,70.0,70.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,70.0,69.0,69.0,69.0,69.0,69.0,68.0,68.0,68.0,68.0,68.0,68.0,68.0,73.0,72.0,70.0,70.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,70.0,71.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,71.0,71.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,69.0,69.0,69.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,69.0,69.0,69.0,70.0,70.0,69.0,69.0,70.0,70.0,70.0,70.0,70.0,69.0,70.0,70.0,70.0,71.0,70.0,69.0,70.0,70.0,70.0,70.0,69.0,69.0,69.0,70.0,70.0,70.0,70.0,69.0,69.0,69.0,69.0,69.0,69.0,70.0,72.0,74.0,75.0,76.0,77.0,77.0,78.0,78.0,79.0,77.0,72.0,73.0,77.0,77.0,78.0,78.0,74.0,78.0,78.0,77.0,77.0,78.0,75.0,78.0,77.0,77.0,76.0,79.0,74.0,78.0,75.0,78.0,74.0,77.0,76.0,72.0,73.0,76.0,76.0,76.0,76.0,78.0,76.0,76.0,77.0,75.0,77.0,77.0,75.0,77.0,77.0,75.0,77.0,76.0,76.0,76.0,77.0,74.0,78.0,76.0,75.0,77.0,76.0,74.0,76.0,77.0,78.0,73.0,77.0,77.0,76.0,74.0,78.0,74.0,77.0,75.0,77.0,75.0,77.0,77.0,76.0,77.0,76.0,73.0,73.0,76.0,78.0,76.0,76.0,77.0,75.0,77.0,77.0,74.0,77.0,77.0,74.0,77.0,77.0,77.0,76.0,75.0,77.0,77.0,75.0,78.0,76.0,74.0,76.0,76.0,76.0,78.0,75.0,73.0,72.0,72.0,76.0,75.0,76.0,77.0,77.0,76.0,77.0,77.0,75.0,77.0,77.0,76.0,77.0,75.0,78.0,75.0,73.0,76.0,76.0,76.0,75.0,77.0,77.0,75.0,78.0,77.0,77.0,74.0,78.0,76.0,75.0,77.0,76.0,76.0,77.0,75.0,77.0,77.0,73.0,75.0,74.0,77.0,77.0,77.0,76.0,73.0,72.0,71.0,70.0,69.0,68.0,67.0,67.0,66.0,66.0,66.0,65.0,65.0,64.0,64.0,65.0,65.0,64.0,64.0,64.0,63.0,70.0,73.0,74.0,74.0,75.0,75.0,77.0,77.0,77.0,76.0,77.0,76.0,76.0,75.0,72.0,76.0,76.0,78.0,76.0,76.0,78.0,76.0,73.0,78.0,76.0,76.0,76.0,76.0,76.0,76.0,77.0,77.0,77.0,75.0,77.0,75.0,77.0,76.0,75.0,77.0,72.0,77.0,77.0,76.0,76.0,74.0,73.0,76.0,77.0,76.0,75.0,77.0,76.0,75.0,77.0,76.0,75.0,77.0,76.0,75.0,77.0,75.0,76.0,77.0,75.0,77.0,76.0,74.0,77.0,75.0,74.0,77.0,76.0,76.0,77.0,77.0,77.0,76.0,77.0,77.0,74.0,77.0,77.0,74.0,78.0,76.0,77.0,75.0,77.0,75.0,77.0,77.0,78.0,75.0,74.0,77.0,77.0,75.0,76.0,76.0,74.0,77.0,77.0,76.0,78.0,73.0,76.0,78.0,78.0,75.0,78.0,76.0,76.0,78.0,74.0,77.0,77.0,75.0,75.0,77.0,75.0,78.0,75.0,77.0,76.0,76.0,77.0,77.0,78.0,73.0,77.0,76.0,77.0,75.0,77.0,77.0,77.0,75.0,77.0,75.0,78.0,74.0,74.0,77.0,76.0,75.0,77.0,77.0,75.0,77.0,78.0,73.0,75.0,78.0,77.0,75.0,77.0,77.0,78.0,77.0,76.0,77.0,74.0,77.0,77.0,75.0,76.0,76.0,76.0,78.0,75.0,77.0,75.0,77.0,75.0,77.0,75.0,77.0,76.0,77.0,76.0,76.0,77.0,76.0,77.0,76.0,76.0,77.0,75.0,73.0,74.0,77.0,77.0,75.0,77.0,76.0,76.0,77.0,75.0,76.0,76.0,74.0,77.0,76.0,75.0,77.0,75.0,76.0,76.0,74.0,77.0,76.0,75.0,74.0,76.0,76.0,75.0,77.0,75.0,73.0,72.0,77.0,77.0,76.0,77.0,73.0,77.0,75.0,77.0,75.0,76.0,77.0,75.0,76.0,73.0,77.0,78.0,75.0,73.0,77.0,77.0,74.0,77.0,76.0,75.0,76.0,77.0,77.0,76.0,75.0,77.0,77.0,73.0,75.0,74.0,72.0,72.0,74.0,74.0,74.0,74.0,73.0,73.0,76.0,77.0,76.0,73.0,71.0,68.0,67.0,65.0,63.0,62.0,61.0,61.0,60.0,60.0,60.0,60.0,60.0,60.0,60.0,60.0,60.0,60.0,59.0,59.0,59.0,59.0,58.0,58.0,58.0,58.0,58.0,59.0,60.0,65.0,64.0,62.0,61.0,61.0,62.0,62.0,62.0,61.0,61.0,61.0,61.0,60.0,60.0,61.0,62.0,63.0,62.0,62.0,61.0,62.0,62.0,63.0,64.0,66.0,68.0,68.0,69.0,69.0,70.0,71.0,72.0,73.0,74.0,74.0,74.0,74.0,72.0,70.0,71.0,71.0,72.0,74.0,74.0,74.0,75.0,75.0,76.0,74.0,76.0,76.0,76.0,75.0,74.0,72.0,73.0,73.0,74.0,71.0,72.0,74.0,73.0,70.0,74.0,75.0,76.0,75.0,74.0,75.0,73.0,76.0,75.0,76.0,75.0,75.0,76.0,74.0,77.0,76.0,78.0,73.0,77.0,76.0,76.0,77.0,74.0,73.0,76.0,77.0,77.0,74.0,76.0,77.0,74.0,77.0,76.0,76.0,77.0,74.0,76.0,77.0,74.0,78.0,76.0,75.0,77.0,75.0,76.0,75.0,72.0,76.0,77.0,76.0,78.0,76.0,77.0,77.0,76.0,74.0,75.0,73.0,77.0,77.0,77.0,76.0,77.0,76.0,78.0,75.0,77.0,76.0,77.0,76.0,73.0,73.0,74.0,76.0,77.0,78.0,75.0,78.0,76.0,76.0,78.0,73.0,75.0,76.0,76.0,76.0,78.0,77.0,73.0,75.0,75.0,75.0,75.0,75.0,74.0,73.0,77.0,76.0,75.0,77.0,74.0,77.0,74.0,77.0,73.0,75.0,77.0,77.0,77.0,77.0,76.0,78.0,76.0,77.0,75.0,77.0,76.0,77.0,74.0,73.0,73.0,75.0,77.0,77.0,76.0,74.0,76.0,77.0,74.0,77.0,76.0,77.0,75.0,78.0,75.0,76.0,77.0,76.0,78.0,75.0,76.0,78.0,76.0,75.0,77.0,75.0,77.0,73.0,71.0,69.0,74.0,77.0,77.0,75.0,77.0,75.0,77.0,76.0,77.0,76.0,77.0,76.0,76.0,76.0,75.0,78.0,75.0,72.0,75.0,75.0,74.0,74.0,72.0,71.0,70.0,69.0,69.0,68.0,66.0,65.0,64.0,63.0,62.0,62.0,61.0,61.0,60.0,60.0,60.0,60.0,61.0,60.0,58.0,58.0,57.0,57.0,56.0,55.0,54.0,54.0,54.0,54.0,54.0,54.0,54.0,54.0,54.0,54.0,54.0,54.0,54.0,55.0,55.0,55.0,55.0,55.0,55.0,55.0,55.0,55.0,55.0,56.0,56.0,64.0,64.0,65.0,65.0,66.0,68.0,69.0,69.0,69.0,70.0,70.0,70.0,70.0,70.0,66.0,66.0,67.0,67.0,66.0,66.0,67.0,68.0,70.0,71.0,72.0,72.0,71.0,71.0,70.0,69.0,68.0,66.0,64.0,63.0,63.0,64.0,67.0,70.0,72.0,70.0,69.0,70.0,71.0,72.0,74.0,75.0,73.0,71.0,72.0,72.0,72.0,71.0,71.0,71.0,72.0,71.0,72.0,72.0,72.0,72.0,72.0,70.0,69.0,68.0,66.0,66.0,67.0,68.0,70.0,72.0,72.0,72.0,72.0,73.0,73.0,74.0,74.0,75.0,76.0,77.0,76.0,76.0,77.0,76.0,76.0,77.0,76.0,76.0,76.0,75.0,75.0,75.0,74.0,74.0,74.0,73.0,72.0,71.0,71.0,70.0,70.0,68.0,70.0,70.0,70.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,68.0,69.0,70.0,71.0,71.0,71.0,70.0,69.0,69.0,69.0,70.0,70.0,69.0,69.0,68.0,67.0,66.0,66.0,66.0,67.0,68.0,69.0,69.0,67.0,67.0,67.0,66.0,66.0,66.0,67.0,66.0,65.0,65.0,65.0,63.0,64.0,64.0,63.0,63.0,62.0,62.0,62.0,62.0,62.0,62.0,63.0,63.0,63.0,64.0,65.0,66.0,68.0,69.0,71.0,72.0,73.0,73.0,74.0,73.0,72.0,73.0,73.0,74.0,74.0,73.0,73.0,74.0,73.0,74.0,71.0,75.0,72.0,71.0,74.0,74.0,73.0,74.0,73.0,74.0,72.0,73.0,74.0,74.0,73.0,73.0,73.0,73.0,72.0,72.0,72.0,72.0,71.0,71.0,69.0,69.0,67.0,66.0,67.0,68.0,69.0,69.0,70.0,70.0,70.0,71.0,72.0,73.0,74.0,72.0,74.0,73.0,74.0,73.0,73.0,74.0,72.0,74.0,72.0,74.0,72.0,71.0,75.0,74.0,73.0,75.0,71.0,74.0,71.0,75.0,73.0,74.0,75.0,71.0,74.0,71.0,74.0,74.0,72.0,75.0,71.0,75.0,72.0,74.0,74.0,72.0,75.0,71.0,74.0,71.0,74.0,71.0,74.0,71.0,75.0,71.0,75.0,71.0,76.0,71.0,75.0,71.0,76.0,73.0,75.0,72.0,75.0,70.0,72.0,72.0,75.0,72.0,75.0,74.0,73.0,76.0,72.0,75.0,74.0,73.0,74.0,72.0,76.0,73.0,74.0,74.0,73.0,75.0,72.0,75.0,73.0,73.0,74.0,72.0,74.0,71.0,75.0,72.0,75.0,72.0,76.0,73.0,76.0,73.0,75.0,71.0,75.0,73.0,74.0,72.0,74.0,72.0,74.0,72.0,75.0,73.0,71.0,75.0,75.0,73.0,74.0,72.0,74.0,73.0,74.0,73.0,73.0,74.0,74.0,74.0,73.0,74.0,73.0,74.0,74.0,74.0,74.0,73.0,74.0,73.0,71.0,75.0,74.0,73.0,73.0,74.0,73.0,74.0,73.0,75.0,71.0,65.0,63.0,61.0,60.0,59.0,58.0,57.0,56.0,55.0,55.0,54.0,53.0,53.0,51.0,51.0,51.0,50.0,50.0,49.0,49.0,48.0,48.0,47.0,47.0,46.0,46.0,46.0,45.0,41.0,28.0,24.0,35.0,38.0,42.0,43.0,52.0,57.0,58.0,60.0,62.0,65.0,68.0,70.0,72.0,72.0,73.0,68.0,73.0,71.0,74.0,69.0,73.0,70.0,74.0,70.0,72.0,71.0,72.0,72.0,72.0,72.0,70.0,72.0,72.0,71.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,70.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,70.0,72.0,72.0,72.0,72.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,74.0,72.0,71.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,71.0,71.0,72.0,71.0,71.0,73.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,71.0,71.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,71.0,71.0,71.0,71.0,71.0,71.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,71.0,71.0,71.0,71.0,70.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,70.0,70.0,70.0,70.0,70.0,66.0,63.0,61.0,59.0,58.0,57.0,57.0,56.0,55.0,54.0,54.0,53.0,52.0,51.0,31.0,25.0,24.0,22.0,22.0,22.0,21.0,22.0,34.0,52.0,59.0,62.0,65.0,68.0,70.0,73.0,73.0,71.0,72.0,71.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,72.0,72.0,72.0,71.0,71.0,71.0,71.0,71.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,71.0,71.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,71.0,72.0,72.0,71.0,71.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,71.0,71.0,71.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,71.0,72.0,72.0,72.0,72.0,72.0,70.0,69.0,69.0,76.0,74.0,73.0,73.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,71.0,71.0,71.0,71.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,71.0,71.0,71.0,71.0,71.0,71.0,70.0,68.0,67.0,67.0,67.0,67.0,66.0,66.0,66.0,66.0,66.0,65.0,65.0,64.0,64.0,64.0,64.0,64.0,64.0,64.0,64.0,64.0,64.0,63.0,63.0,63.0,63.0,63.0,63.0,63.0,63.0,63.0,62.0,62.0,62.0,62.0,62.0,62.0,62.0,62.0,62.0,62.0,62.0,62.0,62.0,62.0,62.0,62.0,62.0,61.0,61.0,61.0,61.0,61.0,61.0,61.0,61.0,61.0,61.0,61.0,61.0,61.0,61.0,61.0,61.0,60.0,60.0,60.0,60.0,60.0,60.0,60.0,60.0,60.0,60.0,60.0,60.0,60.0,60.0,60.0,60.0,60.0,60.0,59.0,59.0,59.0,59.0,59.0,59.0,59.0,59.0,59.0,59.0,59.0],"tsp":[8.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,15.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,16.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,18.0,18.0,18.0,18.0,18.0,21.0,22.0,22.0,22.0,22.0,22.0,22.0,22.0,22.0,22.0,22.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,23.0,24.0,24.0,24.0,24.0,24.0,24.0,24.0,24.0,24.0,24.0,24.0,25.0,25.0,25.0,25.0,25.0,25.0,25.0,36.0,41.0,41.0,41.0,42.0,42.0,42.0,42.0,42.0,42.0,42.0,42.0,42.0,42.0,42.0,43.0,44.0,48.0,52.0,53.0,53.0,53.0,53.0,53.0,53.0,53.0,53.0,53.0,54.0,54.0,54.0,54.0,54.0,54.0,54.0,54.0,54.0,54.0,55.0,55.0,55.0,55.0,55.0,55.0,55.0,55.0,55.0,55.0,55.0,56.0,56.0,56.0,56.0,56.0,56.0,56.0,56.0,56.0,56.0,56.0,57.0,57.0,57.0,57.0,57.0,57.0,57.0,57.0,57.0,57.0,57.0,58.0,58.0,58.0,58.0,58.0,58.0,58.0,58.0,58.0,58.0,58.0,59.0,59.0,59.0,59.0,59.0,59.0,59.0,59.0,59.0,66.0,66.0,66.0,66.0,66.0,66.0,66.0,66.0,66.0,67.0,67.0,67.0,67.0,67.0,67.0,67.0,67.0,67.0,67.0,67.0,68.0,68.0,68.0,68.0,68.0,68.0,68.0,68.0,68.0,68.0,68.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,69.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,73.0,71.0,71.0,71.0,71.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,69.0,70.0,73.0,73.0,73.0,73.0,73.0,73.0,73.0,74.0,78.0,78.0,78.0,78.0,78.0,78.0,78.0,78.0,78.0,78.0,78.0,78.0,78.0,78.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,74.0,74.0,75.0,75.0,75.0,75.0,75.0,75.0,75.0,75.0,75.0,75.0,75.0,76.0,76.0,76.0,76.0,76.0,76.0,76.0,76.0,76.0,76.0,76.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,78.0,78.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,78.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,78.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,70.0,70.0,70.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,73.0,73.0,73.0,73.0,73.0,73.0,73.0,73.0,73.0,73.0,73.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,75.0,75.0,75.0,75.0,75.0,75.0,75.0,75.0,75.0,75.0,75.0,76.0,76.0,76.0,76.0,76.0,76.0,76.0,76.0,76.0,76.0,76.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,77.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,71.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,73.0,73.0,73.0,73.0,73.0,73.0,73.0,73.0,73.0,73.0,73.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,75.0,75.0,75.0,75.0,75.0,75.0,75.0,75.0,75.0,75.0,75.0,76.0,76.0,76.0,76.0,76.0,76.0,76.0,75.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,74.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0,72.0],"devmin":[1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,12.0,14.0,15.0,16.0,17.0,17.0,18.0,15.0,13.0,14.0,22.0,21.0,21.0,21.0,22.0,23.0,23.0,23.0,23.0,16.0,14.0,12.0,12.0,11.0,12.0,12.0,13.0,13.0,13.0,14.0,14.0,14.0,15.0,14.0,14.0,15.0,15.0,15.0,16.0,16.0,0.0,1.0,1.0,0.0,0.0,1.0,1.0,1.0,8.0,9.0,10.0,10.0,10.0,10.0,9.0,9.0,6.0,2.0,0.0,1.0,0.0,0.0,-3.0,0.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,0.0,-2.0,-3.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-1.0,0.0,0.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,-1.0,-1.0,0.0,0.0,0.0,1.0,3.0,3.0,4.0,5.0,5.0,6.0,-1.0,-1.0,0.0,0.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,3.0,3.0,3.0,3.0,4.0,4.0,3.0,3.0,3.0,3.0,3.0,4.0,3.0,3.0,3.0,3.0,-1.0,-2.0,-1.0,1.0,-2.0,2.0,-2.0,-1.0,-1.0,0.0,0.0,1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,0.0,-1.0,-1.0,-1.0,0.0,2.0,-1.0,-2.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-2.0,-1.0,-1.0,0.0,0.0,-1.0,-1.0,-2.0,-3.0,-2.0,-2.0,2.0,0.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-2.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-2.0,-2.0,-2.0,-2.0,-2.0,-2.0,-2.0,-2.0,2.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-2.0,-1.0,-1.0,-1.0,0.0,-1.0,-1.0,-1.0,0.0,0.0,0.0,0.0,-1.0,-1.0,0.0,0.0,0.0,0.0,-1.0,-1.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,1.0,0.0,1.0,2.0,3.0,4.0,4.0,5.0,4.0,0.0,-6.0,-6.0,-5.0,-1.0,-1.0,0.0,-4.0,-4.0,0.0,-1.0,-1.0,-2.0,-2.0,-3.0,1.0,0.0,-1.0,-1.0,-3.0,-3.0,-1.0,-2.0,-2.0,-4.0,0.0,-4.0,-5.0,-4.0,-1.0,-1.0,-1.0,-1.0,0.0,-2.0,-1.0,-1.0,-2.0,0.0,-2.0,-2.0,0.0,-2.0,-2.0,0.0,-1.0,-1.0,-1.0,-4.0,-3.0,-1.0,-3.0,-2.0,-1.0,-1.0,-4.0,-1.0,-1.0,-3.0,-4.0,0.0,-1.0,-2.0,-3.0,-2.0,-3.0,-3.0,-2.0,-3.0,-2.0,-2.0,-1.0,-2.0,-1.0,-4.0,-6.0,-4.0,-1.0,-1.0,-2.0,-1.0,-2.0,-2.0,0.0,-3.0,-3.0,0.0,-3.0,-3.0,0.0,0.0,0.0,-3.0,-2.0,0.0,-2.0,-2.0,0.0,-3.0,-4.0,-1.0,-1.0,-1.0,-2.0,-3.0,-5.0,-7.0,-5.0,-5.0,-2.0,-1.0,0.0,-1.0,-1.0,0.0,-3.0,-2.0,-3.0,0.0,-3.0,-1.0,-2.0,-2.0,-5.0,-4.0,-1.0,-1.0,-3.0,-2.0,0.0,-2.0,-2.0,0.0,0.0,-3.0,-3.0,0.0,-3.0,-2.0,-1.0,-2.0,-1.0,-1.0,-2.0,0.0,-3.0,-4.0,-4.0,-3.0,0.0,-1.0,-1.0,-3.0,-5.0,-6.0,-7.0,-8.0,-9.0,-10.0,-10.0,-11.0,-11.0,-11.0,-12.0,-12.0,-13.0,-13.0,-13.0,-12.0,-12.0,-13.0,-13.0,-14.0,-14.0,-7.0,-4.0,-3.0,-3.0,-2.0,-2.0,0.0,0.0,-1.0,-1.0,0.0,-2.0,-1.0,-6.0,-5.0,-1.0,-1.0,0.0,-2.0,-1.0,-1.0,-4.0,-4.0,0.0,-1.0,-1.0,-1.0,-2.0,-1.0,-3.0,0.0,0.0,-2.0,-2.0,-3.0,-2.0,-1.0,-3.0,-2.0,-3.0,-5.0,0.0,-2.0,-1.0,-2.0,-5.0,-4.0,-1.0,-1.0,-3.0,-2.0,-1.0,-3.0,-2.0,-1.0,-3.0,-2.0,-1.0,-3.0,-2.0,-1.0,-3.0,-1.0,-1.0,-3.0,0.0,-3.0,-3.0,-2.0,-4.0,-3.0,-1.0,-1.0,-2.0,0.0,-1.0,-1.0,-2.0,0.0,-3.0,-3.0,-1.0,-2.0,-3.0,-1.0,-1.0,-3.0,-2.0,-3.0,-2.0,-1.0,-2.0,-1.0,-5.0,-3.0,0.0,-1.0,-4.0,-1.0,-3.0,-3.0,0.0,-1.0,-1.0,-4.0,-4.0,-1.0,1.0,-2.0,-2.0,0.0,-3.0,-1.0,-3.0,-3.0,0.0,-2.0,-5.0,-2.0,-2.0,-2.0,-1.0,-2.0,0.0,-2.0,-1.0,-1.0,-3.0,-2.0,-4.0,0.0,-1.0,-1.0,-2.0,-1.0,0.0,-3.0,-2.0,-1.0,-2.0,-2.0,-5.0,-3.0,0.0,-3.0,-2.0,0.0,-3.0,-2.0,0.0,-3.0,-4.0,-2.0,0.0,-2.0,-2.0,0.0,0.0,0.0,-3.0,-1.0,-2.0,-3.0,0.0,-2.0,-4.0,-1.0,-2.0,-1.0,-2.0,-2.0,-2.0,-2.0,-1.0,-2.0,-1.0,-2.0,-1.0,-2.0,0.0,-2.0,-1.0,-2.0,-1.0,-1.0,-1.0,-2.0,-1.0,-3.0,-5.0,-3.0,0.0,-3.0,-2.0,-1.0,-3.0,-1.0,-1.0,-3.0,-1.0,-3.0,-3.0,-1.0,-3.0,-2.0,-1.0,-3.0,-1.0,-3.0,-3.0,-1.0,-3.0,-3.0,-3.0,-1.0,-1.0,-2.0,-1.0,-4.0,-6.0,-5.0,0.0,-2.0,-1.0,-3.0,-4.0,-1.0,-2.0,-1.0,-3.0,-1.0,-3.0,-2.0,-5.0,-4.0,0.0,-1.0,-5.0,-4.0,0.0,-4.0,-3.0,-1.0,-3.0,-2.0,-1.0,0.0,-1.0,-3.0,-2.0,0.0,-4.0,-4.0,-3.0,-5.0,-5.0,-5.0,-3.0,-3.0,-3.0,-4.0,-6.0,-4.0,-1.0,0.0,-3.0,-6.0,-9.0,-10.0,-12.0,-14.0,-15.0,-16.0,-16.0,-17.0,-17.0,-17.0,-17.0,-17.0,-17.0,-17.0,-17.0,-17.0,-17.0,-17.0,-18.0,-18.0,-18.0,-19.0,-19.0,-19.0,-19.0,-19.0,-19.0,-18.0,-17.0,-13.0,-14.0,-16.0,-17.0,-16.0,-15.0,-15.0,-16.0,-16.0,-16.0,-16.0,-17.0,-17.0,-17.0,-16.0,-15.0,-15.0,-15.0,-16.0,-16.0,-15.0,-15.0,-14.0,-13.0,-11.0,-9.0,-9.0,-8.0,-8.0,-7.0,-6.0,-5.0,-4.0,-3.0,-3.0,-3.0,-5.0,-7.0,-7.0,-6.0,-6.0,-5.0,-3.0,-3.0,-3.0,-2.0,-2.0,-3.0,-3.0,-1.0,-1.0,-2.0,-3.0,-5.0,-6.0,-4.0,-4.0,-3.0,-4.0,-2.0,-2.0,-6.0,-5.0,-1.0,0.0,0.0,-2.0,-1.0,-2.0,-2.0,-2.0,-1.0,-1.0,-2.0,-1.0,-1.0,-2.0,0.0,-1.0,-2.0,-3.0,-1.0,-1.0,-1.0,-2.0,-6.0,-4.0,-1.0,0.0,-1.0,-4.0,-1.0,-2.0,-3.0,-1.0,-4.0,-1.0,-2.0,-3.0,-1.0,-1.0,-3.0,0.0,-4.0,-2.0,-1.0,-3.0,-2.0,-5.0,-6.0,-1.0,-1.0,-1.0,0.0,-1.0,-1.0,0.0,-4.0,-3.0,-5.0,-4.0,0.0,-3.0,0.0,-3.0,0.0,-2.0,-1.0,-3.0,-1.0,-3.0,0.0,-3.0,-5.0,-4.0,-3.0,-1.0,0.0,-2.0,-2.0,0.0,-3.0,-1.0,-2.0,-4.0,-2.0,-1.0,-1.0,-1.0,-1.0,-5.0,-4.0,-2.0,-2.0,-2.0,-2.0,-3.0,-5.0,-4.0,-1.0,-3.0,-2.0,-3.0,-3.0,-2.0,-3.0,-2.0,-5.0,-2.0,0.0,-2.0,0.0,-3.0,-1.0,-4.0,-1.0,-2.0,-2.0,-3.0,-1.0,-3.0,-5.0,-5.0,-4.0,-2.0,0.0,-1.0,-2.0,-3.0,-1.0,-1.0,-3.0,-1.0,-1.0,-2.0,-2.0,0.0,-4.0,-1.0,-2.0,-1.0,-1.0,-2.0,-1.0,-1.0,-5.0,-2.0,-4.0,-2.0,-3.0,-6.0,-8.0,-8.0,-3.0,0.0,-1.0,-2.0,-1.0,-3.0,-1.0,-2.0,-1.0,-4.0,-1.0,-3.0,-1.0,-3.0,-2.0,-1.0,-6.0,-5.0,-2.0,-3.0,-3.0,-5.0,-6.0,-7.0,-8.0,-8.0,-9.0,-10.0,-12.0,-13.0,-14.0,-15.0,-15.0,-16.0,-16.0,-17.0,-17.0,-17.0,-17.0,-17.0,-18.0,-18.0,-19.0,-19.0,-20.0,-21.0,-22.0,-23.0,-23.0,-23.0,-23.0,-23.0,-23.0,-23.0,-23.0,-23.0,-23.0,-23.0,-23.0,-23.0,-23.0,-22.0,-22.0,-22.0,-22.0,-22.0,-22.0,-22.0,-22.0,-22.0,-22.0,-21.0,-21.0,-13.0,-13.0,-12.0,-12.0,-11.0,-9.0,-8.0,-8.0,-8.0,-7.0,0.0,0.0,-1.0,-4.0,-5.0,-6.0,-4.0,-5.0,-6.0,-5.0,-4.0,-3.0,-1.0,0.0,0.0,-1.0,-1.0,-2.0,-2.0,-4.0,-6.0,-8.0,-9.0,-10.0,-9.0,-9.0,-6.0,-3.0,-3.0,-4.0,-4.0,-3.0,-2.0,-1.0,1.0,0.0,-4.0,-3.0,-2.0,-2.0,-3.0,-3.0,-3.0,-3.0,-3.0,-3.0,-3.0,-3.0,-3.0,-3.0,-4.0,-6.0,-8.0,-9.0,-9.0,-9.0,-8.0,-7.0,-6.0,-4.0,-4.0,-4.0,-4.0,-3.0,-3.0,-2.0,-2.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-2.0,-1.0,-2.0,-2.0,-2.0,-3.0,-3.0,-3.0,-4.0,-5.0,-6.0,-6.0,-7.0,-7.0,-4.0,-3.0,-1.0,-1.0,-2.0,-2.0,-2.0,-2.0,-2.0,-2.0,-3.0,-5.0,-4.0,-3.0,-2.0,-1.0,-1.0,-2.0,-3.0,-3.0,-4.0,-4.0,-3.0,-4.0,-4.0,-5.0,-6.0,-7.0,-8.0,-7.0,-7.0,-6.0,-6.0,-5.0,-6.0,-8.0,-7.0,-7.0,-8.0,-8.0,-8.0,-8.0,-10.0,-10.0,-10.0,-11.0,-12.0,-11.0,-11.0,-12.0,-13.0,-13.0,-13.0,-14.0,-14.0,-14.0,-14.0,-13.0,-14.0,-14.0,-12.0,-10.0,-8.0,-6.0,-5.0,-3.0,-2.0,-1.0,-1.0,-1.0,-3.0,-2.0,-1.0,-1.0,0.0,-1.0,-3.0,-1.0,-2.0,-1.0,-3.0,-3.0,-1.0,-4.0,-3.0,0.0,-2.0,-1.0,-2.0,-1.0,-2.0,-2.0,-1.0,0.0,-1.0,-1.0,-1.0,-1.0,-2.0,-2.0,-2.0,-2.0,-3.0,-3.0,-4.0,-5.0,-6.0,-8.0,-8.0,-7.0,-6.0,-5.0,-5.0,-4.0,-4.0,-4.0,-3.0,-2.0,-1.0,-1.0,-3.0,-1.0,-3.0,0.0,-3.0,-1.0,-3.0,-2.0,-1.0,-3.0,-1.0,-4.0,-3.0,0.0,-3.0,-1.0,-3.0,-3.0,-2.0,-3.0,0.0,-3.0,0.0,-3.0,-3.0,-1.0,-3.0,0.0,-3.0,-2.0,-3.0,-3.0,0.0,-3.0,0.0,-3.0,-2.0,-2.0,-3.0,-2.0,-3.0,-3.0,-3.0,-3.0,-3.0,-3.0,-3.0,-2.0,-3.0,-2.0,-3.0,-3.0,-3.0,-2.0,-1.0,-3.0,-2.0,-3.0,-4.0,-3.0,-2.0,-1.0,-3.0,0.0,-2.0,-1.0,0.0,-3.0,1.0,-2.0,-1.0,-3.0,-2.0,0.0,-2.0,0.0,-2.0,-1.0,-2.0,-2.0,0.0,-2.0,-1.0,-3.0,-2.0,-2.0,-3.0,-1.0,-2.0,-1.0,-3.0,0.0,-2.0,1.0,-1.0,-1.0,-3.0,-1.0,-1.0,-3.0,-2.0,-2.0,-2.0,-2.0,-2.0,-1.0,-3.0,-3.0,1.0,-2.0,-1.0,-1.0,-2.0,-1.0,-2.0,0.0,-2.0,-1.0,-1.0,0.0,-1.0,-1.0,0.0,-1.0,0.0,-1.0,0.0,-2.0,-1.0,-1.0,-2.0,-4.0,0.0,-2.0,-1.0,-1.0,0.0,-1.0,-1.0,-2.0,-1.0,-8.0,-11.0,-13.0,-14.0,-15.0,-16.0,-17.0,-18.0,-19.0,-19.0,-20.0,-21.0,-21.0,-23.0,-23.0,-23.0,-23.0,-24.0,-25.0,-25.0,-26.0,-26.0,-27.0,-27.0,-28.0,-28.0,-28.0,-29.0,-30.0,-45.0,-50.0,-50.0,-39.0,-36.0,-32.0,-31.0,-20.0,-16.0,-14.0,-12.0,-10.0,-7.0,-4.0,-2.0,0.0,-2.0,-2.0,-4.0,-1.0,-2.0,-1.0,-3.0,-1.0,-2.0,-2.0,-2.0,-1.0,-1.0,0.0,0.0,0.0,-2.0,-2.0,0.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-2.0,-3.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-2.0,-2.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-2.0,1.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,-1.0,-2.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-2.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-2.0,-1.0,-1.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,-2.0,-2.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-2.0,-2.0,-2.0,-2.0,-2.0,-5.0,-9.0,-11.0,-13.0,-14.0,-15.0,-16.0,-16.0,-17.0,-17.0,-18.0,-19.0,-20.0,-20.0,-38.0,-46.0,-48.0,-49.0,-50.0,-50.0,-50.0,-51.0,-50.0,-38.0,-20.0,-13.0,-10.0,-7.0,-4.0,-2.0,0.0,-1.0,-1.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-2.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-1.0,0.0,-1.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-2.0,-1.0,0.0,0.0,0.0,0.0,-2.0,-3.0,-4.0,-3.0,2.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-3.0,-4.0,-5.0,-5.0,-5.0,-6.0,-6.0,-6.0,-6.0,-6.0,-7.0,-7.0,-7.0,-8.0,-8.0,-8.0,-8.0,-8.0,-8.0,-8.0,-8.0,-8.0,-9.0,-9.0,-9.0,-9.0,-9.0,-9.0,-9.0,-9.0,-9.0,-10.0,-10.0,-10.0,-10.0,-10.0,-10.0,-10.0,-10.0,-10.0,-10.0,-10.0,-10.0,-10.0,-10.0,-10.0,-10.0,-10.0,-11.0,-11.0,-11.0,-11.0,-11.0,-11.0,-11.0,-11.0,-11.0,-11.0,-11.0,-11.0,-11.0,-11.0,-11.0,-11.0,-12.0,-12.0,-12.0,-12.0,-12.0,-12.0,-12.0,-12.0,-12.0,-12.0,-12.0,-12.0,-12.0,-12.0,-12.0,-12.0,-12.0,-12.0,-13.0,-13.0,-13.0,-13.0,-13.0,-13.0,-13.0,-13.0,-13.0,-13.0,-13.0,-13.0]}};
+
+/* ---------- utilidades ---------- */
+const NS = "http://www.w3.org/2000/svg";
+/* los graficos se dibujan en un viewBox de 1000; TS sube el texto de ejes,
+   leyendas y etiquetas de punta para que se lea proyectado */
+const TS = 1.15;
+const nf = (n, d) => Number(n).toLocaleString("es-CL", {minimumFractionDigits: d, maximumFractionDigits: d});
+const T0 = new Date(D.ini_log.replace(" ", "T"));
+const at = m => new Date(T0.getTime() + m * 60000);
+const p2 = n => String(n).padStart(2, "0");
+const dlab = d => p2(d.getDate()) + "-" + p2(d.getMonth() + 1);
+const tlab = d => dlab(d) + " " + p2(d.getHours()) + ":" + p2(d.getMinutes());
+
+function E(tag, attrs, styles) {
+  const n = document.createElementNS(NS, tag);
+  if (attrs) for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (styles) for (const k in styles) n.style.setProperty(k, styles[k]);
+  return n;
+}
+function txt(s, x, y, opt) {
+  opt = opt || {};
+  const t = E("text", {x: x, y: y, "text-anchor": opt.a || "start"});
+  t.style.setProperty("font-family", opt.mono ? "var(--f-mono)" : (opt.disp ? "var(--f-disp)" : "var(--f-body)"));
+  t.style.setProperty("font-size", ((opt.size || 11) * TS).toFixed(1) + "px");
+  t.style.setProperty("fill", opt.fill || "var(--muted)");
+  if (opt.weight) t.style.setProperty("font-weight", opt.weight);
+  if (opt.track) t.style.setProperty("letter-spacing", opt.track);
+  if (opt.upper) t.style.setProperty("text-transform", "uppercase");
+  if (opt.opacity) t.style.setProperty("opacity", opt.opacity);
+  t.textContent = s;
+  return t;
+}
+function line(x1, y1, x2, y2, color, w) {
+  return E("line", {x1: x1, y1: y1, x2: x2, y2: y2},
+    {stroke: color, "stroke-width": (w || 1) + "px"});
+}
+function path(d, opt) {
+  return E("path", {d: d}, Object.assign({fill: "none", "stroke-linejoin": "round", "stroke-linecap": "round"}, opt));
+}
+function clear(svg, w, h) {
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+  svg.setAttribute("viewBox", "0 0 " + w + " " + h);
+  return svg;
+}
+function legend(id, items) {
+  const box = document.getElementById(id);
+  box.textContent = "";
+  items.forEach(it => {
+    const s = document.createElement("span");
+    if (it.scale) {
+      const sc = document.createElement("span"); sc.className = "scale";
+      it.scale.forEach(c => { const i = document.createElement("i"); i.style.background = c; sc.appendChild(i); });
+      s.appendChild(sc);
+    } else {
+      const k = document.createElement("i");
+      k.className = it.sq ? "key sq" : "key";
+      k.style.background = it.c;
+      if (it.hollow) { k.style.background = "transparent"; k.style.border = "1.5px solid " + it.c; }
+      s.appendChild(k);
+    }
+    s.appendChild(document.createTextNode(it.t));
+    box.appendChild(s);
+  });
+}
+function table(id, head, rows) {
+  const box = document.getElementById(id);
+  box.textContent = "";
+  const t = document.createElement("table");
+  const th = document.createElement("thead");
+  const hr = document.createElement("tr");
+  head.forEach(h => { const c = document.createElement("th"); c.textContent = h; hr.appendChild(c); });
+  th.appendChild(hr); t.appendChild(th);
+  const tb = document.createElement("tbody");
+  rows.forEach(r => {
+    const tr = document.createElement("tr");
+    r.forEach(v => { const c = document.createElement("td"); c.textContent = v; tr.appendChild(c); });
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb); box.appendChild(t);
+}
+
+/* ---------- capa de hover ---------- */
+function fillTip(tip, title, rows) {
+  tip.textContent = "";
+  const h = document.createElement("div");
+  h.className = "th"; h.textContent = title;
+  tip.appendChild(h);
+  rows.forEach(row => {
+    const d = document.createElement("div"); d.className = "tr";
+    const k = document.createElement("i"); k.className = row.sq ? "key sq k" : "key k";
+    k.style.background = row.c; d.appendChild(k);
+    const n = document.createElement("span"); n.className = "tn"; n.textContent = row.t; d.appendChild(n);
+    const v = document.createElement("span"); v.className = "tv"; v.textContent = row.v; d.appendChild(v);
+    tip.appendChild(d);
+  });
+  tip.classList.add("on");
+}
+function place(tip, card, cx, cy) {
+  const cr = card.getBoundingClientRect();
+  let left = cx - cr.left + 16;
+  if (left + tip.offsetWidth > cr.width - 10) left = cx - cr.left - tip.offsetWidth - 16;
+  tip.style.left = Math.max(8, left) + "px";
+  tip.style.top = Math.min(Math.max(8, cy - cr.top - 12), cr.height - tip.offsetHeight - 8) + "px";
+}
+function hover(svg, tipId, cardId, vbW, getIndex, rows) {
+  const tip = document.getElementById(tipId);
+  const card = document.getElementById(cardId);
+  let cross = null;
+  function show(ev) {
+    const r = svg.getBoundingClientRect();
+    const res = getIndex((ev.clientX - r.left) * (vbW / r.width));
+    if (!res) return hide();
+    if (cross) { cross.setAttribute("transform", "translate(" + res.x + ",0)"); cross.style.setProperty("opacity", "1"); }
+    fillTip(tip, res.title, rows(res.i));
+    place(tip, card, ev.clientX, ev.clientY);
+  }
+  function hide() {
+    tip.classList.remove("on");
+    if (cross) cross.style.setProperty("opacity", "0");
+  }
+  if (svg.hnd) { svg.removeEventListener("pointermove", svg.hnd.m); svg.removeEventListener("pointerleave", svg.hnd.l); }
+  svg.hnd = {m: show, l: hide};
+  svg.addEventListener("pointermove", show);
+  svg.addEventListener("pointerleave", hide);
+  return { setCross: g => { cross = g; } };
+}
+/* zona de impacto por marca: siempre mayor que la marca pintada */
+function markTip(svg, hit, tipId, cardId, title, rows) {
+  const tip = document.getElementById(tipId);
+  const card = document.getElementById(cardId);
+  hit.setAttribute("tabindex", "0");
+  hit.setAttribute("role", "img");
+  hit.setAttribute("aria-label", title + ": " + rows.map(r => r.t + " " + r.v).join(", "));
+  const at = ev => { fillTip(tip, title, rows); place(tip, card, ev.clientX, ev.clientY); };
+  const fromNode = () => {
+    const b = hit.getBoundingClientRect();
+    fillTip(tip, title, rows); place(tip, card, b.left + b.width / 2, b.top);
+  };
+  hit.addEventListener("pointerenter", at);
+  hit.addEventListener("pointermove", at);
+  hit.addEventListener("focus", fromNode);
+  hit.addEventListener("pointerleave", () => tip.classList.remove("on"));
+  hit.addEventListener("blur", () => tip.classList.remove("on"));
+  svg.appendChild(hit);
+}
+
+/* ---------- logo ----------
+   El SVG de arriba es una reconstrucción. Si dejas el archivo original junto al
+   HTML (Logo_Glover.png, .jpg o .svg), la página lo usa en su lugar.          */
+(function marca() {
+  const holder = document.getElementById("brandmark");
+  if (!holder) return;
+  const fuentes = ["Logo_Glover.svg", "Logo_Glover.png", "Logo_Glover.jpg", "logo_glover.png"];
+  (function probar(i) {
+    if (i >= fuentes.length) return;
+    const img = new Image();
+    img.onload = () => { img.alt = "Glover"; holder.textContent = ""; holder.appendChild(img); };
+    img.onerror = () => probar(i + 1);
+    img.src = fuentes[i];
+  })(0);
+})();
+
+/* ---------- KPI ---------- */
+/* Banda de aceptacion del ciclo: un solo par de limites para toda la pagina. */
+const BANDA = nf(D.lo, 0) + " – " + nf(D.hi, 0) + " %";
+const DIAS = Math.floor(D.h_total / 24);
+const HRS = Math.round(D.h_total - DIAS * 24);
+/* Indicadores de como se condujo el programa de secado. El resultado del lote va
+   con las muestras, que es de donde sale. */
+function kpis() {
+  franja("kpis-marcha", [
+    { lbl: "Offset del sensor AWM", val: "+" + nf(D.offset, 1), u: "pts", flag: ["f-warn", "Sin calibrar"],
+      note: "El PLC cerró en " + nf(D.awm_fin, 1) + "% y la madera midió " + nf(D.mc_medio, 1) + "%" },
+    { lbl: "Ocupación de cámara", val: nf(D.h_total, 1), u: "h",
+      note: DIAS + " días y " + HRS + " h" },
+    { lbl: "Cola de sobresecado", val: nf(D.h_cola, 1), u: "h", flag: ["f-crit", "Recortable"],
+      note: nf(100 * D.h_cola / D.h_total, 0) + "% del tiempo y " + nf(D.pct_gh_cola, 0) + "% de la energía para " + nf(D.awm_cola_delta, 1) + " pts" },
+    { lbl: "Tiempo fuera de setpoint", val: nf(D.pct_fuera, 1), u: "%", flag: ["f-warn", "Revisar caldera"],
+      note: D.n_eventos + " caídas sostenidas &middot; máx " + D.desv_max + " °C" }
+  ]);
+}
+
+function franja(id, items) {
+  const box = document.getElementById(id);
+  items.forEach(it => {
+    const d = document.createElement("div"); d.className = "kpi";
+    const l = document.createElement("div"); l.className = "lbl"; l.textContent = it.lbl; d.appendChild(l);
+    if (it.res !== undefined) {
+      const r = document.createElement("div");
+      r.className = "res " + (it.res ? "ok" : "no");
+      r.appendChild(document.createElement("i"));
+      r.appendChild(document.createTextNode(it.res ? "Aprobado" : "Rechazado"));
+      d.appendChild(r);
+    } else {
+      const v = document.createElement("div"); v.className = "val";
+      v.appendChild(document.createTextNode(it.val));
+      const u = document.createElement("span"); u.className = "u"; u.textContent = it.u; v.appendChild(u);
+      d.appendChild(v);
+    }
+    if (it.flag) {
+      const f = document.createElement("div"); f.className = "flag " + it.flag[0];
+      const dot = document.createElement("i"); dot.className = "dot"; f.appendChild(dot);
+      f.appendChild(document.createTextNode(it.flag[1])); d.appendChild(f);
+    }
+    if (it.meter) {
+      const m = document.createElement("div"); m.className = "meter";
+      const i = document.createElement("i"); i.style.width = it.meter[0] + "%"; m.appendChild(i);
+      const b = document.createElement("b"); b.style.left = it.meter[1] + "%";
+      b.title = "Umbral " + it.meter[1] + "%"; m.appendChild(b);
+      d.appendChild(m);
+    }
+    const n = document.createElement("div"); n.className = "note"; n.innerHTML = it.note; d.appendChild(n);
+    box.appendChild(d);
+  });
+}
+
+/* ---------- 1. curva de secado ---------- */
+const W = 1000, ML = 48, MR = 18;
+const PA = {t: 34, h: 172}, PB = {t: 252, h: 122};
+const HC = 424;
+
+function xticks(m0, m1) {
+  const out = [];
+  const span = m1 - m0;
+  const startDay = new Date(T0.getTime() + m0 * 60000);
+  const d = new Date(startDay.getFullYear(), startDay.getMonth(), startDay.getDate());
+  const stepH = span > 4000 ? 24 : (span > 1200 ? 12 : 6);
+  let cur = new Date(d.getTime());
+  while (cur.getTime() <= T0.getTime() + m1 * 60000) {
+    const m = (cur.getTime() - T0.getTime()) / 60000;
+    if (m >= m0) out.push({m: m, l: cur.getHours() === 0 ? dlab(cur) : p2(cur.getHours()) + "h"});
+    cur = new Date(cur.getTime() + stepH * 3600000);
+  }
+  return out;
+}
+
+function curva(r) {
+  const svg = clear(document.getElementById("svg-curva"), W, HC);
+  const S = D.serie, PW = W - ML - MR;
+  const i0 = S.m.findIndex(m => m >= r[0]);
+  const i1 = S.m.length - 1 - [...S.m].reverse().findIndex(m => m <= r[1]);
+  const x = m => ML + (m - r[0]) / (r[1] - r[0]) * PW;
+  const yA = v => PA.t + PA.h - v / 60 * PA.h;
+  const yB = v => PB.t + PB.h - v / 90 * PB.h;
+
+  D.fases.forEach(f => {
+    const a = Math.max(f.desde, r[0]), b = Math.min(f.hasta, r[1]);
+    if (b <= a) return;
+    const st = f.id === "pre" ? {fill: "var(--grid)", opacity: ".55"}
+      : f.id === "cola" ? {fill: "var(--crit)", opacity: ".07"} : null;
+    if (st) svg.appendChild(E("rect", {x: x(a), y: PA.t, width: x(b) - x(a), height: PB.t + PB.h - PA.t}, st));
+    if (x(b) - x(a) > 96)
+      svg.appendChild(txt(f.label + "  " + nf(f.horas, 1) + " h", (x(a) + x(b)) / 2, 13,
+        {a: "middle", size: 10.5, disp: true, upper: true, track: ".1em", weight: 600, fill: "var(--muted)"}));
+  });
+
+  svg.appendChild(E("rect", {x: ML, y: yA(D.hi), width: PW, height: yA(D.lo) - yA(D.hi)},
+    {fill: "var(--good)", opacity: ".13"}));
+  svg.appendChild(txt("banda " + BANDA, ML + 6, yA(D.lo) - 4, {size: 9.5, mono: true, fill: "var(--good-ink)"}));
+
+  [0, 20, 40, 60].forEach(v => {
+    svg.appendChild(line(ML, yA(v), W - MR, yA(v), "var(--grid)", 1));
+    svg.appendChild(txt(v, ML - 8, yA(v) + 3.5, {a: "end", size: 10, mono: true}));
+  });
+  [0, 30, 60, 90].forEach(v => {
+    svg.appendChild(line(ML, yB(v), W - MR, yB(v), "var(--grid)", 1));
+    svg.appendChild(txt(v, ML - 8, yB(v) + 3.5, {a: "end", size: 10, mono: true}));
+  });
+  svg.appendChild(txt("Humedad  %", ML, PA.t - 9, {size: 10, disp: true, upper: true, track: ".08em", weight: 600, fill: "var(--ink-2)"}));
+  svg.appendChild(txt("Temperatura  °C", ML, PB.t - 9, {size: 10, disp: true, upper: true, track: ".08em", weight: 600, fill: "var(--ink-2)"}));
+
+  xticks(r[0], r[1]).forEach(t => {
+    svg.appendChild(line(x(t.m), PB.t + PB.h, x(t.m), PB.t + PB.h + 4, "var(--rule)", 1));
+    svg.appendChild(txt(t.l, x(t.m), PB.t + PB.h + 17, {a: "middle", size: 10, mono: true}));
+  });
+
+  const mk = (key, y) => {
+    let d = "";
+    for (let i = i0; i <= i1; i++) d += (i === i0 ? "M" : "L") + x(S.m[i]).toFixed(1) + " " + y(S[key][i]).toFixed(1);
+    return d;
+  };
+  svg.appendChild(path(mk("emcsp", yA), {stroke: "var(--muted)", "stroke-width": "1.5px", opacity: ".85"}));
+  svg.appendChild(path(mk("emc", yA), {stroke: "var(--s3)", "stroke-width": "2px"}));
+  svg.appendChild(path(mk("awm", yA), {stroke: "var(--s1)", "stroke-width": "2px"}));
+  svg.appendChild(path(mk("tsp", yB), {stroke: "var(--muted)", "stroke-width": "1.5px", opacity: ".85"}));
+  svg.appendChild(path(mk("temp", yB), {stroke: "var(--s2)", "stroke-width": "2px"}));
+
+  const end = i1, ex = x(S.m[end]);
+  [[yA(S.awm[end]), nf(S.awm[end], 1) + " %", "var(--s1)"],
+   [yB(S.temp[end]), nf(S.temp[end], 0) + " °C", "var(--s2)"]].forEach(p => {
+    svg.appendChild(E("circle", {cx: ex, cy: p[0], r: 4.5}, {fill: p[2], stroke: "var(--surf)", "stroke-width": "2px"}));
+    svg.appendChild(txt(p[1], ex - 9, p[0] - 8, {a: "end", size: 11.5, weight: 600, fill: "var(--ink)"}));
+  });
+  if (r[0] === 0) svg.appendChild(txt(nf(S.awm[i0], 0) + " %", x(S.m[i0]) + 7, yA(S.awm[i0]) + 4, {size: 11.5, weight: 600, fill: "var(--ink)"}));
+
+  const cg = E("g", null, {opacity: "0"});
+  cg.appendChild(line(0, PA.t, 0, PB.t + PB.h, "var(--ink)", 1));
+  svg.appendChild(cg);
+
+  const h = hover(svg, "tip-curva", "c-curva", W, vx => {
+    if (vx < ML || vx > W - MR) return null;
+    const m = r[0] + (vx - ML) / PW * (r[1] - r[0]);
+    let i = i0; let best = 1e9;
+    for (let k = i0; k <= i1; k++) { const d = Math.abs(S.m[k] - m); if (d < best) { best = d; i = k; } }
+    return {i: i, x: x(S.m[i]), title: tlab(at(S.m[i]))};
+  }, i => [
+    {c: "var(--s1)", t: "AWM madera", v: nf(S.awm[i], 1) + " %"},
+    {c: "var(--s3)", t: "EMC ambiente", v: nf(S.emc[i], 1) + " %"},
+    {c: "var(--muted)", t: "EMC programado", v: nf(S.emcsp[i], 1) + " %"},
+    {c: "var(--s2)", t: "Temperatura", v: nf(S.temp[i], 0) + " °C"},
+    {c: "var(--muted)", t: "T programada", v: nf(S.tsp[i], 0) + " °C"}
+  ]);
+  h.setCross(cg);
+
+  legend("lg-curva", [
+    {c: "var(--s1)", t: "AWM · humedad de la madera"},
+    {c: "var(--s3)", t: "EMC · humedad de equilibrio del aire"},
+    {c: "var(--s2)", t: "Temperatura real de cámara"},
+    {c: "var(--muted)", t: "Valores programados (setpoint)"}
+  ]);
+}
+
+/* ---------- 2. estabilidad térmica ---------- */
+const HD = 250;
+function desv(r) {
+  const svg = clear(document.getElementById("svg-desv"), W, HD);
+  const S = D.serie, PW = W - ML - MR, T = 26, PH = 158;
+  const i0 = S.m.findIndex(m => m >= r[0]);
+  const i1 = S.m.length - 1 - [...S.m].reverse().findIndex(m => m <= r[1]);
+  const lo = -55, hi = 15;
+  const x = m => ML + (m - r[0]) / (r[1] - r[0]) * PW;
+  const y = v => T + (hi - v) / (hi - lo) * PH;
+  const fx = n => n.toFixed(1);
+
+  [10, 0, -20, -40].forEach(v => {
+    svg.appendChild(line(ML, y(v), W - MR, y(v), v === 0 ? "var(--rule)" : "var(--grid)", v === 0 ? 1.5 : 1));
+    svg.appendChild(txt(v > 0 ? "+" + v : v, ML - 8, y(v) + 3.5, {a: "end", size: 10, mono: true}));
+  });
+  svg.appendChild(txt("Δ °C respecto del setpoint", ML, T - 9, {size: 10, disp: true, upper: true, track: ".08em", weight: 600, fill: "var(--ink-2)"}));
+
+  let d = "M" + fx(x(S.m[i0])) + " " + fx(y(0));
+  for (let i = i0; i <= i1; i++) d += "L" + fx(x(S.m[i])) + " " + fx(y(S.devmin[i]));
+  d += "L" + fx(x(S.m[i1])) + " " + fx(y(0)) + "Z";
+  ["pos", "neg"].forEach(side => {
+    const cp = E("clipPath", {id: "cl-" + side});
+    cp.appendChild(E("rect", {x: ML, y: side === "pos" ? T : y(0), width: PW, height: side === "pos" ? y(0) - T : T + PH - y(0)}));
+    svg.appendChild(cp);
+    svg.appendChild(E("path", {d: d, "clip-path": "url(#cl-" + side + ")"},
+      {fill: side === "pos" ? "var(--s1)" : "var(--neg)", opacity: ".8"}));
+  });
+
+  D.eventos.forEach(e => {
+    if (e.hasta < r[0] || e.desde > r[1]) return;
+    svg.appendChild(line(Math.max(x(e.desde), ML), T + PH + 6, Math.min(x(e.hasta), W - MR), T + PH + 6, "var(--neg)", 3));
+  });
+  svg.appendChild(txt("eventos sostenidos", ML, T + PH + 20, {size: 9.5, mono: true, fill: "var(--neg)"}));
+
+  const worst = D.eventos.reduce((a, b) => b.desv < a.desv ? b : a);
+  if (worst.desde >= r[0] && worst.desde <= r[1])
+    svg.appendChild(txt(worst.desv + " °C", x(worst.desde) + 6, y(worst.desv) - 6, {size: 11.5, weight: 600, fill: "var(--ink)"}));
+
+  xticks(r[0], r[1]).forEach(t => {
+    svg.appendChild(line(x(t.m), T + PH, x(t.m), T + PH + 4, "var(--rule)", 1));
+    svg.appendChild(txt(t.l, x(t.m), T + PH + 34, {a: "middle", size: 10, mono: true}));
+  });
+
+  const cg = E("g", null, {opacity: "0"});
+  cg.appendChild(line(0, T, 0, T + PH, "var(--ink)", 1));
+  svg.appendChild(cg);
+  const h = hover(svg, "tip-desv", "c-desv", W, vx => {
+    if (vx < ML || vx > W - MR) return null;
+    const m = r[0] + (vx - ML) / PW * (r[1] - r[0]);
+    let i = i0, best = 1e9;
+    for (let k = i0; k <= i1; k++) { const dd = Math.abs(S.m[k] - m); if (dd < best) { best = dd; i = k; } }
+    return {i: i, x: x(S.m[i]), title: tlab(at(S.m[i]))};
+  }, i => [
+    {c: S.devmin[i] < 0 ? "var(--neg)" : "var(--s1)", t: "Desviación mínima", v: (S.devmin[i] > 0 ? "+" : "") + nf(S.devmin[i], 1) + " °C"},
+    {c: "var(--s2)", t: "Temperatura", v: nf(S.temp[i], 0) + " °C"},
+    {c: "var(--muted)", t: "T programada", v: nf(S.tsp[i], 0) + " °C"}
+  ]);
+  h.setCross(cg);
+
+  legend("lg-desv", [
+    {c: "var(--s1)", sq: true, t: "Por sobre el setpoint"},
+    {c: "var(--neg)", sq: true, t: "Por debajo del setpoint"},
+    {c: "var(--neg)", t: "Evento sostenido (más de 20 min bajo −5 °C)"}
+  ]);
+}
+
+/* ---------- 3. balance de horas ---------- */
+function balance() {
+  const svg = clear(document.getElementById("svg-balance"), W, 196);
+  const PW = W - ML - MR, BY = 86, BH = 24, GAP = 2;
+  const segs = [
+    {l: "Acondicionamiento", h: D.h_pre, c: "var(--s1)"},
+    {l: "Secado efectivo", h: D.h_sec, c: "var(--s2)"},
+    {l: "Cola de sobresecado", h: D.h_cola, c: "var(--s3)"},
+    {l: "Enfriado y medición", h: D.h_enfr, c: "var(--s4)"}
+  ];
+  const tot = D.h_total, x = h => ML + h / tot * PW;
+
+  const bs = x(D.h_pre), be = x(tot);
+  svg.appendChild(line(bs, 46, be, 46, "var(--ink-2)", 1));
+  svg.appendChild(line(bs, 46, bs, 54, "var(--ink-2)", 1));
+  svg.appendChild(line(be, 46, be, 54, "var(--ink-2)", 1));
+  svg.appendChild(txt("Ciclo según el informe · " + nf(D.h_inf, 1) + " h", (bs + be) / 2, 38,
+    {a: "middle", size: 11, weight: 600, fill: "var(--ink-2)"}));
+  svg.appendChild(txt("Ocupación real de cámara · " + nf(tot, 1) + " h", ML, 20,
+    {size: 11, disp: true, upper: true, track: ".1em", weight: 600, fill: "var(--ink)"}));
+  svg.appendChild(line(ML, 26, W - MR, 26, "var(--ink)", 1.5));
+
+  let acc = 0;
+  segs.forEach((s, k) => {
+    const x0 = x(acc), x1 = x(acc + s.h);
+    const w = Math.max(1, x1 - x0 - (k < segs.length - 1 ? GAP : 0));
+    svg.appendChild(E("rect", {x: x0, y: BY, width: w, height: BH, rx: 1}, {fill: s.c}));
+    if (w > 64) {
+      svg.appendChild(txt(nf(s.h, 1) + " h", x0 + w / 2, BY - 10, {a: "middle", size: 12, weight: 600, fill: "var(--ink)"}));
+      svg.appendChild(txt(nf(100 * s.h / tot, 0) + "%", x0 + w / 2, BY + BH + 15, {a: "middle", size: 10.5, mono: true, fill: "var(--ink-2)"}));
+    } else {
+      svg.appendChild(line(x0 + w / 2, BY - 7, x0 + w / 2, BY, "var(--rule)", 1));
+      svg.appendChild(txt(nf(s.h, 1) + " h", x1, BY - 12, {a: "end", size: 12, weight: 600, fill: "var(--ink)"}));
+    }
+    markTip(svg, E("rect", {x: x0, y: BY - 6, width: Math.max(12, w), height: BH + 12}, {fill: "transparent"}),
+      "tip-balance", "c-balance", s.l,
+      [{c: s.c, sq: true, t: "Duración", v: nf(s.h, 1) + " h"},
+       {c: "var(--muted)", sq: true, t: "Del total", v: nf(100 * s.h / tot, 1) + " %"}]);
+    acc += s.h;
+  });
+
+  for (let hh = 0; hh <= tot; hh += 24) {
+    svg.appendChild(line(x(hh), BY + BH + 26, x(hh), BY + BH + 30, "var(--rule)", 1));
+    svg.appendChild(txt(hh === 0 ? "0 h" : hh + " h", x(hh), BY + BH + 43, {a: "middle", size: 10, mono: true}));
+  }
+  svg.appendChild(line(ML, BY + BH + 26, W - MR, BY + BH + 26, "var(--grid)", 1));
+
+  legend("lg-balance", segs.map(s => ({c: s.c, sq: true, t: s.l + " · " + nf(s.h, 1) + " h"})));
+  table("tb-balance",
+    ["Fase", "Desde", "Hasta", "Horas", "Share"],
+    [["Acondicionamiento", "24-08 17:16", "26-08 08:12", nf(D.h_pre, 1), nf(100 * D.h_pre / tot, 1) + "%"],
+     ["Secado efectivo", "26-08 08:12", "30-08 09:11", nf(D.h_sec, 1), nf(100 * D.h_sec / tot, 1) + "%"],
+     ["Cola de sobresecado", "30-08 09:11", "01-09 05:42", nf(D.h_cola, 1), nf(100 * D.h_cola / tot, 1) + "%"],
+     ["Enfriado y medición", "01-09 05:42", "01-09 09:26", nf(D.h_enfr, 1), nf(100 * D.h_enfr / tot, 1) + "%"],
+     ["Total", "24-08 17:16", "01-09 09:26", nf(tot, 1), "100,0%"]]);
+}
+
+/* ---------- 4. tramos de AWM ---------- */
+function tramos() {
+  const T = D.tramos, RH = 29, TOP = 40, LW = 92;
+  const H = TOP + T.length * RH + 34;
+  const svg = clear(document.getElementById("svg-tramos"), W, H);
+  /* mismo borde derecho que el gráfico de horas de cámara: x = W - MR */
+  const x0 = LW, PW = W - MR - LW;
+  const max = Math.max.apply(null, T.map(t => t.horas));
+  const dom = Math.ceil(max / 10) * 10;   /* la última marca cae justo en el borde */
+  const x = h => x0 + h / dom * PW;
+
+  svg.appendChild(txt("Tramo de AWM", 0, 22, {size: 10, disp: true, upper: true, track: ".1em", weight: 600, fill: "var(--ink-2)"}));
+  svg.appendChild(txt("Horas empleadas", x0, 22, {size: 10, disp: true, upper: true, track: ".1em", weight: 600, fill: "var(--ink-2)"}));
+  svg.appendChild(line(0, 28, W, 28, "var(--grid)", 1));
+
+  for (let h = 0; h <= dom; h += 10) {
+    svg.appendChild(line(x(h), TOP - 4, x(h), TOP + T.length * RH - 6, "var(--grid)", 1));
+    svg.appendChild(txt(h + " h", x(h), TOP + T.length * RH + 12,
+      {a: h === dom ? "end" : "middle", size: 10, mono: true}));
+  }
+
+  T.forEach((t, i) => {
+    const y = TOP + i * RH, tail = t.fase === "cola";
+    svg.appendChild(txt(nf(t.de, t.de % 1 ? 1 : 0) + " → " + nf(t.a, t.a % 1 ? 1 : 0) + " %", x0 - 12, y + 12,
+      {a: "end", size: 11.5, mono: true, fill: tail ? "var(--ink)" : "var(--ink-2)", weight: tail ? 500 : 400}));
+    const w = Math.max(2, x(t.horas) - x0);
+    svg.appendChild(E("rect", {x: x0, y: y + 1, width: w, height: 16, rx: 1},
+      {fill: tail ? "var(--s1)" : "var(--deemph)"}));
+    svg.appendChild(txt(nf(t.horas, 1) + " h", x0 + w + 8, y + 13,
+      {size: 11.5, weight: tail ? 600 : 500, fill: tail ? "var(--ink)" : "var(--ink-2)"}));
+    markTip(svg, E("rect", {x: 0, y: y - 5, width: W, height: RH - 1}, {fill: "transparent"}),
+      "tip-tramos", "c-tramos",
+      "AWM " + nf(t.de, t.de % 1 ? 1 : 0) + " → " + nf(t.a, t.a % 1 ? 1 : 0) + " %",
+      [{c: tail ? "var(--s1)" : "var(--deemph)", sq: true, t: "Duración", v: nf(t.horas, 1) + " h"},
+       {c: "var(--muted)", sq: true, t: "Acumulado", v: nf(t.acum, 1) + " h"},
+       {c: "var(--muted)", sq: true, t: "Fase", v: tail ? "Cola" : (t.fase === "pre" ? "Acondicionam." : "Secado")}]);
+  });
+
+  legend("lg-tramos", [
+    {c: "var(--deemph)", sq: true, t: "Secado productivo"},
+    {c: "var(--s1)", sq: true, t: "Cola: " + nf(D.h_cola, 1) + " h para 0,8 pts"}
+  ]);
+  table("tb-tramos", ["Tramo AWM", "Horas", "Acumulado", "Fase"],
+    T.map(t => [nf(t.de, t.de % 1 ? 1 : 0) + " → " + nf(t.a, t.a % 1 ? 1 : 0) + " %", nf(t.horas, 1),
+      nf(t.acum, 1) + " h", t.fase === "cola" ? "Cola" : (t.fase === "pre" ? "Acondicionamiento" : "Secado")]));
+}
+
+/* ---------- filtros y arranque ---------- */
+const LAST = D.serie.m[D.serie.m.length - 1];
+const RANGES = [
+  {l: "Ciclo completo", r: [0, LAST]},
+  {l: "Sólo secado efectivo", r: [Math.round(D.fases[1].desde), LAST]},
+  {l: "Últimas 48 h", r: [Math.max(0, LAST - 2880), LAST]}
+];
+function drawTime(r) {
+  curva(r); desv(r);
+  const S = D.serie, rows = [];
+  for (let i = 0; i < S.m.length; i++) {
+    if (S.m[i] < r[0] || S.m[i] > r[1] || S.m[i] % 60 !== 0) continue;
+    rows.push([tlab(at(S.m[i])), nf(S.awm[i], 1), nf(S.emc[i], 1), nf(S.emcsp[i], 1),
+      nf(S.temp[i], 0), nf(S.tsp[i], 0), (S.devmin[i] > 0 ? "+" : "") + nf(S.devmin[i], 1)]);
+  }
+  table("tb-curva", ["Fecha", "AWM %", "EMC %", "EMC prog", "T °C", "T prog", "Δ mín"], rows);
+  table("tb-desv", ["Inicio", "Término", "Minutos", "Desviación máxima"],
+    D.eventos.filter(e => e.hasta >= r[0] && e.desde <= r[1])
+      .map(e => [e.ini, e.fin, String(e.min_), e.desv + " °C"]));
+}
+function filters() {
+  const seg = document.getElementById("seg");
+  RANGES.forEach((rg, i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = rg.l;
+    b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+    b.addEventListener("click", () => {
+      [...seg.children].forEach(c => c.setAttribute("aria-pressed", "false"));
+      b.setAttribute("aria-pressed", "true");
+      drawTime(rg.r);
+    });
+    seg.appendChild(b);
+  });
+}
+kpis(); filters(); drawTime(RANGES[0].r); balance(); tramos();
+let rt = 0;
+window.addEventListener("resize", () => {
+  clearTimeout(rt);
+  rt = setTimeout(() => {
+    const i = [...document.getElementById("seg").children].findIndex(b => b.getAttribute("aria-pressed") === "true");
+    drawTime((RANGES[i] || RANGES[0]).r);
+  }, 180);
+});
+</script>
+
+<script>
+/* =======================================================================
+   Muestras: campana de Gauss y plano de ubicación de paquetes
+   Reutiliza los helpers del bloque anterior (E, txt, line, path, clear,
+   legend, table, fillTip, place, markTip, nf, W).
+   ======================================================================= */
+const RAW = {"ciclo":3367,"n":655,"valores":[8.1,6.5,6.7,7.1,7.4,6.7,7.4,9.1,8.5,8.5,7.8,8.2,8.5,8.5,8.1,7.8,7.6,8.5,7.9,7.6,8.1,7.8,7.6,7.8,7.6,9.8,9.0,8.1,9.1,9.6,9.8,9.3,9.9,9.9,10.0,10.2,10.0,9.9,9.8,8.8,9.1,9.1,8.9,8.9,9.0,7.1,8.8,8.8,8.5,7.9,9.1,10.3,9.9,9.9,9.6,9.9,9.8,9.6,9.6,9.6,9.6,9.6,10.0,10.3,10.5,10.6,9.9,8.9,9.5,9.6,9.3,9.6,8.5,8.6,8.2,8.6,8.3,8.8,6.7,7.9,7.5,8.2,8.3,7.8,8.3,8.1,8.2,8.1,7.9,7.8,8.1,8.5,8.3,8.2,8.2,8.6,7.2,7.6,7.5,6.9,6.8,7.2,7.2,6.9,7.1,7.9,7.5,7.9,7.8,9.0,8.8,8.6,8.8,8.8,8.8,8.2,8.6,8.3,8.2,8.5,6.4,7.5,8.3,8.3,7.9,8.2,7.9,8.1,8.2,8.1,8.2,8.3,8.3,8.1,7.9,7.8,7.8,7.5,7.9,7.9,8.8,8.9,8.8,6.1,6.9,8.8,8.3,8.3,8.5,8.3,9.3,9.1,8.5,8.6,8.5,8.5,9.0,8.6,8.8,8.5,8.8,8.3,8.8,9.1,9.1,9.1,9.1,9.3,10.0,9.1,9.3,9.2,9.2,9.5,9.3,8.9,8.9,8.5,9.3,9.1,8.2,7.4,7.4,7.6,7.9,9.2,9.0,8.6,8.6,8.9,6.7,9.1,9.5,9.5,10.5,10.3,10.6,9.2,9.5,9.9,9.8,9.8,9.8,9.2,9.1,9.3,9.3,8.9,9.1,9.3,9.0,9.2,9.2,9.2,9.3,7.8,8.3,8.9,9.2,9.6,8.2,10.3,10.0,9.3,9.6,9.5,9.9,9.0,9.3,9.5,8.8,8.8,8.3,9.2,9.1,9.1,9.3,9.5,9.5,9.8,7.6,8.5,8.3,7.9,7.6,7.8,7.2,7.8,9.1,7.9,7.8,8.6,8.5,8.3,8.3,8.1,8.2,8.2,8.1,7.6,8.8,8.6,8.9,8.2,8.8,9.0,9.8,9.5,9.2,9.3,9.9,10.2,10.6,10.0,9.9,10.0,9.9,10.3,10.3,10.2,9.5,9.5,9.6,9.9,10.0,9.8,9.5,17.4,16.8,15.2,13.2,10.2,9.3,9.5,9.2,10.0,9.6,8.8,9.8,10.0,10.0,9.3,9.5,9.8,9.6,9.5,9.6,9.9,9.9,9.9,9.8,10.5,10.6,10.2,9.2,8.3,10.2,10.6,10.2,10.2,10.3,10.6,10.5,10.5,9.9,9.6,9.1,7.2,9.9,9.5,10.3,9.2,8.5,8.9,9.1,9.3,9.2,9.3,8.1,10.6,9.5,8.6,8.2,8.8,8.8,7.6,9.2,9.2,9.1,7.8,9.1,9.3,8.9,8.8,9.1,8.5,7.2,7.1,9.0,8.8,7.9,21.5,21.7,18.5,9.5,8.5,9.5,9.5,9.5,9.6,9.5,8.3,9.1,9.3,9.2,9.1,9.1,8.3,7.1,9.6,9.6,9.2,9.1,9.2,9.2,9.9,8.8,9.5,7.4,8.3,9.3,9.8,9.0,9.6,9.5,9.8,10.0,8.6,9.6,10.7,9.8,9.6,9.1,9.3,9.6,9.6,9.2,9.2,8.9,9.0,9.5,8.9,9.9,9.2,9.5,9.2,9.5,9.8,10.0,10.2,6.7,8.3,9.0,8.6,8.2,8.5,8.1,8.2,8.2,8.3,8.9,8.5,8.3,8.6,8.1,5.7,8.6,8.2,8.6,8.1,8.9,9.1,8.9,9.2,9.5,9.9,10.0,9.8,8.9,11.4,8.6,9.9,10.3,10.0,10.2,9.3,9.6,9.1,10.5,10.3,7.9,6.9,9.5,9.5,8.8,8.2,7.4,8.1,8.3,9.2,8.2,8.9,9.5,8.6,8.6,9.0,9.1,8.6,8.5,8.5,8.8,9.0,8.6,7.6,7.8,7.5,8.5,8.5,8.8,7.9,8.5,8.6,8.8,8.6,8.3,8.2,8.1,7.2,8.6,9.6,8.5,8.8,8.9,9.0,9.3,9.2,9.8,9.9,10.5,9.0,8.1,10.0,8.2,9.3,9.2,10.2,9.8,9.3,9.9,10.5,10.0,10.0,9.8,10.0,10.5,9.3,8.6,8.9,8.9,9.0,8.5,8.9,8.2,8.1,6.5,8.5,9.9,9.8,8.6,9.0,9.6,9.6,9.5,9.3,9.0,8.9,9.1,9.0,8.9,8.9,9.1,8.3,8.3,8.2,8.8,7.9,8.2,8.6,9.2,9.1,6.1,8.1,8.5,7.9,8.1,8.5,7.4,8.2,8.2,7.9,8.6,8.6,8.5,9.6,8.5,8.8,8.5,8.3,8.3,8.8,8.9,9.3,9.0,9.2,9.5,9.6,9.8,9.9,10.0,9.3,9.9,9.3,9.0,9.0,9.0,9.5,9.8,9.2,9.3,9.2,10.2,10.0,9.9,9.1,9.3,8.9,8.3,9.2,9.0,9.1,9.2,8.8,9.1,8.9,9.0,8.8,8.2,8.1,8.5,8.8,8.3,8.5,8.3,8.2,8.2,8.1,7.9,9.0,8.9,8.3,10.9,9.3,10.2,10.2,8.6,8.5,8.3,8.5,8.2,8.9,9.8,9.5,8.9,9.0,9.5,9.6,8.5,9.6,10.0,10.3,10.5,10.5,10.5,10.6,10.7],"k":27,"grupo":"p36","media":9.0043,"sd":1.294,"min":5.7,"max":21.7};
+const el = id => document.getElementById(id);
+
+/* ---------- estadística ---------- */
+const mean = a => a.reduce((s, v) => s + v, 0) / a.length;
+const sdev = a => { const m = mean(a); return Math.sqrt(a.reduce((s, v) => s + (v - m) * (v - m), 0) / (a.length - 1)); };
+/* Abramowitz & Stegun 7.1.26 — error máximo 1,5e-7 */
+function erf(x) {
+  const s = x < 0 ? -1 : 1, a = Math.abs(x), t = 1 / (1 + 0.3275911 * a);
+  const poly = ((((1.061405429 * t - 1.453152027) * t + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t;
+  return s * (1 - poly * Math.exp(-a * a));
+}
+const Phi = (x, m, s) => 0.5 * (1 + erf((x - m) / (s * Math.SQRT2)));
+const npdf = (x, m, s) => Math.exp(-0.5 * Math.pow((x - m) / s, 2)) / (s * Math.sqrt(2 * Math.PI));
+
+/* ---------- tooltip sobre nodos HTML ---------- */
+function domTip(node, tipId, cardId, title, rows) {
+  const tip = el(tipId), card = el(cardId);
+  node.setAttribute("tabindex", "0");
+  const on = ev => { fillTip(tip, title, rows); place(tip, card, ev.clientX, ev.clientY); };
+  node.addEventListener("pointerenter", on);
+  node.addEventListener("pointermove", on);
+  node.addEventListener("focus", () => {
+    const b = node.getBoundingClientRect();
+    fillTip(tip, title, rows); place(tip, card, b.left + b.width / 2, b.top);
+  });
+  node.addEventListener("pointerleave", () => tip.classList.remove("on"));
+  node.addEventListener("blur", () => tip.classList.remove("on"));
+}
+
+/* ---------- planos (estructura de propuesta_2_plano_camaras_v3) ---------- */
+const PLANOS = {
+  p12: {
+    n: 24, titulo: "Cámaras 1–2", cols: 8,
+    nota: "En la distribución de <b>Cámaras 1–2</b> los paquetes se organizan en una <b>columna " +
+          "izquierda</b> y una <b>columna derecha</b>. La franja central corresponde a los " +
+          "<b>calefactores</b> y en los extremos izquierdo y derecho se ubica la <b>tina</b>.",
+    build: cell => {
+      const lay = document.createElement("div");
+      lay.className = "layout layout12";
+      lay.appendChild(box("side-tub", "Tina"));
+      lay.appendChild(camara("Columna izquierda", [
+        [[8, 7, 6], [2, 1, 0]], [[11, 10, 9], [5, 4, 3]]
+      ], cell));
+      lay.appendChild(box("heater", "Calefactores"));
+      lay.appendChild(camara("Columna derecha", [
+        [[20, 19, 18], [14, 13, 12]], [[23, 22, 21], [17, 16, 15]]
+      ], cell));
+      lay.appendChild(box("side-tub", "Tina"));
+      return [lay];
+    }
+  },
+  p36: {
+    n: 27, titulo: "Cámaras 3–6", cols: 9,
+    nota: "En <b>Cámaras 3–6</b> no existe pasillo entre las tres columnas. La <b>tina</b> se ubica " +
+          "en la parte trasera, detrás del conjunto de paquetes.",
+    build: cell => {
+      const rear = box("rear-tub", "Tina · parte trasera de las cámaras 3–6");
+      const lay = document.createElement("div");
+      lay.className = "layout layout36";
+      lay.appendChild(camara("Columna izquierda", [[[26, 25, 24], [17, 16, 15], [8, 7, 6]]], cell));
+      lay.appendChild(camara("Columna central", [[[23, 22, 21], [14, 13, 12], [5, 4, 3]]], cell));
+      lay.appendChild(camara("Columna derecha", [[[20, 19, 18], [11, 10, 9], [2, 1, 0]]], cell));
+      return [rear, lay];
+    }
+  }
+};
+function box(cls, t) { const d = document.createElement("div"); d.className = cls; d.textContent = t; return d; }
+function camara(titulo, columnas, cell) {
+  const s = document.createElement("section"); s.className = "camera";
+  s.appendChild(box("camera-title", titulo));
+  const g = document.createElement("div");
+  g.className = columnas.length > 1 ? "grid2" : "grid1";
+  columnas.forEach(col => {
+    const c = document.createElement("div");
+    if (col.length > 1 && columnas.length > 1) {
+      col.forEach((rack, i) => {
+        if (i > 0) {
+          const a = document.createElement("div"); a.className = "acceso";
+          const sp = document.createElement("span"); sp.textContent = "acceso"; a.appendChild(sp);
+          c.appendChild(a);
+        }
+        c.appendChild(mkRack(rack, cell));
+      });
+    } else {
+      c.className = "grid1";
+      col.forEach(rack => c.appendChild(mkRack(rack, cell)));
+    }
+    g.appendChild(c);
+  });
+  s.appendChild(g);
+  return s;
+}
+function mkRack(ids, cell) {
+  const r = document.createElement("div"); r.className = "rack";
+  ids.forEach(id => r.appendChild(cell(id)));
+  return r;
+}
+
+/* ---------- reconocimiento de cámara ----------
+   Un paquete lleva entre 24 y 26 tablas. Las cámaras 1–2 admiten 24 paquetes;
+   las 3–6, 27. De ahí sale el rango de paquetes posible para un total dado, y
+   con él la cámara compatible. Si ni la cámara mayor alcanza, el archivo trae
+   más muestras de las que cabe una carga: el Wagner duplicó los datos.        */
+const PMIN = 24, PMAX = 26;
+const CAP = {p12: 24, p36: 27};
+
+function detectar(v) {
+  const n = v.length;
+  const kmin = Math.ceil(n / PMAX), kmax = Math.floor(n / PMIN);
+  const d = {n: n, kmin: kmin, kmax: kmax, reparte: kmin <= kmax,
+             c12: kmin <= CAP.p12, c36: kmin <= CAP.p36};
+  /* la regla sólo puede *probar* cámaras 3–6: una carga chica cabe en las dos */
+  d.ok = d.c36;
+  d.grupo = "p36";
+  d.ambiguo = d.c12;
+  /* forense de duplicación: mitades idénticas, o un bloque que sí cabría solo */
+  const h = n >> 1;
+  d.mitadesIguales = n > 3 && n % 2 === 0 && v.every((x, i) => i >= h || Math.abs(x - v[i + h]) < 1e-9);
+  d.mitadCabe = n % 2 === 0 && Math.ceil(h / PMAX) <= CAP.p36 && Math.ceil(h / PMAX) <= Math.floor(h / PMIN);
+  d.mitad = h;
+  return d;
+}
+/* k paquetes repartidos lo más parejo posible, sin salirse de 24–26 */
+function repartir(n, k) {
+  const base = Math.floor(n / k), r = n % k, out = [];
+  for (let i = 0; i < k; i++)
+    out.push(base + (Math.floor((i + 1) * r / k) > Math.floor(i * r / k) ? 1 : 0));
+  return out;
+}
+function kPreferido(d, grupo) {
+  const cap = CAP[grupo];
+  if (!d.reparte) return Math.min(cap, Math.max(1, d.kmin));
+  const ks = [];
+  for (let k = d.kmin; k <= d.kmax; k++) if (k <= cap) ks.push(k);
+  return ks.length ? ks[ks.length - 1] : d.kmin;   /* el que más posiciones llena */
+}
+
+/* ---------- estado ---------- */
+let M = null;
+/* Camara y reparto en paquetes salen de la ingesta, que ya resolvio la deteccion. */
+const PLAN = RAW.grupo || "p36";
+const K = RAW.k || kPreferido(detectar(RAW.valores), PLAN);
+/* La banda es la del criterio guardado con el ciclo; se fija al cargar, no se
+   ajusta desde la pagina, para que el porcentaje que se cite sea siempre el mismo. */
+const band = () => {
+  let lo = parseFloat(D.lo), hi = parseFloat(D.hi);
+  if (!isFinite(lo)) lo = 8;
+  if (!isFinite(hi)) hi = 12;
+  return hi < lo ? [hi, lo] : [lo, hi];
+};
+
+function build(valores, ciclo, k) {
+  const b = band(), LO = b[0], HI = b[1], n = valores.length;
+  const tam = repartir(n, k), P = [];
+  let off = 0;
+  for (let p = 0; p < k; p++) {
+    const g = valores.slice(off, off + tam[p]);
+    off += tam[p];
+    const o = {
+      id: p, n: g.length, media: mean(g), sd: g.length > 1 ? sdev(g) : 0,
+      min: Math.min.apply(null, g), max: Math.max.apply(null, g),
+      bajas: g.filter(v => v < LO).length, altas: g.filter(v => v > HI).length
+    };
+    o.fuera = o.bajas + o.altas; o.pct = 100 * o.fuera / o.n;
+    P.push(o);
+  }
+  const mu = mean(valores), sg = sdev(valores);
+  M = {
+    valores: valores, ciclo: ciclo, P: P, n: n, LO: LO, HI: HI, k: k, mu: mu, sd: sg,
+    tamMin: Math.min.apply(null, tam), tamMax: Math.max.apply(null, tam),
+    min: Math.min.apply(null, valores), max: Math.max.apply(null, valores),
+    bajas: valores.filter(v => v < LO).length, altas: valores.filter(v => v > HI).length
+  };
+  M.fuera = M.bajas + M.altas;
+  M.dentro = n - M.fuera;
+  M.expBajas = n * Phi(LO, mu, sg);
+  M.expAltas = n * (1 - Phi(HI, mu, sg));
+}
+
+/* ---------- KPI de muestras ---------- */
+function kpisM() {
+  const box2 = el("kpis-m");
+  box2.textContent = "";
+  const peor = M.P.reduce((a, b) => b.pct > a.pct ? b : a);
+  const afect = M.P.filter(p => p.fuera > 0).length;
+  const dentro = 100 * M.dentro / M.n;
+  const items = [
+    {lbl: "Muestras del ciclo", val: String(M.n), u: "", note: M.P.length + " paquetes de " + M.tamMin + (M.tamMax !== M.tamMin ? " y " + M.tamMax : "") + " tablas"},
+    {lbl: "Media del lote", val: nf(M.mu, 1), u: "%",
+      note: "Óptimo " + nf(M.LO, 0) + " – " + nf(M.HI, 0) + " % · centro " + nf((M.LO + M.HI) / 2, 1) + " %"},
+    {lbl: "Desviación estándar", val: nf(M.sd, 2), u: "pts", note: "Rango " + nf(M.min, 1) + " a " + nf(M.max, 1) + " %"},
+    {lbl: "Dentro del óptimo", val: nf(dentro, 1), u: "%",
+      meter: [dentro, D.umbral],
+      note: M.dentro + " de " + M.n + " tablas · banda " + nf(M.LO, 0) + " – " + nf(M.HI, 0) +
+            " % · umbral " + nf(D.umbral, 0) + " %"},
+    {lbl: "Fuera del óptimo", val: String(M.fuera), u: "tablas",
+      flag: M.bajas >= M.altas ? ["f-warn", M.bajas + " bajo " + nf(M.LO, 0) + " %"]
+                               : ["f-crit", M.altas + " sobre " + nf(M.HI, 0) + " %"],
+      note: M.bajas + " bajo " + nf(M.LO, 0) + " % · " + M.altas + " sobre " + nf(M.HI, 0) + " %"},
+    {lbl: "Paquete más crítico", val: "#" + peor.id, u: "",
+      flag: peor.fuera ? ["f-crit", peor.fuera + " de " + peor.n + " fuera"] : ["f-good", "Sin desvíos"],
+      note: afect + " de " + M.P.length + " paquetes tienen alguna tabla fuera"},
+    /* el veredicto se recalcula sobre las tablas que se están mostrando, con la
+       misma cuenta que usa la ingesta: sin redondear antes de comparar */
+    {lbl: "Resultado del lote", res: dentro >= D.umbral,
+      note: nf(dentro, 1) + " % de las tablas en " + nf(M.LO, 0) + " – " + nf(M.HI, 0) +
+            " % · se exige " + nf(D.umbral, 0) + " %"}
+  ];
+  items.forEach(it => {
+    const d = document.createElement("div"); d.className = "kpi";
+    const l = document.createElement("div"); l.className = "lbl"; l.textContent = it.lbl; d.appendChild(l);
+    if (it.res !== undefined) {
+      const r = document.createElement("div");
+      r.className = "res " + (it.res ? "ok" : "no");
+      r.appendChild(document.createElement("i"));
+      r.appendChild(document.createTextNode(it.res ? "Aprobado" : "Rechazado"));
+      d.appendChild(r);
+    } else {
+      const v = document.createElement("div"); v.className = "val";
+      v.appendChild(document.createTextNode(it.val));
+      if (it.u) { const u = document.createElement("span"); u.className = "u"; u.textContent = it.u; v.appendChild(u); }
+      d.appendChild(v);
+    }
+    if (it.flag) {
+      const f = document.createElement("div"); f.className = "flag " + it.flag[0];
+      const dot = document.createElement("i"); dot.className = "dot"; f.appendChild(dot);
+      f.appendChild(document.createTextNode(it.flag[1])); d.appendChild(f);
+    }
+    if (it.meter) {
+      const m = document.createElement("div"); m.className = "meter";
+      const i = document.createElement("i"); i.style.width = Math.min(100, it.meter[0]) + "%";
+      if (it.meter[0] < it.meter[1]) i.style.background = "var(--crit)";
+      m.appendChild(i);
+      const bb = document.createElement("b"); bb.style.left = it.meter[1] + "%"; m.appendChild(bb);
+      d.appendChild(m);
+    }
+    const nn = document.createElement("div"); nn.className = "note"; nn.textContent = it.note; d.appendChild(nn);
+    box2.appendChild(d);
+  });
+}
+
+/* ---------- campana de Gauss ---------- */
+function gauss() {
+  const svg = clear(el("svg-gauss"), W, 356);
+  const L = 54, R = 26, T = 28, PH = 244, PW = W - L - R, bw = 0.5;
+  const lo = Math.floor(M.min * 2) / 2 - bw, hi = Math.ceil(M.max * 2) / 2 + bw;
+  const nb = Math.round((hi - lo) / bw);
+  const bins = new Array(nb).fill(0);
+  M.valores.forEach(v => { bins[Math.min(nb - 1, Math.max(0, Math.floor((v - lo) / bw)))]++; });
+  const ymax = Math.max.apply(null, bins) * 1.14;
+  const x = v => L + (v - lo) / (hi - lo) * PW;
+  const y = c => T + PH - c / ymax * PH;
+
+  svg.appendChild(E("rect", {x: x(M.LO), y: T, width: x(M.HI) - x(M.LO), height: PH},
+    {fill: "var(--good)", opacity: ".08"}));
+  [M.LO, M.HI].forEach(v => svg.appendChild(line(x(v), T, x(v), T + PH, "var(--good)", 1.5)));
+  svg.appendChild(txt("óptimo  " + nf(M.LO, 0) + " – " + nf(M.HI, 0) + " %",
+    (x(M.LO) + x(M.HI)) / 2, T + 14, {a: "middle", size: 10.5, mono: true, fill: "var(--good-ink)"}));
+
+  const step = ymax > 120 ? 40 : (ymax > 60 ? 20 : (ymax > 24 ? 10 : 5));
+  for (let c = 0; c <= ymax; c += step) {
+    svg.appendChild(line(L, y(c), W - R, y(c), "var(--grid)", 1));
+    svg.appendChild(txt(c, L - 8, y(c) + 3.5, {a: "end", size: 10, mono: true}));
+  }
+  svg.appendChild(txt("Tablas por intervalo de 0,5 %", L, T - 10,
+    {size: 10, disp: true, upper: true, track: ".08em", weight: 600, fill: "var(--ink-2)"}));
+
+  const slot = PW / nb, bwpx = Math.min(24, Math.max(2, slot - 2));
+  bins.forEach((c, k) => {
+    if (!c) return;
+    const c0 = lo + (k + 0.5) * bw;
+    const fill = c0 < M.LO ? "var(--warn)" : (c0 > M.HI ? "var(--crit)" : "var(--s1)");
+    const bx = x(lo + k * bw) + (slot - bwpx) / 2, h = T + PH - y(c);
+    svg.appendChild(E("rect", {x: bx, y: y(c), width: bwpx, height: h, rx: 2}, {fill: fill}));
+    if (h > 4) svg.appendChild(E("rect", {x: bx, y: y(c) + 4, width: bwpx, height: h - 4}, {fill: fill}));
+    markTip(svg, E("rect", {x: bx - 3, y: T, width: bwpx + 6, height: PH}, {fill: "transparent"}),
+      "tip-gauss", "c-gauss", nf(lo + k * bw, 1) + " – " + nf(lo + (k + 1) * bw, 1) + " %",
+      [{c: fill, sq: true, t: "Tablas", v: String(c)},
+       {c: "var(--muted)", sq: true, t: "Del lote", v: nf(100 * c / M.n, 2) + " %"},
+       {c: "var(--ink)", sq: true, t: "Esperado normal",
+        v: nf(M.n * (Phi(lo + (k + 1) * bw, M.mu, M.sd) - Phi(lo + k * bw, M.mu, M.sd)), 1)}]);
+  });
+
+  let d = "";
+  for (let px = 0; px <= 240; px++) {
+    const v = lo + (hi - lo) * px / 240;
+    d += (px ? "L" : "M") + x(v).toFixed(1) + " " + y(npdf(v, M.mu, M.sd) * M.n * bw).toFixed(1);
+  }
+  svg.appendChild(path(d, {stroke: "var(--ink)", "stroke-width": "2px", "pointer-events": "none"}));
+
+  const ml = line(x(M.mu), T, x(M.mu), T + PH, "var(--ink)", 1.5);
+  ml.style.setProperty("pointer-events", "none");
+  svg.appendChild(ml);
+  svg.appendChild(txt("μ " + nf(M.mu, 1) + " %", x(M.mu), T + PH + 16,
+    {a: "middle", size: 11, weight: 600, fill: "var(--ink)"}));
+  [-2, -1, 1, 2].forEach(k => {
+    const v = M.mu + k * M.sd;
+    if (v <= lo || v >= hi) return;
+    svg.appendChild(line(x(v), T + PH, x(v), T + PH + 5, "var(--rule)", 1));
+    svg.appendChild(txt((k > 0 ? "+" : "") + k + "s", x(v), T + PH + 16, {a: "middle", size: 10, mono: true}));
+  });
+  for (let v = Math.ceil(lo); v <= hi; v++) {
+    svg.appendChild(line(x(v), T + PH, x(v), T + PH + 4, "var(--rule)", 1));
+    svg.appendChild(txt(v, x(v), T + PH + 32, {a: "middle", size: 10, mono: true}));
+  }
+  svg.appendChild(line(L, T + PH, W - R, T + PH, "var(--rule)", 1));
+  svg.appendChild(txt("Humedad final  %", W - R, T + PH + 50,
+    {a: "end", size: 10, disp: true, upper: true, track: ".08em", weight: 600, fill: "var(--ink-2)"}));
+
+  legend("lg-gauss", [
+    {c: "var(--s1)", sq: true, t: "Dentro del óptimo"},
+    {c: "var(--warn)", sq: true, t: "Bajo " + nf(M.LO, 0) + " %"},
+    {c: "var(--crit)", sq: true, t: "Sobre " + nf(M.HI, 0) + " %"},
+    {c: "var(--ink)", t: "Normal ajustada (μ " + nf(M.mu, 1) + " · s " + nf(M.sd, 2) + ")"}
+  ]);
+  table("tb-gauss", ["Intervalo", "Tablas", "% del lote", "Esperado normal"],
+    bins.map((c, k) => [nf(lo + k * bw, 1) + " – " + nf(lo + (k + 1) * bw, 1) + " %", String(c),
+      nf(100 * c / M.n, 2) + " %",
+      nf(M.n * (Phi(lo + (k + 1) * bw, M.mu, M.sd) - Phi(lo + k * bw, M.mu, M.sd)), 1)])
+      .filter((r, k) => bins[k] > 0));
+
+  const box3 = el("verdict");
+  const fuerte = M.bajas > M.expBajas * 2 + 2 || M.altas > M.expAltas * 2 + 2;
+  box3.className = "verdict" + (fuerte ? " alert" : "");
+  box3.textContent = "";
+  const add = (t, b) => { const e = document.createElement(b ? "b" : "span"); e.textContent = t; box3.appendChild(e); };
+  add("Una normal con μ " + nf(M.mu, 1) + " y s " + nf(M.sd, 2) + " predice ");
+  add(nf(M.expBajas, 1) + " tablas bajo " + nf(M.LO, 0) + " % y " + nf(M.expAltas, 1) + " sobre " + nf(M.HI, 0) + " %", true);
+  add(". El lote tiene ");
+  add(M.bajas + " y " + M.altas, true);
+  add(". ");
+  add(fuerte
+    ? "Las colas superan lo que explica el azar, así que el lote no es una sola población: hay una subpoblación con otra media. Eso se localiza — busca en el plano los paquetes marcados en rojo."
+    : "Las colas coinciden con lo que predice la normal, así que la dispersión se comporta como ruido del proceso y no como un defecto localizado. Bajar el porcentaje fuera del óptimo exige reducir s en toda la carga, no perseguir un paquete concreto.");
+}
+
+/* ---------- plano ---------- */
+const DVCUT = [-2, -1, -0.4, 0.4, 1, 2];
+const dv = d => { let k = 0; while (k < DVCUT.length && d > DVCUT[k]) k++; return k; };
+
+function plano() {
+  const P = PLANOS[PLAN], modo = el("mode").value, centro = (M.LO + M.HI) / 2;
+  const byId = {};
+  M.P.forEach(p => { byId[p.id] = p; });
+
+  const cell = id => {
+    const p = byId[id];
+    const d = document.createElement("div");
+    d.className = "pkg";
+    const num = document.createElement("div"); num.className = "num";
+    const sub = document.createElement("div"); sub.className = "sub";
+    if (!p) {
+      d.className = "pkg st-none";
+      num.textContent = String(id);
+      sub.textContent = "sin datos";
+      d.appendChild(num); d.appendChild(sub);
+      return d;
+    }
+    num.textContent = String(id);
+    if (modo === "fuera") {
+      d.classList.add(p.fuera === 0 ? "st-ok" : (p.pct < 20 ? "st-warn" : "st-bad"));
+      sub.textContent = nf(p.media, 1) + " %";
+      if (p.fuera) {
+        const b = document.createElement("div"); b.className = "badge";
+        b.textContent = p.fuera + " fuera";
+        b.style.background = p.pct < 20 ? "var(--warn)" : "var(--crit)";
+        if (p.pct < 20) b.style.color = "#2b2103";
+        d.appendChild(b);
+      }
+    } else {
+      const k = dv(p.media - centro);
+      d.classList.add("mc");
+      d.style.background = "var(--dv" + (k + 1) + ")";
+      d.style.color = "var(--dv" + (k + 1) + "i)";
+      sub.textContent = nf(p.media, 1) + " %";
+      if (p.fuera) {
+        const b = document.createElement("div"); b.className = "badge";
+        b.textContent = p.fuera + " fuera";
+        d.appendChild(b);
+      }
+    }
+    d.appendChild(num); d.appendChild(sub);
+    domTip(d, "tip-plan", "c-plan", "Paquete " + id, [
+      {c: "var(--s1)", sq: true, t: "Media", v: nf(p.media, 1) + " %"},
+      {c: "var(--muted)", sq: true, t: "Dispersión", v: nf(p.sd, 2) + " pts"},
+      {c: "var(--muted)", sq: true, t: "Rango", v: nf(p.min, 1) + " – " + nf(p.max, 1) + " %"},
+      {c: "var(--warn)", sq: true, t: "Bajo " + nf(M.LO, 0) + " %", v: String(p.bajas)},
+      {c: "var(--crit)", sq: true, t: "Sobre " + nf(M.HI, 0) + " %", v: String(p.altas)}
+    ]);
+    return d;
+  };
+
+  const cont = el("plan");
+  cont.textContent = "";
+  P.build(cell).forEach(n => cont.appendChild(n));
+
+  el("pnote").innerHTML = "<b>Lectura:</b> " + P.nota;
+
+  /* paquetes sin posición en este plano */
+  const sobra = M.P.filter(p => p.id >= P.n);
+  const tray = el("tray");
+  tray.textContent = "";
+  tray.className = "tray" + (sobra.length ? "" : " off");
+  if (sobra.length) {
+    const t = document.createElement("span");
+    t.textContent = "El plano de " + P.titulo + " tiene " + P.n + " posiciones y la carga generó " +
+      M.P.length + " paquetes. Sin ubicación:";
+    tray.appendChild(t);
+    sobra.forEach(p => {
+      const c = document.createElement("div"); c.className = "tp";
+      const b = document.createElement("b"); b.textContent = "#" + p.id; c.appendChild(b);
+      const s = document.createElement("span");
+      s.textContent = nf(p.media, 1) + " % · " + p.n + " tablas"; c.appendChild(s);
+      tray.appendChild(c);
+    });
+  }
+
+  legend("lg-plan", modo === "fuera"
+    ? [{c: "var(--good)", sq: true, t: "Sin tablas fuera del óptimo"},
+       {c: "var(--warn)", sq: true, t: "Menos del 20 % del paquete fuera"},
+       {c: "var(--crit)", sq: true, t: "20 % o más del paquete fuera"},
+       {c: "var(--rule)", sq: true, t: "Posición sin datos cargados"}]
+    : [{scale: [1, 2, 3, 4, 5, 6, 7].map(i => "var(--dv" + i + ")"),
+        t: "Media del paquete respecto del centro del óptimo (" + nf(centro, 1) + " %), de −2 a +2 pts"}]);
+
+  table("tb-plan", ["Paquete", "Tablas", "Media %", "s", "Mín", "Máx", "Bajas", "Altas", "% fuera"],
+    M.P.slice().sort((a, b) => b.pct - a.pct || b.fuera - a.fuera).map(p =>
+      ["#" + p.id, String(p.n), nf(p.media, 1), nf(p.sd, 2), nf(p.min, 1), nf(p.max, 1),
+       String(p.bajas), String(p.altas), nf(p.pct, 1) + " %"]));
+}
+
+/* ---------- orquestación ---------- */
+function render() {
+  build(RAW.valores, RAW.ciclo, K);
+  kpisM(); gauss(); plano();
+}
+el("mode").addEventListener("change", plano);
+render();
+let rtm = 0;
+window.addEventListener("resize", () => { clearTimeout(rtm); rtm = setTimeout(gauss, 200); });
+</script>
+
+<script>
+/* =======================================================================
+   Carga de archivos en la misma pagina del tablero.
+   Dos pasos: se inspecciona el archivo (sin escribir) y recien al confirmar
+   se guarda en la base; despues la pagina se recarga en el ciclo cargado.
+   ======================================================================= */
+(function carga() {
+  const $ = s => document.querySelector(s);
+  const tok = {muestras: null, proceso: null};
+  const nom = {muestras: null, proceso: null};
+
+  function pinta(avisos) {
+    const box = $("#avisos");
+    box.textContent = "";
+    (avisos || []).forEach(a => {
+      const d = document.createElement("div");
+      d.className = "av " + a[0];
+      d.textContent = a[1];
+      box.appendChild(d);
+    });
+  }
+  function revisa() {
+    $("#guardar").disabled = !(tok.muestras || tok.proceso) || !$("#ciclo").value;
+  }
+
+  async function inspecciona(tipo, file, dropSel, estSel) {
+    const drop = $(dropSel), lbl = $(estSel);
+    drop.className = "drop";
+    lbl.textContent = "Leyendo " + file.name + "…";
+    try {
+      const r = await fetch("/api/inspeccionar?tipo=" + tipo +
+                            "&nombre=" + encodeURIComponent(file.name),
+                            {method: "POST", body: file});
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || "No se pudo leer el archivo.");
+      tok[tipo] = j.token;
+      nom[tipo] = file.name;
+      drop.classList.add(j.avisos.some(a => a[0] === "alerta") ? "malo" : "listo");
+      lbl.textContent = file.name + " · " + j.n +
+                        (tipo === "muestras" ? " muestras" : " registros") +
+                        " · " + (j.formato || "").toUpperCase();
+      if (j.ciclo) $("#ciclo").value = j.ciclo;
+      if (j.camara) $("#camara").value = String(j.camara);
+      pinta(j.avisos);
+    } catch (e) {
+      tok[tipo] = null;
+      nom[tipo] = null;
+      drop.classList.add("malo");
+      lbl.textContent = "No se pudo leer el archivo";
+      pinta([["alerta", e.message]]);
+    }
+    revisa();
+  }
+
+  [["muestras", "#d-mues", "#f-mues", "#e-mues"],
+   ["proceso", "#d-proc", "#f-proc", "#e-proc"]].forEach(([tipo, d, f, e]) => {
+    const drop = $(d), inp = $(f);
+    if (!drop) return;
+    drop.addEventListener("click", () => inp.click());
+    drop.addEventListener("keydown", ev => {
+      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); inp.click(); }
+    });
+    inp.addEventListener("change", () => inp.files[0] && inspecciona(tipo, inp.files[0], d, e));
+    ["dragenter", "dragover"].forEach(x => drop.addEventListener(x, ev => {
+      ev.preventDefault(); drop.classList.add("over");
+    }));
+    ["dragleave", "drop"].forEach(x => drop.addEventListener(x, ev => {
+      ev.preventDefault(); drop.classList.remove("over");
+    }));
+    drop.addEventListener("drop", ev => {
+      const file = ev.dataTransfer && ev.dataTransfer.files[0];
+      if (file) inspecciona(tipo, file, d, e);
+    });
+  });
+
+  $("#ciclo").addEventListener("input", revisa);
+
+  $("#guardar").addEventListener("click", async () => {
+    const b = $("#guardar");
+    b.disabled = true;
+    b.textContent = "Guardando…";
+    try {
+      const r = await fetch("/api/confirmar", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          camara: +$("#camara").value, ciclo: +$("#ciclo").value,
+          muestras: tok.muestras, proceso: tok.proceso,
+          nombre_muestras: nom.muestras, nombre_proceso: nom.proceso,
+          objetivo: +$("#objetivo").value, lo: +$("#crlo").value, hi: +$("#crhi").value,
+          umbral: +$("#umbral").value
+        })
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || "No se pudo guardar.");
+      pinta(j.avisos.concat([["ok", "Guardado. Mostrando el ciclo…"]]));
+      setTimeout(() => { location.href = "/?camara=" + j.camara + "&ciclo=" + j.ciclo; }, 800);
+    } catch (e) {
+      pinta([["alerta", e.message]]);
+      b.disabled = false;
+      b.textContent = "Guardar y ver";
+    }
+  });
+
+  const sel = document.getElementById("selciclo");
+  if (sel) sel.addEventListener("change", () => {
+    const [c, n] = sel.value.split("/");
+    location.href = "/?camara=" + c + "&ciclo=" + n;
+  });
+
+  document.querySelectorAll("button.del").forEach(b => b.addEventListener("click", async ev => {
+    ev.preventDefault();
+    if (!confirm("¿Eliminar la cámara " + b.dataset.c + " ciclo " + b.dataset.n +
+                 " con todos sus registros? No se puede deshacer.")) return;
+    await fetch("/api/borrar", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({camara: +b.dataset.c, ciclo: +b.dataset.n})
+    });
+    location.href = "/";
+  }));
+})();
+</script>
+
+</body>
+</html>

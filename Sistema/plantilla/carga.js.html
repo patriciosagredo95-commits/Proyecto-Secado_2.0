@@ -1,0 +1,122 @@
+<script>
+/* =======================================================================
+   Carga de archivos en la misma pagina del tablero.
+   Dos pasos: se inspecciona el archivo (sin escribir) y recien al confirmar
+   se guarda en la base; despues la pagina se recarga en el ciclo cargado.
+   ======================================================================= */
+(function carga() {
+  const $ = s => document.querySelector(s);
+  const tok = {muestras: null, proceso: null};
+  const nom = {muestras: null, proceso: null};
+
+  function pinta(avisos) {
+    const box = $("#avisos");
+    box.textContent = "";
+    (avisos || []).forEach(a => {
+      const d = document.createElement("div");
+      d.className = "av " + a[0];
+      d.textContent = a[1];
+      box.appendChild(d);
+    });
+  }
+  function revisa() {
+    $("#guardar").disabled = !(tok.muestras || tok.proceso) || !$("#ciclo").value;
+  }
+
+  async function inspecciona(tipo, file, dropSel, estSel) {
+    const drop = $(dropSel), lbl = $(estSel);
+    drop.className = "drop";
+    lbl.textContent = "Leyendo " + file.name + "…";
+    try {
+      const r = await fetch("/api/inspeccionar?tipo=" + tipo +
+                            "&nombre=" + encodeURIComponent(file.name),
+                            {method: "POST", body: file});
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || "No se pudo leer el archivo.");
+      tok[tipo] = j.token;
+      nom[tipo] = file.name;
+      drop.classList.add(j.avisos.some(a => a[0] === "alerta") ? "malo" : "listo");
+      lbl.textContent = file.name + " · " + j.n +
+                        (tipo === "muestras" ? " muestras" : " registros") +
+                        " · " + (j.formato || "").toUpperCase();
+      if (j.ciclo) $("#ciclo").value = j.ciclo;
+      if (j.camara) $("#camara").value = String(j.camara);
+      pinta(j.avisos);
+    } catch (e) {
+      tok[tipo] = null;
+      nom[tipo] = null;
+      drop.classList.add("malo");
+      lbl.textContent = "No se pudo leer el archivo";
+      pinta([["alerta", e.message]]);
+    }
+    revisa();
+  }
+
+  [["muestras", "#d-mues", "#f-mues", "#e-mues"],
+   ["proceso", "#d-proc", "#f-proc", "#e-proc"]].forEach(([tipo, d, f, e]) => {
+    const drop = $(d), inp = $(f);
+    if (!drop) return;
+    drop.addEventListener("click", () => inp.click());
+    drop.addEventListener("keydown", ev => {
+      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); inp.click(); }
+    });
+    inp.addEventListener("change", () => inp.files[0] && inspecciona(tipo, inp.files[0], d, e));
+    ["dragenter", "dragover"].forEach(x => drop.addEventListener(x, ev => {
+      ev.preventDefault(); drop.classList.add("over");
+    }));
+    ["dragleave", "drop"].forEach(x => drop.addEventListener(x, ev => {
+      ev.preventDefault(); drop.classList.remove("over");
+    }));
+    drop.addEventListener("drop", ev => {
+      const file = ev.dataTransfer && ev.dataTransfer.files[0];
+      if (file) inspecciona(tipo, file, d, e);
+    });
+  });
+
+  $("#ciclo").addEventListener("input", revisa);
+
+  $("#guardar").addEventListener("click", async () => {
+    const b = $("#guardar");
+    b.disabled = true;
+    b.textContent = "Guardando…";
+    try {
+      const r = await fetch("/api/confirmar", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          camara: +$("#camara").value, ciclo: +$("#ciclo").value,
+          muestras: tok.muestras, proceso: tok.proceso,
+          nombre_muestras: nom.muestras, nombre_proceso: nom.proceso,
+          objetivo: +$("#objetivo").value, lo: +$("#crlo").value, hi: +$("#crhi").value,
+          umbral: +$("#umbral").value
+        })
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || "No se pudo guardar.");
+      pinta(j.avisos.concat([["ok", "Guardado. Mostrando el ciclo…"]]));
+      setTimeout(() => { location.href = "/?camara=" + j.camara + "&ciclo=" + j.ciclo; }, 800);
+    } catch (e) {
+      pinta([["alerta", e.message]]);
+      b.disabled = false;
+      b.textContent = "Guardar y ver";
+    }
+  });
+
+  const sel = document.getElementById("selciclo");
+  if (sel) sel.addEventListener("change", () => {
+    const [c, n] = sel.value.split("/");
+    location.href = "/?camara=" + c + "&ciclo=" + n;
+  });
+
+  document.querySelectorAll("button.del").forEach(b => b.addEventListener("click", async ev => {
+    ev.preventDefault();
+    if (!confirm("¿Eliminar la cámara " + b.dataset.c + " ciclo " + b.dataset.n +
+                 " con todos sus registros? No se puede deshacer.")) return;
+    await fetch("/api/borrar", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({camara: +b.dataset.c, ciclo: +b.dataset.n})
+    });
+    location.href = "/";
+  }));
+})();
+</script>
